@@ -1,0 +1,64 @@
+@startuml DiagramaDeClasesPrimeraNoche
+
+' Estilos
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+' Clases principales
+class Contenido {
+    - ArrayList<Leccion> lecciones
+    + Contenido()
+    + boolean addLeccion(Leccion nuevaLeccion)
+    + ArrayList<Leccion> getLecciones()
+    + Leccion getLeccion(int numLeccion)
+}
+
+class Leccion {
+    - ArrayList<Ejercicio> listaEjercicios
+    - String nombre
+    + Leccion(String nombre)
+    + String getNombre()
+    + int getNumEjercicios()
+    + Ejercicio getEjercicio(int numEjercicio)
+    + boolean addEjercicio(Ejercicio nuevoEjercicio)
+}
+
+abstract class Ejercicio {
+    # String enunciado
+    + Ejercicio(String enunciado)
+    + String getEnunciado()
+}
+
+class EjercicioSeleccion {
+    - ArrayList<String> opciones
+    - ArrayList<String> respuestas
+    + EjercicioSeleccion(String enunciado, ArrayList<String> opciones, ArrayList<String> respuestas)
+    + ArrayList<String> getListOpciones()
+    + String getOpcion(int numOpcion)
+}
+
+class EjercicioCompletar {
+    + EjercicioCompletar(String enunciado)
+}
+
+enum NivelDificultad {
+    PRINCIPIANTE
+    BASICO
+    INTERMEDIO
+    AVANZADO
+    EXPERTO
+    - String descripcion
+    + NivelDificultad(String descripcion)
+    + String getDescripcion()
+}
+
+' Relaciones
+Contenido "1" *-- "many" Leccion : contiene
+Leccion "1" *-- "many" Ejercicio : contiene
+EjercicioSeleccion --|> Ejercicio : extends
+EjercicioCompletar --|> Ejercicio : extends
+
+@enduml 
