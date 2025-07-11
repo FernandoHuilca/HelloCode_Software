@@ -1,4 +1,4 @@
-package Comunidad_Modulo;
+package Comunidad_Modulo.core;
 
 public class Comunidad {
     private String nombre;
