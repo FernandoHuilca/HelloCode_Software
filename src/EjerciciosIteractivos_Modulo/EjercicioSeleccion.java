@@ -4,13 +4,11 @@ import java.util.ArrayList;
 
 public class EjercicioSeleccion extends Ejercicio {
     private ArrayList<String> opciones;
-    private ArrayList<String> respuestas;
 
     public EjercicioSeleccion(String enunciado, ArrayList<String> opciones, ArrayList<String> respuestas) {
-        super(enunciado);
+        super(enunciado, respuestas);
 
         this.opciones = opciones;
-        this.respuestas = respuestas;
     }
     public ArrayList<String> getListOpciones() {
         return opciones;

@@ -46,6 +46,9 @@ class EjercicioCompletar {
     + EjercicioCompletar(String enunciado, ArrayList<String> partesACompletar, ArrayList<String> respuestas)
     + ArrayList<String> getPartesACompletar()
 }
+class ValidacionRespuestas{
+    +boolean validarRespuestas(Ejercicio ejercicio, ArrayList<String> respuestas)
+}
 
 enum NivelDificultad {
     PRINCIPIANTE
@@ -61,6 +64,7 @@ enum NivelDificultad {
 ' Relaciones
 Contenido "1" *-- "many" Leccion : contiene
 Leccion "1" *-- "many" Ejercicio : contiene
+Ejercicio "1" *-- ValidacionRespuestas
 EjercicioSeleccion --|> Ejercicio : extends
 EjercicioCompletar --|> Ejercicio : extends
 
