@@ -41,7 +41,10 @@ class EjercicioSeleccion {
 }
 
 class EjercicioCompletar {
-    + EjercicioCompletar(String enunciado)
+    -ArrayList<String> partesACompletar
+    -ArrayList<String> respuestas
+    + EjercicioCompletar(String enunciado, ArrayList<String> partesACompletar, ArrayList<String> respuestas)
+    + ArrayList<String> getPartesACompletar()
 }
 
 enum NivelDificultad {
