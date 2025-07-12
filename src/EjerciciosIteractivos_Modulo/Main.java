@@ -6,140 +6,210 @@ import EjerciciosIteractivos_Modulo.Lecciones.Leccion;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//Fernando Huilca
+//Fernando Huilca y Mateo Quisilema
 public class Main {
-    private static Scanner scanner = new Scanner(System.in); //Input
+
+    private static Scanner inputScanner = new Scanner(System.in); //Scanner para entrada del usuario
+    
     public static void main(String[] args) {
-    //Variables para el main______________________________________
-        int opcionMenuGeneral = 1; //Menu While
-        //Contenido tiene muchas lecciones:
-        Contenido contenidoRutaBasica = new Contenido();
-        Leccion leccionTipoDatos = new Leccion("Tipos de Datos");
-        Leccion leccionSintaxis = new Leccion("Sintaxis Basica");
-        contenidoRutaBasica.addLeccion(leccionSintaxis);
-        contenidoRutaBasica.addLeccion(leccionTipoDatos);
-        //Lecciones tienen muchos ejercicios:
-        String enunciado = "¿Cuál de estos es un tipo de dato entero en Java?";
-        ArrayList<String> opciones = new ArrayList<>();
-        opciones.add("String");
-        opciones.add("boolean");
-        opciones.add("double");
-        opciones.add("int");
-        ArrayList<String> respuestas = new ArrayList<>();
-        respuestas.add("int");
+        //Variables para el menú principal
+        int seleccionUsuario = 1; //Control del bucle del menú principal
+        
+        //Inicialización del contenido educativo
+        Contenido cursoBasico = new Contenido();
+        Leccion leccionTiposDatos = new Leccion("Tipos de Datos");
+        Leccion leccionSintaxisBasica = new Leccion("Sintaxis Básica");
+        cursoBasico.addLeccion(leccionSintaxisBasica);
+        cursoBasico.addLeccion(leccionTiposDatos);
+        
+        //Creación de ejercicios para la lección de tipos de datos
+        String preguntaTiposEnteros = "¿Cuál de estos es un tipo de dato entero en Java?";
+        ArrayList<String> opcionesTiposEnteros = new ArrayList<>();
+        opcionesTiposEnteros.add("String");
+        opcionesTiposEnteros.add("boolean");
+        opcionesTiposEnteros.add("double");
+        opcionesTiposEnteros.add("int");
+        opcionesTiposEnteros.add("Integer");
+        ArrayList<String> respuestasCorrectasTiposEnteros = new ArrayList<>();
+        respuestasCorrectasTiposEnteros.add("int");
+        respuestasCorrectasTiposEnteros.add("Integer");
 
-        String enunciado2 = "¿Qué tipo se usa para verdadero o falso?";
-        ArrayList<String> opciones2 = new ArrayList<>();
-        opciones2.add("String");
-        opciones2.add("boolean");
-        opciones2.add("double");
-        opciones2.add("int");
-        ArrayList<String> respuestas2 = new ArrayList<>();
-        respuestas2.add("boolean");
+        String preguntaTipoBooleano = "¿Qué tipo se usa para verdadero o falso?";
+        ArrayList<String> opcionesTipoBooleano = new ArrayList<>();
+        opcionesTipoBooleano.add("String");
+        opcionesTipoBooleano.add("boolean");
+        opcionesTipoBooleano.add("double");
+        opcionesTipoBooleano.add("int");
+        ArrayList<String> respuestasCorrectasTipoBooleano = new ArrayList<>();
+        respuestasCorrectasTipoBooleano.add("boolean");
 
+        //Ejercicio con múltiples respuestas correctas
+        String preguntaTiposPrimitivos = "¿Cuáles de estos son tipos de datos primitivos en Java?";
+        ArrayList<String> opcionesTiposPrimitivos = new ArrayList<>();
+        opcionesTiposPrimitivos.add("int");
+        opcionesTiposPrimitivos.add("String");
+        opcionesTiposPrimitivos.add("double");
+        opcionesTiposPrimitivos.add("boolean");
+        opcionesTiposPrimitivos.add("Integer");
+        opcionesTiposPrimitivos.add("char");
+        ArrayList<String> respuestasCorrectasTiposPrimitivos = new ArrayList<>();
+        respuestasCorrectasTiposPrimitivos.add("int");
+        respuestasCorrectasTiposPrimitivos.add("double");
+        respuestasCorrectasTiposPrimitivos.add("boolean");
+        respuestasCorrectasTiposPrimitivos.add("char");
 
-        Ejercicio ejercicioSeleccion = new EjercicioSeleccion(enunciado,opciones, respuestas);
-        Ejercicio ejercicioSeleccion2 = new EjercicioSeleccion(enunciado2,opciones2, respuestas2);
-        leccionTipoDatos.addEjercicio(ejercicioSeleccion);
-        leccionTipoDatos.addEjercicio(ejercicioSeleccion2);
+        //Creación de ejercicios de selección múltiple
+        EjercicioBase ejercicioTiposEnteros = new EjercicioSeleccion(preguntaTiposEnteros, opcionesTiposEnteros, respuestasCorrectasTiposEnteros, NivelDificultad.BASICO, Lenguaje.JAVA);
+        EjercicioBase ejercicioTipoBooleano = new EjercicioSeleccion(preguntaTipoBooleano, opcionesTipoBooleano, respuestasCorrectasTipoBooleano, NivelDificultad.BASICO, Lenguaje.JAVA);
+        EjercicioBase ejercicioTiposPrimitivos = new EjercicioSeleccion(preguntaTiposPrimitivos, opcionesTiposPrimitivos, respuestasCorrectasTiposPrimitivos, NivelDificultad.BASICO, Lenguaje.JAVA);
+        
+        //Creación de ejercicios de completar código
+        String instruccionCompletarVariable = "Declara una variable de tipo entera llamada edad:";
+        String codigoIncompletoVariable = "int ____ = 20;";
+        ArrayList<String> partesFaltantesVariable = new ArrayList<>();
+        partesFaltantesVariable.add("edad");
+        ArrayList<String> respuestasEsperadasVariable = new ArrayList<>();
+        respuestasEsperadasVariable.add("edad");
+        
+        String instruccionCompletarMetodo = "Completa el método para sumar dos números:";
+        String codigoIncompletoMetodo = "public int sumar(int a, int b) {\n    return ____;\n}";
+        ArrayList<String> partesFaltantesMetodo = new ArrayList<>();
+        partesFaltantesMetodo.add("a + b");
+        ArrayList<String> respuestasEsperadasMetodo = new ArrayList<>();
+        respuestasEsperadasMetodo.add("a + b");
+        
+        EjercicioBase ejercicioCompletarVariable = new EjercicioCompletarCodigo(instruccionCompletarVariable, codigoIncompletoVariable, partesFaltantesVariable, respuestasEsperadasVariable, NivelDificultad.BASICO, Lenguaje.JAVA);
+        EjercicioBase ejercicioCompletarMetodo = new EjercicioCompletarCodigo(instruccionCompletarMetodo, codigoIncompletoMetodo, partesFaltantesMetodo, respuestasEsperadasMetodo, NivelDificultad.BASICO, Lenguaje.JAVA);
+        
+        leccionTiposDatos.addEjercicio(ejercicioTiposEnteros);
+        leccionTiposDatos.addEjercicio(ejercicioTipoBooleano);
+        leccionTiposDatos.addEjercicio(ejercicioTiposPrimitivos);
+        leccionTiposDatos.addEjercicio(ejercicioCompletarVariable);
+        leccionTiposDatos.addEjercicio(ejercicioCompletarMetodo);
 
-
-        //******************* Ejercicios de Completar
-        String enunciado3 = "Declara una variable int llamada int con el nombre de 'edad' y un valor de 18...";
-        String parte1 = "int";
-        String parte2 = "= 18";
-        ArrayList<String> partesACompletar = new ArrayList<>();
-        partesACompletar.add(parte1);
-        partesACompletar.add(parte2);
-        ArrayList<String> respuesta3 = new ArrayList<>();
-        respuesta3.add("edad");
-
-        Ejercicio ejercicioCompletar = new EjercicioCompletar(enunciado3, partesACompletar, respuesta3);
-        leccionTipoDatos.addEjercicio(ejercicioCompletar);
-
-        String enunciado4 = "Completa el tipo de variable si se conoce que...";
-        //Entre cada parte debe ir una plabra a completar. Tomar en cuenta ese aspecto.
-        String parte3_1 = "";
-        String parte3 = "validador = true;\nif(";
-        String parte4 = ") contador++;";
-        ArrayList<String> partesACompletar2 = new ArrayList<>();
-        partesACompletar2.add(parte3_1);
-        partesACompletar2.add(parte3);
-        partesACompletar2.add(parte4);
-        ArrayList<String> respuesta4 = new ArrayList<>();
-        respuesta4.add("boolean");
-        respuesta4.add("validador");
-
-        Ejercicio ejercicioCompletar2 = new EjercicioCompletar(enunciado4, partesACompletar2, respuesta4);
-        leccionTipoDatos.addEjercicio(ejercicioCompletar2);
-    //____________________________________________________________
-
-
+        //Interfaz de usuario principal
         System.out.println("_______________________ Bienvenido a HelloCode _______________________");
-        while (opcionMenuGeneral != 111) {
-            System.out.println("_________________ Ejemplo Contenido sobre tipo de datos _________________");
-            System.out.println("Seleccione la lección que desea realizar: ");
-            for (int i = 0; i < contenidoRutaBasica.getLecciones().size(); i++) {
-                System.out.println(i + ". Leccion " + contenidoRutaBasica.getLecciones().get(i).getNombre());
+        while (seleccionUsuario != 111) {
+            mostrarMenuLecciones(cursoBasico);
+            seleccionUsuario = inputScanner.nextInt();
+            
+            if (seleccionUsuario >= 0 && seleccionUsuario < cursoBasico.getLecciones().size()) {
+                ejecutarLeccionSeleccionada(cursoBasico, seleccionUsuario);
+            } else if (seleccionUsuario != 111) {
+                System.out.println("Opción no válida. Por favor, seleccione una lección válida.");
             }
-            opcionMenuGeneral = scanner.nextInt();
-            System.out.println("Ahora estamos dentro de la lección " + contenidoRutaBasica.getLecciones().get(opcionMenuGeneral).getNombre());
-            //Metodo para mostrar los ejercicios de una leccion dada:
-            for (int i = 0; i < contenidoRutaBasica.getLeccion(opcionMenuGeneral).getNumEjercicios(); i++) {
+        }
+    }
 
-                Ejercicio ejercicio = contenidoRutaBasica.getLeccion(opcionMenuGeneral).getEjercicio(i);
+    /**
+     * Muestra el menú de lecciones disponibles
+     */
+    private static void mostrarMenuLecciones(Contenido curso) {
+        System.out.println("_________________ Contenido del curso _________________");
+        System.out.println("Seleccione la lección que desea realizar: ");
+        for (int i = 0; i < curso.getLecciones().size(); i++) {
+            System.out.println(i + ". Lección: " + curso.getLecciones().get(i).getNombre());
+        }
+        System.out.println("111. Salir");
+    }
 
-                /*El problema de mostrar los ejercicios siendo estos diferentes puede usar un patron como el de estados
-                 o strategy para evitar los ifs, pero a nivel o capa de back no es necesario */
-
-                if (ejercicio instanceof EjercicioSeleccion ) {
-                    logicaMostrarEjercicioSeleccion((EjercicioSeleccion) ejercicio);
-                }
-                if (ejercicio instanceof EjercicioCompletar ) {
-                    logicaMostrarEjercicioCompletar((EjercicioCompletar) ejercicio);
-                }
-
-
+    /**
+     * Ejecuta la lección seleccionada por el usuario
+     */
+    private static void ejecutarLeccionSeleccionada(Contenido curso, int indiceLeccion) {
+        Leccion leccionActual = curso.getLeccion(indiceLeccion);
+        System.out.println("____________________ Lección: " + leccionActual.getNombre() + " ____________________");
+        
+        for (int i = 0; i < leccionActual.getNumEjercicios(); i++) {
+            EjercicioBase ejercicioActual = leccionActual.getEjercicio(i);
+            
+            //Aplicación del patrón Strategy para diferentes tipos de ejercicios
+            if (ejercicioActual instanceof EjercicioSeleccion) {
+                ejecutarEjercicioSeleccionMultiple((EjercicioSeleccion) ejercicioActual);
+            } else if (ejercicioActual instanceof EjercicioCompletarCodigo) {
+                ejecutarEjercicioCompletarCodigo((EjercicioCompletarCodigo) ejercicioActual);
             }
-
-
-        }
-
-    }
-
-    private static void logicaMostrarEjercicioCompletar(EjercicioCompletar ejercicioCompletar) {
-        String espacioVacio = " __________ ";
-        System.out.println("" + ejercicioCompletar.getEnunciado());
-        System.out.println(" ____Ejercicio____");
-        String ejercicioEspacios = String.join(espacioVacio, ejercicioCompletar.getPartesACompletar());
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println(ejercicioEspacios);
-        ArrayList<String> respuestas = new ArrayList<>();
-        for (int i = 0; i < ejercicioCompletar.getPartesACompletar().size() - 1; i++) {
-            System.out.print("Escriba su(s) respuesta(s) No." + (i+1) + ": ");
-            //scanner.nextLine(); // 🔥 limpia el \n del buffer
-            respuestas.add(scanner.nextLine());
-        }
-
-        if(esCorrecto(ejercicioCompletar, respuestas)){
-            System.out.println("Felicidades adivinaste...");
+            //Aquí se pueden agregar más tipos de ejercicios en el futuro
         }
     }
 
-    private static boolean esCorrecto(EjercicioCompletar ejercicioCompletar, ArrayList<String> respuesta) {
-        if(ejercicioCompletar.validarRespuestas(respuesta)) return true;
-        else return false;
+    /**
+     * Ejecuta un ejercicio de selección múltiple
+     * Esta lógica podría ser parte de una interfaz gráfica en el futuro
+     */
+    private static void ejecutarEjercicioSeleccionMultiple(EjercicioSeleccion ejercicio) {
+        System.out.println("\n" + ejercicio.getInstruccion());
+        System.out.println("____ Opciones ____");
+        
+        for (int i = 0; i < ejercicio.getListOpciones().size(); i++) {
+            System.out.println(i + ". " + ejercicio.getOpcion(i));
+        }
+        
+        System.out.println("\nEste ejercicio tiene " + ejercicio.obtenerRespuestasCorrectas().size() + " respuesta(s) correcta(s).");
+        
+        
+        ArrayList<Respuesta> respuestasUsuario = new ArrayList<>();
+        
+        for (int i = 0; i < ejercicio.obtenerRespuestasCorrectas().size(); i++) {
+            System.out.print("Seleccione la respuesta " + (i + 1) + " (número de opción): ");
+            int seleccionRespuesta = inputScanner.nextInt();
+            
+            //Validación de entrada
+            if (seleccionRespuesta >= 0 && seleccionRespuesta < ejercicio.getListOpciones().size()) {
+                //Verificar que no se haya seleccionado la misma opción antes
+                    respuestasUsuario.add(new RespuestaString(ejercicio.getOpcion(seleccionRespuesta)));
+            } else {
+                System.out.println("Opción no válida. Por favor, seleccione una opción válida.");
+                i--; // Repetir esta iteración
+            }
+        }
+        
+        System.out.println("\nSus respuestas seleccionadas:");
+        for (int i = 0; i < respuestasUsuario.size(); i++) {
+            System.out.println((i + 1) + ". " + respuestasUsuario.get(i).getRespuesta());
+        }
+        
+        boolean respuestaCorrecta = ejercicio.evaluarRespuestas(respuestasUsuario);
+        
+        if (respuestaCorrecta) {
+            System.out.println("\n¡Correcto! ¡Felicidades! Todas sus respuestas son correctas.");
+        } else {
+            System.out.println("\nIncorrecto. ¡Sigue practicando!");
+            System.out.println("Respuestas correctas: " + ejercicio.obtenerRespuestasCorrectas());
+        }
     }
 
-    private static void logicaMostrarEjercicioSeleccion(EjercicioSeleccion ejercicioSeleccion) {
-        System.out.println("" + ejercicioSeleccion.getEnunciado());
-        System.out.println(" ____Opciones____");
-        for (int i = 0 ; i <  ejercicioSeleccion.getListOpciones().size(); i++){
-            System.out.println(i + " " + ejercicioSeleccion.getOpcion(i));
+    /**
+     * Ejecuta un ejercicio de completar código
+     * Esta lógica podría ser parte de una interfaz gráfica en el futuro
+     */
+    private static void ejecutarEjercicioCompletarCodigo(EjercicioCompletarCodigo ejercicio) {
+        System.out.println("\n" + ejercicio.getInstruccion());
+        System.out.println("____ Código a completar ____");
+        System.out.println(ejercicio.obtenerCodigoIncompleto());
+        
+        System.out.println("\nEste ejercicio tiene " + ejercicio.obtenerNumeroPartesFaltantes() + " parte(s) por completar.");
+        
+        ArrayList<Respuesta> respuestasUsuario = new ArrayList<>();
+        
+        for (int i = 0; i < ejercicio.obtenerNumeroPartesFaltantes(); i++) {
+            System.out.print("Complete la parte " + (i + 1) + ": ");
+            String respuestaUsuario = inputScanner.next();
+            respuestasUsuario.add(new RespuestaString(respuestaUsuario));
         }
-        System.out.print("Escriba el numero de su respuesta: ");
-        scanner.nextLine(); // 🔥 limpia el \n del buffer
-        scanner.nextInt();
+        
+        System.out.println("\nSus respuestas:");
+        for (int i = 0; i < respuestasUsuario.size(); i++) {
+            System.out.println((i + 1) + ". " + respuestasUsuario.get(i).getRespuesta());
+        }
+        
+        boolean respuestaCorrecta = ejercicio.evaluarRespuestas(respuestasUsuario);
+        
+        if (respuestaCorrecta) {
+            System.out.println("\n¡Correcto! ¡Felicidades! El código está completo.");
+        } else {
+            System.out.println("\nIncorrecto. ¡Sigue practicando!");
+            System.out.println("Respuestas correctas: " + ejercicio.obtenerRespuestasEsperadas());
+        }
     }
 }

@@ -1,11 +1,11 @@
 package EjerciciosIteractivos_Modulo.Lecciones;
 
-import EjerciciosIteractivos_Modulo.Ejercicio;
+import EjerciciosIteractivos_Modulo.EjercicioBase;
 
 import java.util.ArrayList;
 
 public class Leccion {
-    ArrayList<Ejercicio> listaEjercicios;
+    ArrayList<EjercicioBase> listaEjercicios;
 
     //Atributos que sugerimos tenga una lección
     private String nombre; //De que va la lección en general?
@@ -16,8 +16,6 @@ public class Leccion {
         this.listaEjercicios = new ArrayList<>();
     }
 
-
-
     public String getNombre() {
         return nombre;
     }
@@ -26,11 +24,11 @@ public class Leccion {
         return listaEjercicios.size();
     }
 
-    public Ejercicio getEjercicio(int numEjercicio) {
+    public EjercicioBase getEjercicio(int numEjercicio) {
         return listaEjercicios.get(numEjercicio);
     }
 
-    public boolean addEjercicio(Ejercicio nuevoEjercicio) {
+    public boolean addEjercicio(EjercicioBase nuevoEjercicio) {
         return listaEjercicios.add(nuevoEjercicio);
     }
 }

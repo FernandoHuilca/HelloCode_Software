@@ -1,0 +1,81 @@
+@startuml DiagramaClases2
+
+!define RECTANGLE class
+
+package "EjerciciosIteractivos_Modulo" {
+    
+    abstract class EjercicioBase {
+        # String instruccion
+        # ArrayList<String> respuestasCorrectas
+        # NivelDificultad nivelDificultad
+        # Lenguaje lenguaje
+        + EjercicioBase(String instruccion, ArrayList<String> respuestasCorrectas, NivelDificultad nivelDificultad, Lenguaje lenguaje)
+        + String getInstruccion()
+        + {abstract} boolean evaluarRespuestas(ArrayList<Respuesta> respuestasUsuario)
+    }
+    
+    class EjercicioSeleccion {
+        - ArrayList<String> opcionesDeSeleccion
+        + EjercicioSeleccion(String instruccion, ArrayList<String> opcionesDeSeleccion, ArrayList<String> respuestasCorrectas, NivelDificultad nivelDeDificultad, Lenguaje lenguaje)
+        + ArrayList<String> getListOpciones()
+        + String getOpcion(int numOpcion)
+        + ArrayList<String> obtenerRespuestasCorrectas()
+        + boolean evaluarRespuestas(ArrayList<Respuesta> respuestasUsuario)
+    }
+    
+    class EjercicioCompletarCodigo {
+        - String codigoIncompleto
+        - ArrayList<String> partesFaltantes
+        - ArrayList<String> respuestasEsperadas
+        + EjercicioCompletarCodigo(String instruccion, String codigoIncompleto, ArrayList<String> partesFaltantes, ArrayList<String> respuestasEsperadas, NivelDificultad nivelDificultad, Lenguaje lenguaje)
+        + String obtenerCodigoIncompleto()
+        + ArrayList<String> obtenerPartesFaltantes()
+        + ArrayList<String> obtenerRespuestasEsperadas()
+        + int obtenerNumeroPartesFaltantes()
+        + boolean evaluarRespuestas(ArrayList<Respuesta> respuestasUsuario)
+    }
+    
+    interface EvaluadorRespuestas {
+        + boolean evaluarRespuestas(ArrayList<Respuesta> respuestasUsuario)
+    }
+    
+    interface Respuesta {
+        + Object getRespuesta()
+    }
+    
+    class RespuestaString {
+        - String respuesta
+        + RespuestaString(String respuesta)
+        + Object getRespuesta()
+    }
+    
+    enum NivelDificultad {
+        PRINCIPIANTE
+        BASICO
+        INTERMEDIO
+        AVANZADO
+        EXPERTO
+        - String descripcion
+        + String getDescripcion()
+    }
+    
+    enum Lenguaje {
+        JAVA
+        PYTHON
+        C
+        PHP
+    }
+}
+
+' Relaciones del módulo de Ejercicios Interactivos
+EjercicioSeleccion --|> EjercicioBase : extiende
+EjercicioCompletarCodigo --|> EjercicioBase : extiende
+EjercicioBase ..|> EvaluadorRespuestas : implementa
+RespuestaString ..|> Respuesta : implementa
+
+EjercicioBase ..> Respuesta : evalúa *
+EjercicioBase --> NivelDificultad : usa
+EjercicioBase --> Lenguaje : usa
+
+
+@enduml 
