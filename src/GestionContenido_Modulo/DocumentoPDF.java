@@ -1,27 +1,29 @@
 package GestionContenido_Modulo;
 
-// Clase concreta que representa un recurso de tipo documento PDF.
-// Hereda de la clase abstracta RecursoAprendizaje.
 public class DocumentoPDF extends RecursoAprendizaje {
+    private final String nombreArchivo;
+    private final int numeroPaginas;
 
-    // URL desde donde se puede descargar el documento PDF.
-    private final String urlDescarga;
-
-    // Número total de páginas del documento PDF.
-    private final int numPaginas;
-
-    // Constructor que recibe el título, la URL de descarga y el número de páginas.
-    // Llama al constructor de la superclase con el título.
-    public DocumentoPDF(String titulo, String urlDescarga, int numPaginas) {
+    public DocumentoPDF(String titulo, String nombreArchivo, int numeroPaginas) {
         super(titulo);
-        this.urlDescarga = urlDescarga;
-        this.numPaginas = numPaginas;
+        this.nombreArchivo = nombreArchivo;
+        this.numeroPaginas = numeroPaginas;
     }
 
-    // Implementación concreta del método abstracto de RecursoAprendizaje.
-    // Devuelve un mensaje con la cantidad de páginas y el enlace de descarga del PDF.
+    public DocumentoPDF(String titulo, String nombreArchivo) {
+        this(titulo, nombreArchivo, 0); // constructor con número de páginas opcional
+    }
+
     @Override
     public String obtenerDetalle() {
-        return String.format("Descargar PDF (%d páginas) desde: %s", numPaginas, urlDescarga);
+        return String.format("Archivo: %s (%d páginas)", nombreArchivo, numeroPaginas);
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public int getNumeroPaginas() {
+        return numeroPaginas;
     }
 }

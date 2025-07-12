@@ -1,77 +1,41 @@
 package GestionContenido_Modulo;
 
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-/**
- * Representa un curso, el contenedor principal gestionado por nuestro módulo.
- * Un curso agrupa una biblioteca de módulos temáticos y ofrece una o más
- * rutas de aprendizaje, las cuales son "jaladas" de módulos externos.
- */
-/**
 public class Curso {
-
-    // Identificador único del curso, generado automáticamente.
     private final String id;
-
-    // Nombre del curso (por ejemplo: "Curso de Java Básico").
-    private final String nombre;
-
-    // Breve descripción del curso para mostrar al usuario.
-    private final String descripcion;
-
-    // Lista de módulos temáticos asociados a este curso (contenido "jalado").
-    // Cada módulo puede contener lecciones y recursos propios.
+    private String nombre;
+    private String descripcion;
+    private final Date fechaCreacion;
     private final List<ModuloEducativo> modulos;
 
-    // Lista de rutas de aprendizaje disponibles para este curso (contenido "jalado").
-    // Una ruta es una secuencia de lecciones organizadas de forma visual.
-    private final List<RutaDeAprendizaje> rutas;
-
-    // Constructor que recibe nombre y descripción, genera ID único,
-    // y crea listas vacías para módulos y rutas.
-    public Curso(String nombre, String descripcion) {
-        this.id = UUID.randomUUID().toString();
+    public Curso(String id, String nombre, String descripcion) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.fechaCreacion = new Date();
         this.modulos = new ArrayList<>();
-        this.rutas = new ArrayList<>();
     }
 
-    // Getter que devuelve el identificador único del curso.
+    // Getters
     public String getId() { return id; }
-
-    // Getter que devuelve el nombre del curso.
     public String getNombre() { return nombre; }
-
-    // Getter que devuelve la descripción del curso.
     public String getDescripcion() { return descripcion; }
+    public Date getFechaCreacion() { return new Date(fechaCreacion.getTime()); }
+    public List<ModuloEducativo> getModulosEducativos() { return new ArrayList<>(modulos); }
 
-    /**
-     * Devuelve la lista de módulos temáticos asociados.
-     * El contenido de esta lista es gestionado por otro equipo.
-     */
-/**
-    public List<ModuloEducativo> getModulos() {
-        return modulos;
-    }
-**/
-    /**
-     * Devuelve las rutas de aprendizaje disponibles en el curso.
-     * El contenido de esta lista es gestionado por otro equipo.
-     */
- /**
-    public List<RutaDeAprendizaje> getRutas() {
-        return rutas;
+    // Setters
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    // Operaciones
+    public void agregarModuloEducativo(ModuloEducativo modulo) {
+        modulos.add(modulo);
     }
 
-    // Método sobrescrito que devuelve el nombre del curso como representación en texto.
-    @Override
-    public String toString() {
-        return nombre;
+    public List<ModuloEducativo> obtenerModulosEducativos() {
+        return new ArrayList<>(modulos);
     }
 }
-**/
-
