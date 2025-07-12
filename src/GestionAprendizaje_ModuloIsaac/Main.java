@@ -1,11 +1,11 @@
-package GestionAprendizaje_Modulo;
+package GestionAprendizaje_ModuloIsaac;
 
-import GestionAprendizaje_Modulo.Modelo.Leccion;
-import GestionAprendizaje_Modulo.Modelo.ModuloEducativo;
-import GestionAprendizaje_Modulo.Repositorio.RepositorioModulosEducativos;
-import GestionAprendizaje_Modulo.Repositorio.RepositorioModulosEnMemoria;
-import GestionAprendizaje_Modulo.Ruta.NodoRuta;
-import GestionAprendizaje_Modulo.Ruta.Ruta;
+import GestionAprendizaje_ModuloIsaac.Modelo.Leccion;
+import GestionAprendizaje_ModuloIsaac.Modelo.ModuloEducativo;
+import GestionAprendizaje_ModuloIsaac.Repositorio.RepositorioModulosEducativos;
+import GestionAprendizaje_ModuloIsaac.Repositorio.RepositorioModulosEnMemoria;
+import GestionAprendizaje_ModuloIsaac.Ruta.NodoRuta;
+import GestionAprendizaje_ModuloIsaac.Ruta.Ruta;
 
 
 public class Main {

@@ -1,6 +1,6 @@
-package GestionAprendizaje_Modulo.Ruta;
+package GestionAprendizaje_ModuloIsaac.Ruta;
 
-import GestionAprendizaje_Modulo.Modelo.Leccion;
+import GestionAprendizaje_ModuloIsaac.Modelo.Leccion;
 
 public class NodoRuta {
     private int orden;

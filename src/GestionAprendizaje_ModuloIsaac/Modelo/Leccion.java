@@ -1,4 +1,4 @@
-package GestionAprendizaje_Modulo.Modelo;
+package GestionAprendizaje_ModuloIsaac.Modelo;
 
 public class Leccion {
     private String id;
