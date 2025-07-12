@@ -3,6 +3,7 @@ package GestionContenido_Modulo;
 import java.util.List;
 import java.util.Objects;
 
+
 public class ValidadorDeContenido {
 
     public boolean validarDatos(ModuloEducativo modulo) {
