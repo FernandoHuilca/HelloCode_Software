@@ -14,6 +14,7 @@ public class ValidadorDeContenido {
         List<RecursoAprendizaje> recursos = modulo.getRecursos();
         if (recursos == null || recursos.isEmpty()) return false;
 
+
         return recursos.stream()
                 .filter(Objects::nonNull)
                 .allMatch(r -> {
