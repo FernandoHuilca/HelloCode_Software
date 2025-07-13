@@ -1,23 +1,25 @@
 package GestionContenido_Modulo;
 
-// Clase concreta que representa un recurso de tipo artículo web.
-// Hereda de la clase abstracta RecursoAprendizaje.
 public class Articulo extends RecursoAprendizaje {
+    private final String contenido;
+    private final String autor;
 
-    // URL del artículo, normalmente un enlace a una página web.
-    private final String url;
-
-    // Constructor que recibe el título del artículo y su URL.
-    // Llama al constructor de la superclase con el título.
-    public Articulo(String titulo, String url) {
+    public Articulo(String titulo, String contenido, String autor) {
         super(titulo);
-        this.url = url;
+        this.contenido = contenido;
+        this.autor = autor;
     }
 
-    // Implementación concreta del método abstracto de RecursoAprendizaje.
-    // Devuelve una cadena que invita al usuario a leer el artículo mediante su enlace.
     @Override
     public String obtenerDetalle() {
-        return "Leer artículo en: " + url;
+        return String.format("Autor: %s, Contenido: %s", autor, contenido);
+    }
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public String getAutor() {
+        return autor;
     }
 }
