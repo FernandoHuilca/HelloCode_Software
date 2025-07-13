@@ -1,4 +1,4 @@
-package EjerciciosIteractivos_Modulo;
+package EjerciciosIteractivos_Modulo.Logic;
 
 public class RespuestaString implements Respuesta {
     private String respuesta;

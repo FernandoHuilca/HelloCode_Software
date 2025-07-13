@@ -1,10 +1,11 @@
-package EjerciciosIteractivos_Modulo;
+package EjerciciosIteractivos_Modulo.Logic;
 
 import EjerciciosIteractivos_Modulo.Contenido.*;
 import EjerciciosIteractivos_Modulo.Lecciones.Leccion;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.List;
 
 //Fernando Huilca y Mateo Quisilema
 public class Main {
@@ -21,71 +22,20 @@ public class Main {
         Leccion leccionSintaxisBasica = new Leccion("Sintaxis Básica");
         cursoBasico.addLeccion(leccionSintaxisBasica);
         cursoBasico.addLeccion(leccionTiposDatos);
-        
-        //Creación de ejercicios para la lección de tipos de datos
-        String preguntaTiposEnteros = "¿Cuál de estos es un tipo de dato entero en Java?";
-        ArrayList<String> opcionesTiposEnteros = new ArrayList<>();
-        opcionesTiposEnteros.add("String");
-        opcionesTiposEnteros.add("boolean");
-        opcionesTiposEnteros.add("double");
-        opcionesTiposEnteros.add("int");
-        opcionesTiposEnteros.add("Integer");
-        ArrayList<String> respuestasCorrectasTiposEnteros = new ArrayList<>();
-        respuestasCorrectasTiposEnteros.add("int");
-        respuestasCorrectasTiposEnteros.add("Integer");
+        //Carga de ejercicios desde el repositorio
+        List<EjercicioCompletarCodigo> ejerciciosCompletarCodigo = EjercicioRepository.cargarEjerciciosCompletarCodigo();
+        List<EjercicioSeleccion> ejerciciosSeleccion = EjercicioRepository.cargarEjerciciosSeleccion();
+        for (EjercicioCompletarCodigo ejercicio : ejerciciosCompletarCodigo) {
+            leccionSintaxisBasica.addEjercicio(ejercicio);
+        }
+        for (EjercicioSeleccion ejercicio : ejerciciosSeleccion) {
+            leccionTiposDatos.addEjercicio(ejercicio);
+        }
 
-        String preguntaTipoBooleano = "¿Qué tipo se usa para verdadero o falso?";
-        ArrayList<String> opcionesTipoBooleano = new ArrayList<>();
-        opcionesTipoBooleano.add("String");
-        opcionesTipoBooleano.add("boolean");
-        opcionesTipoBooleano.add("double");
-        opcionesTipoBooleano.add("int");
-        ArrayList<String> respuestasCorrectasTipoBooleano = new ArrayList<>();
-        respuestasCorrectasTipoBooleano.add("boolean");
+        EjercicioSeleccion ejercicioSeleccion = new EjercicioSeleccion.Builder()
+                .conInstruccion("HOLA COMO ESTA").conLenguaje(Lenguaje.JAVA)
+                .conNivel(NivelDificultad.BASICO).conOpcion("bien").conRespuestaCorrecta("mal").construir();
 
-        //Ejercicio con múltiples respuestas correctas
-        String preguntaTiposPrimitivos = "¿Cuáles de estos son tipos de datos primitivos en Java?";
-        ArrayList<String> opcionesTiposPrimitivos = new ArrayList<>();
-        opcionesTiposPrimitivos.add("int");
-        opcionesTiposPrimitivos.add("String");
-        opcionesTiposPrimitivos.add("double");
-        opcionesTiposPrimitivos.add("boolean");
-        opcionesTiposPrimitivos.add("Integer");
-        opcionesTiposPrimitivos.add("char");
-        ArrayList<String> respuestasCorrectasTiposPrimitivos = new ArrayList<>();
-        respuestasCorrectasTiposPrimitivos.add("int");
-        respuestasCorrectasTiposPrimitivos.add("double");
-        respuestasCorrectasTiposPrimitivos.add("boolean");
-        respuestasCorrectasTiposPrimitivos.add("char");
-
-        //Creación de ejercicios de selección múltiple
-        EjercicioBase ejercicioTiposEnteros = new EjercicioSeleccion(preguntaTiposEnteros, opcionesTiposEnteros, respuestasCorrectasTiposEnteros, NivelDificultad.BASICO, Lenguaje.JAVA);
-        EjercicioBase ejercicioTipoBooleano = new EjercicioSeleccion(preguntaTipoBooleano, opcionesTipoBooleano, respuestasCorrectasTipoBooleano, NivelDificultad.BASICO, Lenguaje.JAVA);
-        EjercicioBase ejercicioTiposPrimitivos = new EjercicioSeleccion(preguntaTiposPrimitivos, opcionesTiposPrimitivos, respuestasCorrectasTiposPrimitivos, NivelDificultad.BASICO, Lenguaje.JAVA);
-        
-        //Creación de ejercicios de completar código
-        String instruccionCompletarVariable = "Declara una variable de tipo entera llamada edad:";
-        String codigoIncompletoVariable = "int ____ = 20;";
-        ArrayList<String> partesFaltantesVariable = new ArrayList<>();
-        partesFaltantesVariable.add("edad");
-        ArrayList<String> respuestasEsperadasVariable = new ArrayList<>();
-        respuestasEsperadasVariable.add("edad");
-        
-        String instruccionCompletarMetodo = "Completa el método para sumar dos números:";
-        String codigoIncompletoMetodo = "public int sumar(int a, int b) {\n    return ____;\n}";
-        ArrayList<String> partesFaltantesMetodo = new ArrayList<>();
-        partesFaltantesMetodo.add("a + b");
-        ArrayList<String> respuestasEsperadasMetodo = new ArrayList<>();
-        respuestasEsperadasMetodo.add("a + b");
-        
-        EjercicioBase ejercicioCompletarVariable = new EjercicioCompletarCodigo(instruccionCompletarVariable, codigoIncompletoVariable, partesFaltantesVariable, respuestasEsperadasVariable, NivelDificultad.BASICO, Lenguaje.JAVA);
-        EjercicioBase ejercicioCompletarMetodo = new EjercicioCompletarCodigo(instruccionCompletarMetodo, codigoIncompletoMetodo, partesFaltantesMetodo, respuestasEsperadasMetodo, NivelDificultad.BASICO, Lenguaje.JAVA);
-        
-        leccionTiposDatos.addEjercicio(ejercicioTiposEnteros);
-        leccionTiposDatos.addEjercicio(ejercicioTipoBooleano);
-        leccionTiposDatos.addEjercicio(ejercicioTiposPrimitivos);
-        leccionTiposDatos.addEjercicio(ejercicioCompletarVariable);
-        leccionTiposDatos.addEjercicio(ejercicioCompletarMetodo);
 
         //Interfaz de usuario principal
         System.out.println("_______________________ Bienvenido a HelloCode _______________________");
@@ -169,9 +119,9 @@ public class Main {
             System.out.println((i + 1) + ". " + respuestasUsuario.get(i).getRespuesta());
         }
         
-        boolean respuestaCorrecta = ejercicio.evaluarRespuestas(respuestasUsuario);
-        
-        if (respuestaCorrecta) {
+        ResultadoDeEvaluacion resultadoDeEvaluacion = ejercicio.evaluarRespuestas(respuestasUsuario);
+
+        if (resultadoDeEvaluacion.getPorcentajeDeAcerto() == 100) {
             System.out.println("\n¡Correcto! ¡Felicidades! Todas sus respuestas son correctas.");
         } else {
             System.out.println("\nIncorrecto. ¡Sigue practicando!");
@@ -203,9 +153,9 @@ public class Main {
             System.out.println((i + 1) + ". " + respuestasUsuario.get(i).getRespuesta());
         }
         
-        boolean respuestaCorrecta = ejercicio.evaluarRespuestas(respuestasUsuario);
+        ResultadoDeEvaluacion resultadoDeEvaluacion = ejercicio.evaluarRespuestas(respuestasUsuario);
         
-        if (respuestaCorrecta) {
+        if (resultadoDeEvaluacion.getPorcentajeDeAcerto() == 100) {
             System.out.println("\n¡Correcto! ¡Felicidades! El código está completo.");
         } else {
             System.out.println("\nIncorrecto. ¡Sigue practicando!");

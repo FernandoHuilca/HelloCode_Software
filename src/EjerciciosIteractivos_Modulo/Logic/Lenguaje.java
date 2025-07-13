@@ -1,4 +1,4 @@
-package EjerciciosIteractivos_Modulo;
+package EjerciciosIteractivos_Modulo.Logic;
 
 public enum Lenguaje {
     JAVA,

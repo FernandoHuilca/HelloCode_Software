@@ -1,4 +1,4 @@
-package EjerciciosIteractivos_Modulo;
+package EjerciciosIteractivos_Modulo.Logic;
 
 import java.util.ArrayList;
 
@@ -17,5 +17,13 @@ public abstract class EjercicioBase implements EvaluadorRespuestas {
 
     public String getInstruccion() {
         return instruccion;
+    }
+    
+    public NivelDificultad getNivel() {
+        return nivelDificultad;
+    }
+    
+    public Lenguaje getLenguaje() {
+        return lenguaje;
     }
 }

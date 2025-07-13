@@ -1,8 +1,8 @@
 package EjerciciosIteractivos_Modulo.Lecciones;
 
-import EjerciciosIteractivos_Modulo.EjercicioBase;
-
 import java.util.ArrayList;
+
+import EjerciciosIteractivos_Modulo.Logic.EjercicioBase;
 
 public class Leccion {
     ArrayList<EjercicioBase> listaEjercicios;

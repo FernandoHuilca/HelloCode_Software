@@ -1,4 +1,4 @@
-package EjerciciosIteractivos_Modulo;
+package EjerciciosIteractivos_Modulo.Logic;
 
 public enum NivelDificultad {
     PRINCIPIANTE("Ideal para empezar desde cero"),
