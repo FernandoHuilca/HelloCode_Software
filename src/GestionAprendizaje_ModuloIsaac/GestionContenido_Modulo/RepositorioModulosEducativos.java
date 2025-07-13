@@ -1,4 +1,4 @@
-package GestionContenido_Modulo;
+package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
 
 public interface RepositorioModulosEducativos {
     void guardarModuloEducativo(ModuloEducativo modulo);

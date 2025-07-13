@@ -1,4 +1,4 @@
-package GestionContenido_Modulo;
+package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
 
 import java.util.Map;
 

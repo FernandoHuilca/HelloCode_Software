@@ -1,9 +1,9 @@
 package GestionAprendizaje_ModuloIsaac;
 
 import GestionAprendizaje_ModuloIsaac.Modelo.Leccion;
-import GestionAprendizaje_ModuloIsaac.Modelo.ModuloEducativo;
-import GestionAprendizaje_ModuloIsaac.Repositorio.RepositorioModulosEducativos;
-import GestionAprendizaje_ModuloIsaac.Repositorio.RepositorioModulosEnMemoria;
+import GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo.ModuloEducativo;
+import GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo.RepositorioModulosEducativos;
+import GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo.RepositorioEnMemoria;
 import GestionAprendizaje_ModuloIsaac.Ruta.NodoRuta;
 import GestionAprendizaje_ModuloIsaac.Ruta.Ruta;
 
@@ -11,10 +11,10 @@ import GestionAprendizaje_ModuloIsaac.Ruta.Ruta;
 public class Main {
     public static void main(String[] args) {
         // Crear el repositorio
-        RepositorioModulosEducativos repo = new RepositorioModulosEnMemoria();
+        RepositorioModulosEducativos repo = new RepositorioEnMemoria();
 
         // Crear un módulo educativo
-        ModuloEducativo modulo1 = new ModuloEducativo("Introducción a Java", "v1.0", "borrador");
+        ModuloEducativo modulo1 = new ModuloEducativo("Introducción a Java", "v1.0", "borrador","metadato","activo");
 
         // Guardarlo
         repo.guardarModuloEducativo(modulo1);
