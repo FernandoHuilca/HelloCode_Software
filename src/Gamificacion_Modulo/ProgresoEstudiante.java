@@ -26,7 +26,7 @@ public class ProgresoEstudiante {
         if (desafio.estaCompletado()) {
             // 2. Actualizar porcentaje en lista de desafíos
             listaDesafios.put(desafio.getId().toString(), 100.0);
-            
+
             // 3. Verificar si desbloquea logros
             if (desafio.verificarComplecion(this)) {
                 // 4. Completar el desafío (suma puntos y desactiva)
@@ -53,6 +53,14 @@ public class ProgresoEstudiante {
             System.out.println("*** Logro desbloqueado: " + logro.getNombre() + "! (+" + logro.getPuntos() + " puntos)");
         }
     }
+    private List<Desafio> desafiosActivos = new ArrayList<>();
+
+    public List<Desafio> getDesafiosActivos() {
+        return desafiosActivos;
+    }
+    public void agregarDesafio(Desafio desafio) {
+        desafiosActivos.add(desafio);
+    }
 
     public void sumarPuntos(Integer puntos) {
         this.puntosTotal += puntos;
@@ -64,4 +72,4 @@ public class ProgresoEstudiante {
     public Integer getDesafiosCompletados() { return desafiosCompletados; }
     public Estudiante getEstudiante() { return estudiante; }
     public HashMap<String, Double> getListaDesafios() { return listaDesafios; }
-} 
+}

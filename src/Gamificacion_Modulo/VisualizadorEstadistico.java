@@ -4,14 +4,28 @@ public class VisualizadorEstadistico {
     private EstrategiaVisualizacion estrategia;
 
     public VisualizadorEstadistico(EstrategiaVisualizacion estrategia) {
-        // Constructor sin implementación
+        if (estrategia == null) {
+            throw new IllegalArgumentException("La estrategia de visualización no puede ser nula.");
+        }
+        this.estrategia = estrategia;
     }
 
     public void setEstrategia(EstrategiaVisualizacion estrategia) {
-        // Método sin implementación
+        if (estrategia == null) {
+            throw new IllegalArgumentException("La estrategia de visualización no puede ser nula.");
+        }
+        this.estrategia = estrategia;
+    }
+
+    public EstrategiaVisualizacion getEstrategia() {
+        return estrategia;
     }
 
     public void visualizar(Estadistica estadistica) {
-        // Método sin implementación
+        if (estadistica == null) {
+            System.out.println(">>> No se proporcionó una estadística para visualizar.");
+            return;
+        }
+        estrategia.visualizar(estadistica);
     }
-} 
+}
