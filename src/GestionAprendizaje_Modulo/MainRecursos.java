@@ -1,8 +1,13 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import GestionAprendizaje_Modulo.Modelo.Articulo;
+import GestionAprendizaje_Modulo.Modelo.DocumentoPDF;
+import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
+import GestionAprendizaje_Modulo.Modelo.Video;
 
 public class MainRecursos {
 

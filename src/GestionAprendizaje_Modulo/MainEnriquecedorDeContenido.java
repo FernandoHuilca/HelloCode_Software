@@ -1,8 +1,19 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo;
 
-import java.util.*;
-import GestionAprendizaje_ModuloIsaac.Ruta.Ruta;
-import GestionAprendizaje_ModuloIsaac.Ruta.NodoRuta;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+import GestionAprendizaje_Modulo.Modelo.Articulo;
+import GestionAprendizaje_Modulo.Modelo.Curso;
+import GestionAprendizaje_Modulo.Modelo.DocumentoPDF;
+import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
+import GestionAprendizaje_Modulo.Modelo.Video;
+import GestionAprendizaje_Modulo.Ruta.NodoRuta;
+import GestionAprendizaje_Modulo.Ruta.Ruta;
 
 public class MainEnriquecedorDeContenido {
 

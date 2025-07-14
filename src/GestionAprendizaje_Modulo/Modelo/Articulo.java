@@ -1,4 +1,4 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo.Modelo;
 
 // Clase concreta que representa un recurso de tipo artículo web.
 // Hereda de la clase abstracta RecursoAprendizaje.

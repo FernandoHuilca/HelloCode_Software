@@ -1,7 +1,11 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo.Gestor;
 
 import java.util.List;
 import java.util.Objects;
+
+import GestionAprendizaje_Modulo.Modelo.Leccion;
+import GestionAprendizaje_Modulo.Modelo.ModuloEducativo;
+import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
 
 
 public class ValidadorDeContenido {

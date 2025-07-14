@@ -1,6 +1,9 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo.Gestor;
 
 import java.util.Map;
+
+import GestionAprendizaje_Modulo.Modelo.ModuloEducativo;
+import GestionAprendizaje_Modulo.Repositorio.RepositorioModulosEducativos;
 
 
 

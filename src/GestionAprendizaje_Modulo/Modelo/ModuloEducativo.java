@@ -1,4 +1,4 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo.Modelo;
 
 import java.util.ArrayList;
 import java.util.List;

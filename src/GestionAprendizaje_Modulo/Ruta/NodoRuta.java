@@ -1,47 +1,10 @@
-package GestionAprendizaje_ModuloIsaac.Ruta;
+package GestionAprendizaje_Modulo.Ruta;
 
-import GestionAprendizaje_ModuloIsaac.Modelo.Leccion;
-/**
-public class NodoRuta {
-    private int orden;
-    private boolean completado;
-    private Leccion leccion;
-
-    public NodoRuta(int orden, Leccion leccion) {
-        this.orden = orden;
-        this.leccion = leccion;
-        this.completado = false;
-    }
-
-    public void marcarComoCompletado() {
-        this.completado = true;
-    }
-
-    public Leccion getLeccion() {
-        return leccion;
-    }
-
-    public boolean estaCompletado() {
-        return completado;
-    }
-
-    public int getOrden() {
-        return orden;
-    }
-
-    @Override
-    public String toString() {
-        return "NodoRuta{" +
-                "orden=" + orden +
-                ", completado=" + completado +
-                ", leccionTest=" + leccion.getTitulo() +
-                '}';
-    }
-}**/
-// Asegúrate de que los imports sean correctos según tu estructura de paquetes
-import GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo.RecursoAprendizaje;
 import java.util.ArrayList;
 import java.util.List;
+
+import GestionAprendizaje_Modulo.Modelo.Leccion;
+import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
 
 public class NodoRuta {
     private int orden;

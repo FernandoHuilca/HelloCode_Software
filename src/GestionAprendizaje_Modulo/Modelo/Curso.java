@@ -1,9 +1,10 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo.Modelo;
 // Importaciones necesarias para listas y generación de IDs únicos.
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import GestionAprendizaje_ModuloIsaac.Ruta.Ruta;
+
+import GestionAprendizaje_Modulo.Ruta.Ruta;
 /**
  * Representa un curso, el contenedor principal gestionado por nuestro módulo.
  * Un curso agrupa una biblioteca de módulos temáticos y ofrece una o más

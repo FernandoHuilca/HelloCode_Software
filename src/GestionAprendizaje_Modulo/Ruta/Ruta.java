@@ -1,4 +1,4 @@
-package GestionAprendizaje_ModuloIsaac.Ruta;
+package GestionAprendizaje_Modulo.Ruta;
 
 import java.util.ArrayList;
 import java.util.List;

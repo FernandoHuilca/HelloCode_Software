@@ -1,6 +1,14 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo;
 
 import java.util.Map;
+
+import GestionAprendizaje_Modulo.Gestor.GestorDeModuloEducativo;
+import GestionAprendizaje_Modulo.Modelo.DocumentoPDF;
+import GestionAprendizaje_Modulo.Modelo.Leccion;
+import GestionAprendizaje_Modulo.Modelo.ModuloEducativo;
+import GestionAprendizaje_Modulo.Modelo.Video;
+import GestionAprendizaje_Modulo.Repositorio.RepositorioEnMemoria;
+import GestionAprendizaje_Modulo.Repositorio.RepositorioModulosEducativos;
 
 public class DemoAutonomo {
     public static void main(String[] args) {

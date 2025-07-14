@@ -1,7 +1,9 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo.Repositorio;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import GestionAprendizaje_Modulo.Modelo.ModuloEducativo;
 
 public class RepositorioEnMemoria implements RepositorioModulosEducativos {
 

@@ -1,4 +1,4 @@
-package GestionAprendizaje_ModuloIsaac.GestionContenido_Modulo;
+package GestionAprendizaje_Modulo.Modelo;
 
 import java.util.UUID;
 // Usamos una clase abstracta para que sea fácil agregar nuevos tipos de recursos en el futuro.
