@@ -37,4 +37,8 @@ public class Ruta {
                 ", progreso=" + obtenerProgreso() + "%" +
                 '}';
     }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

@@ -1,6 +1,7 @@
 package GestionAprendizaje_Modulo.Repositorio;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import GestionAprendizaje_Modulo.Modelo.ModuloEducativo;
@@ -22,5 +23,10 @@ public class RepositorioEnMemoria implements RepositorioModulosEducativos {
     @Override
     public ModuloEducativo buscarPorId(String id) {
         return store.get(id);
+    }
+
+    @Override
+    public List<ModuloEducativo> buscarTodos() {
+        return List.of();
     }
 }
