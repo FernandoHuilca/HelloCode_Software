@@ -1,8 +1,11 @@
 package controladores;
 
 import modelo.*;
+import integracion.IModuloUsuarios;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Contexto del sistema que mantiene el estado global de la aplicación.
@@ -16,17 +19,32 @@ public class ContextoSistema {
     private List<Moderador> moderadores;
     private Comunidad comunidadActual;
     
+    // Integración con otros módulos
+    private IModuloUsuarios moduloUsuarios;
+    private UsuarioTemp usuarioActivo;
+    
+    // Estadísticas de participación
+    private Map<String, Integer> participacionesUsuario;
+    private Map<String, Integer> puntosUsuario;
+    
     private ContextoSistema() {
         this.usuarios = new ArrayList<>();
         this.comunidades = new ArrayList<>();
         this.moderadores = new ArrayList<>();
+        this.participacionesUsuario = new HashMap<>();
+        this.puntosUsuario = new HashMap<>();
     }
     
-    public static ContextoSistema getInstancia() {
+    public static ContextoSistema getInstance() {
         if (instancia == null) {
             instancia = new ContextoSistema();
         }
         return instancia;
+    }
+    
+    // Método existente para compatibilidad
+    public static ContextoSistema getInstancia() {
+        return getInstance();
     }
     
     // Getters
@@ -105,5 +123,42 @@ public class ContextoSistema {
     
     public int getTotalComunidades() {
         return comunidades.size();
+    }
+    
+    // Métodos de integración con módulo de usuarios
+    public void setModuloUsuarios(IModuloUsuarios moduloUsuarios) {
+        this.moduloUsuarios = moduloUsuarios;
+    }
+    
+    public IModuloUsuarios getModuloUsuarios() {
+        return this.moduloUsuarios;
+    }
+    
+    public void setUsuarioActivo(UsuarioTemp usuario) {
+        this.usuarioActivo = usuario;
+        if (usuario != null && !usuarios.contains(usuario)) {
+            usuarios.add(usuario);
+        }
+    }
+    
+    public UsuarioTemp getUsuarioActivo() {
+        return this.usuarioActivo;
+    }
+    
+    // Métodos de estadísticas
+    public int getParticipacionesUsuario(String nombreUsuario) {
+        return participacionesUsuario.getOrDefault(nombreUsuario, 0);
+    }
+    
+    public void incrementarParticipaciones(String nombreUsuario) {
+        participacionesUsuario.put(nombreUsuario, getParticipacionesUsuario(nombreUsuario) + 1);
+    }
+    
+    public int getPuntosUsuario(String nombreUsuario) {
+        return puntosUsuario.getOrDefault(nombreUsuario, 0);
+    }
+    
+    public void agregarPuntos(String nombreUsuario, int puntos) {
+        puntosUsuario.put(nombreUsuario, getPuntosUsuario(nombreUsuario) + puntos);
     }
 }
