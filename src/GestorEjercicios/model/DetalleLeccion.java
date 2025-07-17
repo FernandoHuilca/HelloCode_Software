@@ -12,7 +12,17 @@ public class DetalleLeccion {
     public Ejercicio getEjercicio() { return ejercicio; }
     public ResultadoEvaluacion getResultado() { return resultado; }
 
-    public void resolverEjercicio(String respuestaUsuario) {
-        this.resultado = ejercicio.resolver(respuestaUsuario);
+    // Modificado para aceptar tiempoEmpleado
+    public void resolverEjercicio(String respuestaUsuario, long tiempoEmpleado) {
+        ResultadoEvaluacion res = ejercicio.resolver(respuestaUsuario);
+        // Creamos un nuevo ResultadoEvaluacion con el tiempo correcto
+        ResultadoEvaluacion resultadoConTiempo = new ResultadoEvaluacion(
+            res.isCorrecto(),
+            res.getPuntuacionObtenida(),
+            tiempoEmpleado,
+            res.getObtenerMensaje(),
+            false // o el valor que corresponda para hayEjercicioSiguiente
+        );
+        this.resultado = resultadoConTiempo;
     }
 }
