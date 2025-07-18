@@ -7,7 +7,7 @@ import utilidades.MenuHelper;
 
 /**
  * Punto de entrada principal para el módulo de comunidad.
- * Esta clase sería llamada desde el módulo principal del sistema Duolingo.
+ * Esta clase sería llamada desde el módulo principal del sistema HelloCode.
  * Gestiona la inicialización y coordinación de todos los controladores de comunidad.
  */
 public class ComunidadModuloEntry {
@@ -31,8 +31,7 @@ public class ComunidadModuloEntry {
         // Verificar si hay un usuario activo y cargarlo
         cargarUsuarioActivo();
         
-        // Inicializar datos de ejemplo si es necesario
-        DatosEjemploFactory.crearDatosExtendidos(contexto);
+        // El sistema está listo para funcionar sin datos de ejemplo
     }
     
     /**

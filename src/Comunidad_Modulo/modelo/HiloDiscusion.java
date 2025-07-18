@@ -1,6 +1,7 @@
 package modelo;
 
 import enums.EstadoHilo;
+import servicios.ModeracionService.ResultadoModeracion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -66,6 +67,47 @@ public class HiloDiscusion {
     }
     
     // Métodos de negocio
+    public boolean responder(String contenido, UsuarioTemp autor, Moderador moderador) {
+        if (estado == EstadoHilo.CERRADO) {
+            System.out.println("🚫 No se puede responder a un hilo cerrado");
+            return false;
+        }
+        
+        // Verificar si el usuario está sancionado
+        if (moderador.usuarioEstaSancionado(autor)) {
+            SancionUsuario sancion = moderador.getSancionActiva(autor);
+            System.out.println("🚫 RESPUESTA BLOQUEADA - Usuario " + autor.getNombre() + 
+                             " está sancionado. Tiempo restante: " + 
+                             sancion.getMinutosRestantes() + " minutos");
+            System.out.println("   Razón: " + sancion.getRazon());
+            return false;
+        }
+        
+        // Moderar el contenido de la respuesta
+        ResultadoModeracion resultado = moderador.moderarMensaje(contenido, autor);
+        
+        if (!resultado.isAprobado()) {
+            System.out.println("🚫 RESPUESTA BLOQUEADA EN HILO DE DISCUSIÓN");
+            System.out.println("   Usuario: " + autor.getNombre());
+            System.out.println("   Hilo: " + this.titulo);
+            System.out.println("   Contenido: \"" + contenido + "\"");
+            System.out.println("   Razón: " + resultado.getMensaje());
+            return false;
+        }
+        
+        // Si la respuesta es aprobada, agregarla al hilo
+        Respuesta respuesta = new Respuesta(contenido, autor);
+        respuestas.add(respuesta);
+        
+        // Otorgar puntos de reputación por participar
+        autor.aumentarReputacion(2);
+        
+        System.out.println("✅ Respuesta agregada al hilo \"" + this.titulo + "\" por " + autor.getNombre());
+        return true;
+    }
+    
+    // Método legacy para compatibilidad (sin moderación)
+    @Deprecated
     public void responder(String contenido, UsuarioTemp autor) {
         if (estado == EstadoHilo.CERRADO) {
             throw new IllegalStateException("No se puede responder a un hilo cerrado");
