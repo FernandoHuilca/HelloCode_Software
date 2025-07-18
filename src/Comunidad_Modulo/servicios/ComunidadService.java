@@ -2,7 +2,6 @@ package servicios;
 
 import modelo.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ComunidadService {
     
@@ -48,29 +47,5 @@ public class ComunidadService {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         }
-    }
-    
-    public String generarReporteComunidad(Comunidad comunidad) {
-        StringBuilder reporte = new StringBuilder();
-        reporte.append("=== REPORTE DE COMUNIDAD ===\n");
-        reporte.append(comunidad.obtenerEstadisticas()).append("\n\n");
-        
-        // Estadísticas del foro
-        ForoGeneral foro = comunidad.getForoGeneral();
-        reporte.append("=== ESTADÍSTICAS DEL FORO ===\n");
-        reporte.append(foro.toString()).append("\n\n");
-        
-        // Usuarios más activos
-        reporte.append("=== USUARIOS MÁS ACTIVOS ===\n");
-        List<UsuarioTemp> usuariosOrdenados = comunidad.getUsuariosConectados().stream()
-                .sorted((u1, u2) -> u2.getReputacion().compareTo(u1.getReputacion()))
-                .limit(5)
-                .collect(Collectors.toList());
-        
-        for (UsuarioTemp usuario : usuariosOrdenados) {
-            reporte.append(usuario.toString()).append("\n");
-        }
-        
-        return reporte.toString();
     }
 }

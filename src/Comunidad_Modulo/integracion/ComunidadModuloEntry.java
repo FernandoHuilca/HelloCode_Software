@@ -74,10 +74,6 @@ public class ComunidadModuloEntry {
                     new ChatControlador(comunidadService, contexto).ejecutar();
                     break;
                 case 5:
-                    // Estadísticas
-                    new EstadisticasControlador(comunidadService, contexto).ejecutar();
-                    break;
-                case 6:
                     salir = true;
                     break;
                 default:

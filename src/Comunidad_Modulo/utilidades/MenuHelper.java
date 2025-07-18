@@ -11,8 +11,7 @@ public class MenuHelper {
         System.out.println("2. Gestionar Comunidad");
         System.out.println("3. Gestionar Foro");
         System.out.println("4. Gestionar Chats Privados");
-        System.out.println("5. Ver Estadísticas");
-        System.out.println("6. Salir");
+        System.out.println("5. Salir");
         System.out.println("================================");
     }
     
