@@ -1,10 +1,22 @@
-package Comunidad_Modulo.enums;
+package enums;
 
-/**
- * Enum que representa los diferentes niveles de conocimiento en Java
- */
 public enum NivelJava {
-    PRINCIPIANTE,
-    INTERMEDIO,
-    AVANZADO
+    PRINCIPIANTE("Principiante"),
+    INTERMEDIO("Intermedio"),
+    AVANZADO("Avanzado");
+    
+    private final String descripcion;
+    
+    NivelJava(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    @Override
+    public String toString() {
+        return descripcion;
+    }
 }

@@ -1,9 +1,22 @@
-package Comunidad_Modulo.enums;
+package enums;
 
-// rEnum que representa el tipo de solución que puede tener un hilo en la comunidad
 public enum TipoSolucion {
-    TEXTO,
-    IMAGEN,
-    CODIGO
+    TEXTO("Texto"),
+    IMAGEN("Imagen"),
+    CODIGO("Código");
+    
+    private final String descripcion;
+    
+    TipoSolucion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    @Override
+    public String toString() {
+        return descripcion;
+    }
 }
-

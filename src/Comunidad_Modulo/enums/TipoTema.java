@@ -1,13 +1,25 @@
-package Comunidad_Modulo.enums;
+package enums;
 
-/**
- * Enum que representa los diferentes tipos de temas de programación
- */
 public enum TipoTema {
-    SINTAXIS,
-    ESTRUCTURAS_DATOS,
-    ALGORITMOS,
-    POO,
-    EXCEPCIONES,
-    FRAMEWORKS
+    SINTAXIS("Sintaxis"),
+    ESTRUCTURAS_DATOS("Estructuras de Datos"),
+    ALGORITMOS("Algoritmos"),
+    POO("Programación Orientada a Objetos"),
+    EXCEPCIONES("Manejo de Excepciones"),
+    FRAMEWORKS("Frameworks");
+    
+    private final String descripcion;
+    
+    TipoTema(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    @Override
+    public String toString() {
+        return descripcion;
+    }
 }
