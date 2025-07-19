@@ -1,5 +1,8 @@
 package modelo;
 
+import servicios.ModeracionService;
+import servicios.ModeracionService.ResultadoModeracion;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -8,11 +11,13 @@ public class Moderador {
     private String idModerador;
     private String nombre;
     private List<Comunidad> comunidadesGestionadas;
+    private ModeracionService moderacionService;
     
     public Moderador(String nombre) {
         this.idModerador = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.comunidadesGestionadas = new ArrayList<>();
+        this.moderacionService = new ModeracionService();
     }
     
     // Getters y setters
@@ -66,6 +71,91 @@ public class Moderador {
     public void suspenderUsuario(UsuarioTemp usuario) {
         // Lógica para suspender usuario (simulada)
         System.out.println("Usuario suspendido: " + usuario.getNombre());
+    }
+    
+    // === NUEVOS MÉTODOS DE MODERACIÓN AUTOMÁTICA ===
+    
+    /**
+     * Modera un mensaje automáticamente antes de publicarlo
+     */
+    public ResultadoModeracion moderarMensaje(String contenido, UsuarioTemp autor) {
+        return moderacionService.moderarMensaje(contenido, autor, this.nombre);
+    }
+    
+    /**
+     * Aplica una sanción manual a un usuario
+     */
+    public SancionUsuario aplicarSancionManual(UsuarioTemp usuario, String razon, int duracionMinutos) {
+        return moderacionService.aplicarSancion(usuario, razon, duracionMinutos, this.nombre);
+    }
+    
+    /**
+     * Levanta una sanción de un usuario
+     */
+    public boolean levantarSancion(UsuarioTemp usuario) {
+        return moderacionService.levantarSancion(usuario, this.nombre);
+    }
+    
+    /**
+     * Verifica si un usuario está sancionado
+     */
+    public boolean usuarioEstaSancionado(UsuarioTemp usuario) {
+        return moderacionService.usuarioEstaSancionado(usuario);
+    }
+    
+    /**
+     * Obtiene información de la sanción activa de un usuario
+     */
+    public SancionUsuario getSancionActiva(UsuarioTemp usuario) {
+        return moderacionService.obtenerSancionActiva(usuario);
+    }
+    
+    /**
+     * Obtiene todas las sanciones activas
+     */
+    public List<SancionUsuario> getSancionesActivas() {
+        return moderacionService.getSancionesActivas();
+    }
+    
+    /**
+     * Obtiene el historial de sanciones de un usuario
+     */
+    public List<SancionUsuario> getHistorialSanciones(UsuarioTemp usuario) {
+        return moderacionService.getHistorialSanciones(usuario);
+    }
+    
+    /**
+     * Obtiene estadísticas de moderación
+     */
+    public ModeracionService.EstadisticasModeración getEstadisticasModeración() {
+        return moderacionService.getEstadisticas();
+    }
+    
+    /**
+     * Método auxiliar para mostrar el estado de moderación
+     */
+    public void mostrarEstadoModeración() {
+        System.out.println("\n🛡️ === ESTADO DE MODERACIÓN ===");
+        System.out.println("Moderador: " + this.nombre);
+        
+        ModeracionService.EstadisticasModeración stats = getEstadisticasModeración();
+        System.out.println(stats.toString());
+        
+        List<SancionUsuario> sancionesActivas = getSancionesActivas();
+        if (!sancionesActivas.isEmpty()) {
+            System.out.println("\n🚫 Sanciones activas:");
+            for (SancionUsuario sancion : sancionesActivas) {
+                System.out.println("  - " + sancion.toString());
+            }
+        } else {
+            System.out.println("\n✅ No hay sanciones activas");
+        }
+        System.out.println("=".repeat(35));
+    }
+    
+    // Getter para el servicio de moderación (por si se necesita acceso directo)
+    public ModeracionService getModeracionService() {
+        return moderacionService;
     }
     
     @Override

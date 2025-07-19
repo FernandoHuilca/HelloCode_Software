@@ -71,6 +71,14 @@ public class UsuarioTemp {
         this.reputacion = Math.max(0, this.reputacion - puntos);
     }
     
+    /**
+     * Verifica si el usuario puede interactuar (enviar mensajes, crear hilos, etc.)
+     * Este método debe ser usado junto con un moderador para verificar sanciones.
+     */
+    public boolean puedeInteractuar(Moderador moderador) {
+        return !moderador.usuarioEstaSancionado(this);
+    }
+    
     @Override
     public String toString() {
         return String.format("Usuario: %s (Nivel: %s, Reputación: %d)", 

@@ -23,6 +23,10 @@ public class Comunidad {
         this.chatsPrivados = new ArrayList<>();
         this.usuariosConectados = new ArrayList<>();
         this.fechaCreacion = LocalDateTime.now();
+        
+        // Inicializar moderador automático para la comunidad
+        this.moderador = new Moderador("ModeradorBot_" + nombre);
+        this.moderador.asignarComunidad(this);
     }
     
     // Getters y setters
