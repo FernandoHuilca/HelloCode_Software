@@ -1,15 +1,6 @@
-package main;
-
-import model.Ejercicio;
-import model.DetalleLeccion;
-import model.ResultadoEvaluacion;
-import model.GestorLecciones;
-import model.Leccion;
-import filtros.FiltroEjercicio;
-import filtros.FiltroPorLenguaje;
-import enums.LenguajeProgramacion;
-import enums.NivelDificultad;
-import enums.TipoEjercicio;
+import model.*;
+import filtros.*;
+import enums.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +24,7 @@ public class Main {
         disponibles.add(crearEjercicio(8, "Arreglos", "¿Qué símbolo se usa para declarar un arreglo?", "[]"));
 
         List<FiltroEjercicio> filtros = Arrays.asList(
-            new FiltroPorLenguaje(LenguajeProgramacion.JAVA)
+                new FiltroPorLenguaje(LenguajeProgramacion.JAVA)
         );
 
         GestorLecciones gestorLecciones = new GestorLecciones();
@@ -43,27 +34,17 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         int correctos = 0;
-        // ...existing code...
         for (DetalleLeccion detalle : leccion.getEjerciciosResueltos()) {
             Ejercicio ejercicio = detalle.getEjercicio();
             System.out.println("\nEjercicio: " + ejercicio.getTitulo());
             System.out.println(ejercicio.getEnunciado());
             System.out.print("Tu respuesta: ");
-
-            long inicio = System.currentTimeMillis(); // INICIO MEDICIÓN TIEMPO
             String respuesta = sc.nextLine();
-            long fin = System.currentTimeMillis();    // FIN MEDICIÓN
-
-            long tiempoEmpleado = fin - inicio;
-
-            detalle.resolverEjercicio(respuesta, tiempoEmpleado); // <-- Cambiado
-
+            detalle.resolverEjercicio(respuesta);
             ResultadoEvaluacion r = detalle.getResultado();
-            System.out.println("Tiempo empleado: " + r.getTiempoFormateado());
             if (r.isCorrecto()) correctos++;
             System.out.println("Resultado: " + r.getObtenerMensaje());
         }
-
 
         boolean leccionAprobada = ResultadoEvaluacion.evaluarLeccion(leccion.getEjerciciosResueltos().size(), correctos);
         if (leccionAprobada) {
