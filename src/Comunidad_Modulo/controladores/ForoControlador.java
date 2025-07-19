@@ -225,8 +225,93 @@ public class ForoControlador implements IControlador {
     }
     
     private void responderHilo() {
-        // Por ahora, implementación básica
-        System.out.println("Función de responder hilo - Implementación completa disponible");
+        System.out.println("\n=== RESPONDER HILO ===");
+        
+        ForoGeneral foro = contexto.getComunidadActual().getForoGeneral();
+        List<GrupoDiscusion> grupos = foro.getGruposDiscusion();
+        
+        if (grupos.isEmpty()) {
+            System.out.println("No hay grupos de discusión disponibles.");
+            InputHelper.presionarEnterParaContinuar();
+            return;
+        }
+        
+        // Seleccionar grupo
+        System.out.println("Grupos de discusión disponibles:");
+        for (int i = 0; i < grupos.size(); i++) {
+            GrupoDiscusion grupo = grupos.get(i);
+            System.out.println((i + 1) + ". " + grupo.getTitulo() + 
+                             " (" + grupo.getHilos().size() + " hilos)");
+        }
+        
+        int indiceGrupo = InputHelper.leerEntero("Seleccione el grupo") - 1;
+        if (indiceGrupo < 0 || indiceGrupo >= grupos.size()) {
+            System.out.println("Selección inválida.");
+            InputHelper.presionarEnterParaContinuar();
+            return;
+        }
+        
+        GrupoDiscusion grupo = grupos.get(indiceGrupo);
+        List<HiloDiscusion> hilos = grupo.getHilos();
+        
+        if (hilos.isEmpty()) {
+            System.out.println("No hay hilos en este grupo.");
+            InputHelper.presionarEnterParaContinuar();
+            return;
+        }
+        
+        // Seleccionar hilo
+        System.out.println("\nHilos disponibles:");
+        for (int i = 0; i < hilos.size(); i++) {
+            HiloDiscusion hilo = hilos.get(i);
+            System.out.println((i + 1) + ". " + hilo.getTitulo() + 
+                             " (" + hilo.getRespuestas().size() + " respuestas) [" + 
+                             hilo.getEstado() + "]");
+        }
+        
+        int indiceHilo = InputHelper.leerEntero("Seleccione el hilo") - 1;
+        if (indiceHilo < 0 || indiceHilo >= hilos.size()) {
+            System.out.println("Selección inválida.");
+            InputHelper.presionarEnterParaContinuar();
+            return;
+        }
+        
+        HiloDiscusion hilo = hilos.get(indiceHilo);
+        
+        // Seleccionar usuario que responde
+        List<UsuarioTemp> usuariosConectados = contexto.getComunidadActual().getUsuariosConectados();
+        if (usuariosConectados.isEmpty()) {
+            System.out.println("No hay usuarios conectados.");
+            InputHelper.presionarEnterParaContinuar();
+            return;
+        }
+        
+        System.out.println("\nUsuarios conectados:");
+        MenuHelper.mostrarUsuarios(usuariosConectados);
+        
+        int indiceUsuario = InputHelper.leerEntero("Seleccione el usuario que responde") - 1;
+        if (indiceUsuario < 0 || indiceUsuario >= usuariosConectados.size()) {
+            System.out.println("Selección inválida.");
+            InputHelper.presionarEnterParaContinuar();
+            return;
+        }
+        
+        UsuarioTemp autor = usuariosConectados.get(indiceUsuario);
+        
+        // Leer la respuesta
+        System.out.println("\nProblema: " + hilo.getProblema());
+        String respuesta = InputHelper.leerTexto("Escriba su respuesta");
+        
+        // Enviar respuesta con moderación
+        Moderador moderador = contexto.getComunidadActual().getModerador();
+        boolean respuestaEnviada = hilo.responder(respuesta, autor, moderador);
+        
+        if (respuestaEnviada) {
+            System.out.println("✅ Respuesta agregada exitosamente.");
+        } else {
+            System.out.println("🚫 La respuesta no pudo ser enviada.");
+        }
+        
         InputHelper.presionarEnterParaContinuar();
     }
     

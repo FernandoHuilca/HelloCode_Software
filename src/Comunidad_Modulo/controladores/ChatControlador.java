@@ -130,8 +130,15 @@ public class ChatControlador implements IControlador {
         UsuarioTemp emisor = participantes.get(indiceUsuario);
         String contenido = InputHelper.leerTexto("Escriba el mensaje");
         
-        chat.enviarMensaje(contenido, emisor);
-        System.out.println("Mensaje enviado exitosamente.");
+        // Usar el nuevo método con moderación
+        Moderador moderador = contexto.getComunidadActual().getModerador();
+        boolean mensajeEnviado = chat.enviarMensaje(contenido, emisor, moderador);
+        
+        if (mensajeEnviado) {
+            System.out.println("✅ Mensaje enviado exitosamente.");
+        } else {
+            System.out.println("🚫 El mensaje no pudo ser enviado.");
+        }
         
         InputHelper.presionarEnterParaContinuar();
     }
