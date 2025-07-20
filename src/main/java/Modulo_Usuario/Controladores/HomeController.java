@@ -46,8 +46,23 @@ public class HomeController {
 
     @FXML
     private void abrirReportes(MouseEvent event) {
-        // Aquí puedes cargar el módulo de reportes cuando lo tengas
-        mostrarMensaje("Módulo Reportes", "Este módulo estará disponible próximamente.");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 393, 852);
+
+            Stage stage = new Stage();
+            stage.setTitle("Hello Code Software - Gamificación");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            // Cerrar la pantalla actual
+            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            thisStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarError("Error al abrir el módulo de gamificación: " + e.getMessage());
+        }
     }
 
     @FXML

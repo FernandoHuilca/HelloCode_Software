@@ -16,6 +16,8 @@ module Modulo_Ejercicios {
     // Exporta el paquete de controladores para que FXML pueda acceder a él
     opens Modulo_Ejercicios.Controladores to javafx.fxml;
     opens Modulo_Usuario.Controladores to javafx.fxml;
+    opens Gamificacion_Modulo.GUI.controllers to javafx.fxml;
+    opens Gamificacion_Modulo to javafx.fxml;
 
 
     exports Modulo_Ejercicios.application;
@@ -25,4 +27,5 @@ module Modulo_Ejercicios {
     exports Modulo_Usuario.Clases;
     exports Modulo_Usuario.Controladores;
     exports Modulo_Usuario.application;
+    exports Gamificacion_Modulo;
 } 
