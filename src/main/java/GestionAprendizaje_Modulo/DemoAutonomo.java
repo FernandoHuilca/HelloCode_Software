@@ -1,5 +1,5 @@
 package GestionAprendizaje_Modulo;
-
+/**
 import java.util.Map;
 
 import GestionAprendizaje_Modulo.Gestor.GestorDeModuloEducativo;
@@ -39,3 +39,4 @@ public class DemoAutonomo {
         mod.getLecciones().forEach(l -> System.out.println("Lección: " + l.getTitulo()));
     }
 }
+**/

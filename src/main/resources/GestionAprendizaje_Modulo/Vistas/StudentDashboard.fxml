@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<?import java.lang.*?>-->
+<!--<?import java.util.*?>-->
+<!--<?import javafx.scene.*?>-->
+<!--<?import javafx.scene.control.*?>-->
+<!--<?import javafx.scene.layout.*?>-->
+
+<!--<AnchorPane xmlns="http://javafx.com/javafx"-->
+<!--            xmlns:fx="http://javafx.com/fxml"-->
+<!--            fx:controller="GestionAprendizaje_Modulo.Vistas.StudentDashboard"-->
+<!--            prefHeight="400.0" prefWidth="600.0">-->
+
+<!--</AnchorPane>-->
+
+
+
+        <?import javafx.geometry.Insets?>
+        <?import javafx.scene.control.ComboBox?>
+        <?import javafx.scene.control.Label?>
+        <?import javafx.scene.control.ListView?>
+        <?import javafx.scene.control.ScrollPane?>
+        <?import javafx.scene.layout.BorderPane?>
+        <?import javafx.scene.layout.HBox?>
+        <?import javafx.scene.layout.VBox?>
+        <?import javafx.scene.text.Font?>
+        <?import javafx.scene.text.Text?>
+        <?import javafx.scene.text.TextFlow?>
+
+<BorderPane prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GestionAprendizaje_Modulo.Controladores.StudentDashboardController">
+<top>
+    <Label text="Panel del Estudiante" BorderPane.alignment="CENTER">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+        <BorderPane.margin>
+            <Insets top="10.0" />
+        </BorderPane.margin>
+    </Label>
+</top>
+<center>
+    <HBox spacing="10.0" BorderPane.alignment="CENTER">
+        <children>
+            <!-- Panel Izquierdo: Selección de Contenido -->
+            <VBox prefWidth="250.0" spacing="5.0">
+                <children>
+                    <Label text="1. Elige un Curso" />
+                    <ComboBox fx:id="comboCursos" onAction="#onCursoSeleccionado" prefWidth="250.0" promptText="Cursos disponibles..." />
+                    <Label text="2. Elige tu Ruta de Aprendizaje" />
+                    <ComboBox fx:id="comboRutas" onAction="#onRutaSeleccionada" prefWidth="250.0" promptText="Rutas del curso..." />
+                    <Label text="3. Selecciona una Lección (Nodo)" />
+                    <ListView fx:id="listNodos" prefHeight="200.0" VBox.vgrow="ALWAYS" />
+                </children>
+            </VBox>
+            <!-- Panel Derecho: Visualización del Contenido -->
+            <VBox prefWidth="350.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                <children>
+                    <Label fx:id="labelNodoSeleccionado" text="Contenido de la Lección" wrapText="true">
+                        <font>
+                            <Font name="System Bold" size="14.0" />
+                        </font>
+                    </Label>
+                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                        <content>
+                            <VBox spacing="15.0">
+                                <children>
+                                    <VBox spacing="5.0">
+                                        <children>
+                                            <Label text="Descripción de la Lección:">
+                                                <font>
+                                                    <Font name="System Italic" size="12.0" />
+                                                </font>
+                                            </Label>
+                                            <Text fx:id="textDescripcionLeccion" strokeType="OUTSIDE" strokeWidth="0.0" text="(Seleccione un nodo para ver la descripción)" wrappingWidth="300.0" />
+                                        </children>
+                                    </VBox>
+                                    <VBox spacing="5.0">
+                                        <children>
+                                            <Label text="Material de Apoyo:">
+                                                <font>
+                                                    <Font name="System Italic" size="12.0" />
+                                                </font>
+                                            </Label>
+                                            <VBox fx:id="vboxMaterialApoyo" spacing="8.0" />
+                                        </children>
+                                    </VBox>
+                                </children>
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </children>
+            </VBox>
+        </children>
+        <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </BorderPane.margin>
+    </HBox>
+</center>
+</BorderPane>
