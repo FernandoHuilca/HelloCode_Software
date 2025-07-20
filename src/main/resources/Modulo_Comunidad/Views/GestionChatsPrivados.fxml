@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Comunidad_Modulo.Controladores_GUI.GestionChat_Controller">
+    <children>
+        <Label layoutX="300" layoutY="30" text="Gestión de Chats Privados">
+            <font>
+                <Font size="22.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="40" layoutY="80" text="Participantes (índices separados por coma):" />
+        <TextField fx:id="txtParticipantes" layoutX="300" layoutY="75" prefWidth="250" />
+
+        <Label layoutX="40" layoutY="120" text="Contenido del mensaje:" />
+        <TextField fx:id="txtMensaje" layoutX="300" layoutY="115" prefWidth="250" />
+
+        <Label layoutX="40" layoutY="160" text="Índice del chat o usuario:" />
+        <TextField fx:id="txtIndice" layoutX="300" layoutY="155" prefWidth="100" />
+
+        <Button layoutX="40" layoutY="210" onAction="#crearChatPrivado" prefWidth="180" text="Crear Chat Privado" />
+        <Button layoutX="240" layoutY="210" onAction="#enviarMensaje" prefWidth="150" text="Enviar Mensaje" />
+        <Button layoutX="410" layoutY="210" onAction="#verHistorialChat" prefWidth="170" text="Ver Historial Chat" />
+        <Button layoutX="600" layoutY="210" onAction="#listarChats" prefWidth="120" text="Listar Chats" />
+
+        <!-- Área principal de información -->
+        <Label layoutX="40" layoutY="260" style="-fx-font-weight: bold;" text="Información del Sistema:" />
+        <TextArea fx:id="txtInformacion" layoutX="40" layoutY="280" prefHeight="180" prefWidth="720" wrapText="true" />
+
+        <!-- Área de notificaciones del moderador -->
+        <Label layoutX="40" layoutY="470" style="-fx-font-weight: bold; -fx-text-fill: #8b4513;" text="Notificaciones de Moderación:" />
+        <Button fx:id="btnLimpiarNotificaciones" layoutX="250" layoutY="467" onAction="#limpiarNotificacionesModerador" prefWidth="80" style="-fx-background-color: #ff6b6b; -fx-text-fill: white; -fx-font-size: 10px;" text="Limpiar" />
+        <TextArea fx:id="txtNotificacionesModerador" layoutX="40" layoutY="490" prefHeight="100" prefWidth="720" style="-fx-background-color: #fff8dc; -fx-border-color: #ffa500; -fx-font-family: monospace; -fx-font-size: 11px;" text="=== NOTIFICACIONES DE MODERACIÓN ===&#10;&#10;Aquí aparecerán los mensajes de sanciones, bloqueos y eventos de moderación..." wrapText="true" />
+      <Button fx:id="btnVolver" layoutX="40.0" layoutY="18.0" mnemonicParsing="false" onAction="#volver" text="Volver" />
+    </children>
+</AnchorPane>
