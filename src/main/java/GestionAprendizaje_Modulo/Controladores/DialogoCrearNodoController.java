@@ -95,6 +95,9 @@ public class DialogoCrearNodoController {
         for (RecursoAprendizaje recurso : recursosTemporales) {
             nuevoNodo.agregarMaterialDeApoyo(recurso);
         }
+        if (rutaActual == null) {
+            rutaActual = new Ruta("1","RutaNueva","Ruta nueva para el ejemplo");
+        }
 
         // Añadir el nodo a la ruta
         rutaActual.agregarNodo(nuevoNodo);
@@ -103,6 +106,7 @@ public class DialogoCrearNodoController {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
     }
+
 
     @FXML
     void handleCancelar(ActionEvent event) {

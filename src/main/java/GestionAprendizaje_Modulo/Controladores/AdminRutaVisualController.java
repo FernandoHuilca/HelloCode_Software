@@ -1,97 +1,107 @@
 package GestionAprendizaje_Modulo.Controladores;
 
+import GestionAprendizaje_Modulo.Modelo.Leccion;
+import GestionAprendizaje_Modulo.Repositorio.RepositorioEnMemoria; // <-- Importa el repositorio
 import GestionAprendizaje_Modulo.Ruta.NodoRuta;
 import GestionAprendizaje_Modulo.Ruta.Ruta;
+import MetodosGlobales.MetodosFrecuentes;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class AdminRutaVisualController {
 
-    @FXML private Label labelNombreRuta;
-    @FXML private VBox pathContainer;
     @FXML private Button buttonAgregar;
+    @FXML private Text labelNameRuta;
+    @FXML private VBox pathContainer;
 
+    // --- LA CORRECCIÓN CLAVE PARA EL ERROR DEL ADMIN ---
+    private final RepositorioEnMemoria repositorio = RepositorioEnMemoria.getInstancia();
     private Ruta rutaActual;
 
-    // Este método es llamado desde el controlador anterior para pasarle la ruta a editar.
-    public void setRuta(Ruta ruta) {
-        this.rutaActual = ruta;
-        labelNombreRuta.setText("Editando Ruta: " + ruta.getNombre());
-        renderizarRuta();
+    @FXML
+    public void initialize() {
+        this.rutaActual = obtenerOcrearRutaDePruebaEnRepositorio();
+        actualizarVista();
     }
 
-    private void renderizarRuta() {
-        pathContainer.getChildren().clear(); // Limpiamos la vista para redibujar
-
-        // Dibujamos cada nodo existente
-        for (NodoRuta nodo : rutaActual.getNodos()) {
-            pathContainer.getChildren().add(crearComponenteNodo(nodo));
+    private Ruta obtenerOcrearRutaDePruebaEnRepositorio() {
+        if (!repositorio.getRutas().isEmpty()) {
+            return repositorio.getRutas().get(0);
+        } else {
+            Ruta nuevaRuta = new Ruta(UUID.randomUUID().toString(), "Ruta de Java Inicial", "Creada por Admin");
+            Leccion leccionInicial = new Leccion("L-INIT", "¡Bienvenido!", "...", "PUBLICADO");
+            nuevaRuta.agregarNodo(new NodoRuta(1, leccionInicial));
+            repositorio.getRutas().add(nuevaRuta);
+            return nuevaRuta;
         }
-
-        // Añadimos el botón para agregar un nuevo nodo
-        Button buttonAgregar = new Button("+");
-        buttonAgregar.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-background-radius: 50;");
-        buttonAgregar.setPrefSize(50, 50);
-        buttonAgregar.setOnAction(event -> añadirNodos());
-        pathContainer.getChildren().add(buttonAgregar);
     }
 
-    private HBox crearComponenteNodo(NodoRuta nodo) {
-        HBox nodoBox = new HBox(10);
-        nodoBox.setAlignment(Pos.CENTER_LEFT);
-
-        Circle circulo = new Circle(20, Color.DODGERBLUE);
-        Label etiquetaOrden = new Label(String.valueOf(nodo.getOrden()));
-        etiquetaOrden.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
-
-        // StackPane para poner el número dentro del círculo (opcional, pero se ve bien)
-        javafx.scene.layout.StackPane stack = new javafx.scene.layout.StackPane(circulo, etiquetaOrden);
-
-        Label etiquetaLeccion = new Label(nodo.getLeccion().getTitulo());
-        etiquetaLeccion.setFont(new javafx.scene.text.Font(16));
-
-        // Podrías añadir un botón de "Editar" aquí si quisieras
-
-        nodoBox.getChildren().addAll(stack, etiquetaLeccion);
-        return nodoBox;
+    private void actualizarVista() {
+        if (rutaActual == null) return;
+        labelNameRuta.setText("EDITAR RUTA: " + rutaActual.getNombre());
+        pathContainer.getChildren().clear();
+        pathContainer.setAlignment(Pos.TOP_CENTER);
+        pathContainer.setSpacing(15.0);
+        for (NodoRuta nodo : rutaActual.getNodos()) {
+            pathContainer.getChildren().add(crearComponenteVisualNodo(nodo));
+        }
     }
 
     @FXML
-    private void añadirNodos() {
+    void añadirNodos(ActionEvent event) {
+        if (rutaActual == null) return;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/DialogoCrearNodo.fxml"));
             Parent root = loader.load();
-
-            DialogoCrearNodoController controller = loader.getController();
-            controller.setRuta(rutaActual); // Pasamos la ruta al controlador del diálogo
-
+            DialogoCrearNodoController controllerDialogo = loader.getController();
+            controllerDialogo.setRuta(this.rutaActual);
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Crear Nuevo Nodo");
-            dialogStage.initModality(Modality.APPLICATION_MODAL); // Bloquea la ventana principal
+            dialogStage.setTitle("Añadir Nuevo Nodo");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setScene(new Scene(root));
-
-            // Espera a que el diálogo se cierre
             dialogStage.showAndWait();
-
-            // Después de que se cierra el diálogo, volvemos a renderizar la ruta para mostrar los cambios
-            renderizarRuta();
-
+            actualizarVista();
         } catch (IOException e) {
             e.printStackTrace();
-            // Mostrar una alerta de error
         }
+    }
+
+    private HBox crearComponenteVisualNodo(NodoRuta nodo) {
+        HBox nodoBox = new HBox(10);
+        nodoBox.setAlignment(Pos.CENTER_LEFT);
+        nodoBox.setStyle("-fx-background-color: #F0F0F0; -fx-padding: 10; -fx-background-radius: 10;");
+        Circle circulo = new Circle(15, Color.STEELBLUE);
+        Text textoOrden = new Text(String.valueOf(nodo.getOrden()));
+        textoOrden.setFont(Font.font("System", 12));
+        textoOrden.setFill(Color.WHITE);
+        javafx.scene.layout.StackPane stack = new javafx.scene.layout.StackPane(circulo, textoOrden);
+        Text textoLeccion = new Text(nodo.getLeccion().getTitulo());
+        textoLeccion.setFont(Font.font("System", 14));
+        nodoBox.getChildren().addAll(stack, textoLeccion);
+        return nodoBox;
+    }
+    @FXML
+    private Button buttonAtras;
+    @FXML
+    private void regresarPrincipal(){
+        System.out.println("Regreso a contenido");
+        MetodosFrecuentes.cambiarVentana((Stage) buttonAtras.getScene().getWindow(),"/GestionAprendizaje_Modulo/Vistas/selectorRol.fxml","ROL");
     }
 }
