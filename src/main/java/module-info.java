@@ -1,8 +1,9 @@
-module Modulo_Ejercicios {
+module Modulo_Ejercicio {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
     requires javafx.web;
-    
+
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
@@ -12,19 +13,25 @@ module Modulo_Ejercicios {
     requires com.almasb.fxgl.all;
     requires java.desktop;
 
+    // Abre paquetes para FXML
+    opens GestionAprendizaje_Modulo.Controladores to javafx.fxml;
+    opens GestionAprendizaje_Modulo.Aplicacion to javafx.graphics, javafx.fxml;
 
-    // Exporta el paquete de controladores para que FXML pueda acceder a él
     opens Modulo_Ejercicios.Controladores to javafx.fxml;
     opens Modulo_Usuario.Controladores to javafx.fxml;
-
     opens MetodosGlobales to javafx.fxml;
 
-    // Opens Modulo-Comunidad
     opens Comunidad_Modulo.Controladores_GUI to javafx.fxml;
     opens Comunidad_Modulo.controladores to javafx.fxml;
     opens Comunidad_Modulo.App to javafx.fxml, javafx.graphics;
 
-    // Exports Modulo_Comunidad
+    // Exportaciones
+    exports GestionAprendizaje_Modulo.Aplicacion;
+    exports GestionAprendizaje_Modulo.Ruta;
+    exports GestionAprendizaje_Modulo.Modelo;
+    exports GestionAprendizaje_Modulo.Repositorio;
+    exports GestionAprendizaje_Modulo.Gestor;
+
     exports Comunidad_Modulo.App;
     exports Comunidad_Modulo.integracion;
     exports Comunidad_Modulo.modelo;
@@ -34,15 +41,15 @@ module Modulo_Ejercicios {
     exports Comunidad_Modulo.servicios;
     exports Comunidad_Modulo.enums;
 
-
-
     exports Modulo_Ejercicios.application;
     exports Modulo_Ejercicios.otrosModulos;
     exports Modulo_Ejercicios.exercises;
     exports Modulo_Ejercicios.DataBase;
+
     exports Modulo_Usuario.Clases;
     exports Modulo_Usuario.Controladores;
     exports Modulo_Usuario.application;
-    exports MetodosGlobales;
 
-} 
+    exports MetodosGlobales;
+}
+
