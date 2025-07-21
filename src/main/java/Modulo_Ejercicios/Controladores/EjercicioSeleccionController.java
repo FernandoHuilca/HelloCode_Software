@@ -1,8 +1,10 @@
 package Modulo_Ejercicios.Controladores;
 
+import MetodosGlobales.MetodosFrecuentes;
 import Modulo_Ejercicios.DataBase.EjercicioRepository;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;
 import Modulo_Ejercicios.otrosModulos.Leccion;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import javafx.fxml.FXML;
@@ -337,6 +339,7 @@ public class EjercicioSeleccionController implements Initializable {
             // Todos los ejercicios completados
             System.out.println("¡Lección completada!");
             btnComprobar.setText("Finalizado");
+            MetodosFrecuentes.cambiarVentana((Stage) btnComprobar.getScene().getWindow(), "/Modulo_Ejercicios/views/CompletarCodigo.fxml", "Ventana de Ejercicios de Completar...");
             btnComprobar.setDisable(true);
             progressBar.setProgress(1.0);
         }

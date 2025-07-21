@@ -11,13 +11,13 @@
       <BorderPane layoutX="-2.0" layoutY="82.0" prefHeight="373.0" prefWidth="372.0">
          <center>
             <GridPane BorderPane.alignment="CENTER">
-               <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="119.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="226.0" minHeight="10.0" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
-               </rowConstraints>
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="119.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="226.0" minHeight="10.0" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <children>

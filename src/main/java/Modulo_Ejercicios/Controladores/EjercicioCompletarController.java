@@ -1,5 +1,6 @@
 package Modulo_Ejercicios.Controladores;
 
+import MetodosGlobales.MetodosFrecuentes;
 import Modulo_Ejercicios.DataBase.EjercicioRepository;
 import Modulo_Ejercicios.exercises.*;
 import javafx.animation.PauseTransition;
@@ -7,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -118,6 +120,7 @@ public class EjercicioCompletarController implements Initializable {
             } else {
                 TexVida.setText("0");
                 Avisos.setText("¡Se han agotado tus vidas!");
+                MetodosFrecuentes.cambiarVentana((Stage)btnComprobar.getScene().getWindow(), "/Modulo_Usuario/views/home.fxml", "Ventana Home...");
                 Avisos.setVisible(true);
                 PauseTransition pauseAvisos = new PauseTransition(Duration.seconds(2));
                 pauseAvisos.setOnFinished(event -> Avisos.setVisible(false));
@@ -164,6 +167,7 @@ public class EjercicioCompletarController implements Initializable {
         } else {
             // Si se completaron todos los ejercicios
             System.out.println("¡Todos los ejercicios completados!");
+            MetodosFrecuentes.cambiarVentana((Stage)btnComprobar.getScene().getWindow(), "/Modulo_Usuario/views/home.fxml", "Ventana Home...");
             btnComprobar.setDisable(true);
             terminarEjecucion();
         }
@@ -176,7 +180,5 @@ public class EjercicioCompletarController implements Initializable {
     // Método para finalizar la ejecución
     private void terminarEjecucion() {
         btnComprobar.setDisable(true);
-
-
     }
 }

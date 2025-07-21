@@ -1,5 +1,6 @@
 package Modulo_Usuario.Controladores;
 
+
 import MetodosGlobales.MetodosFrecuentes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,8 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+
 
 public class HomeController {
 
@@ -41,17 +43,64 @@ public class HomeController {
 
     @FXML
     private void abrirEjercicios(MouseEvent event) {
-        MetodosFrecuentes.cambiarVentana((Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow(), "/Modulo_Ejercicios/views/CompletarCodigo.fxml", "Ejercicios de Completar");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Ejercicios/views/SeleccionMultiple-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
+
+            Stage stage = new Stage();
+            stage.setTitle("Hello Code Software - Módulo Ejercicios");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            // Cerrar la pantalla actual
+            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            thisStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarError("Error al abrir el módulo de usuarios: " + e.getMessage());
+        }
+
+        // Aquí puedes cargar el módulo de ejercicios cuando lo tengas
+        //mostrarMensaje("Módulo Ejercicios", "Este módulo estará disponible próximamente.");
+
     }
 
     @FXML
     private void abrirReportes(MouseEvent event) {
+
         // Aquí puedes cargar el módulo de reportes cuando lo tengas
         mostrarMensaje("Módulo Reportes", "Este módulo estará disponible próximamente.");
     }
 
     @FXML
-    public void mostrarPerfil(ActionEvent event) {
+    private void abrirComunidad(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Comunidad/Views/Comunidad.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 360, 640);
+
+            Stage stage = new Stage();
+            stage.setTitle("Hello Code Software - Módulo Comunidad");
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            // Cerrar la pantalla actual
+            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            thisStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            mostrarError("Error al abrir el módulo de comunidad: " + e.getMessage());
+
+        }
+    }
+
+    @FXML
+
+    private void mostrarPerfil(ActionEvent event) {
+
         // Aquí puedes mostrar información del perfil del usuario
         mostrarMensaje("Perfil de Usuario", "Funcionalidad de perfil estará disponible próximamente.");
     }
@@ -93,4 +142,5 @@ public class HomeController {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-} 
+}
+
