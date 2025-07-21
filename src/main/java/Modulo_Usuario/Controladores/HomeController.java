@@ -1,5 +1,6 @@
 package Modulo_Usuario.Controladores;
 
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
+
 
 public class HomeController {
 
@@ -40,12 +42,15 @@ public class HomeController {
 
     @FXML
     private void abrirEjercicios(MouseEvent event) {
+
         // Aquí puedes cargar el módulo de ejercicios cuando lo tengas
         mostrarMensaje("Módulo Ejercicios", "Este módulo estará disponible próximamente.");
+
     }
 
     @FXML
     private void abrirReportes(MouseEvent event) {
+
         // Aquí puedes cargar el módulo de reportes cuando lo tengas
         mostrarMensaje("Módulo Reportes", "Este módulo estará disponible próximamente.");
     }
@@ -58,6 +63,7 @@ public class HomeController {
 
             Stage stage = new Stage();
             stage.setTitle("Hello Code Software - Módulo Comunidad");
+
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
@@ -67,12 +73,16 @@ public class HomeController {
             thisStage.close();
         } catch (Exception e) {
             e.printStackTrace();
+
             mostrarError("Error al abrir el módulo de comunidad: " + e.getMessage());
+
         }
     }
 
     @FXML
+
     private void mostrarPerfil(ActionEvent event) {
+
         // Aquí puedes mostrar información del perfil del usuario
         mostrarMensaje("Perfil de Usuario", "Funcionalidad de perfil estará disponible próximamente.");
     }
@@ -115,3 +125,4 @@ public class HomeController {
         alert.showAndWait();
     }
 }
+

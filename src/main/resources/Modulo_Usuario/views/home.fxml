@@ -13,6 +13,7 @@
     
     <!-- Navbar superior -->
     <HBox style="-fx-background-color: #A6B1E1; -fx-effect: dropshadow(gaussian, #23243a, 4, 0.2, 0, 2);" 
+
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" prefHeight="60">
         <padding>
             <Insets top="12" right="20" bottom="12" left="20"/>
@@ -22,6 +23,7 @@
             <VBox spacing="2">
                 <Label text="Hello Code Software" style="-fx-text-fill: #424874; -fx-font-size: 16px; -fx-font-weight: bold;"/>
                 <Label text="Panel Principal" style="-fx-text-fill: #A6B1E1; -fx-font-size: 11px;"/>
+
             </VBox>
         </HBox>
         <Button text="👤" onAction="#mostrarPerfil" 
@@ -34,6 +36,7 @@
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="60" AnchorPane.bottomAnchor="0">
         <padding>
             <Insets top="32" right="16" bottom="16" left="16"/>
+
         </padding>
 
         <!-- Mensaje de bienvenida -->
@@ -130,3 +133,4 @@
                 prefWidth="150" prefHeight="36"/>
     </VBox>
 </AnchorPane>
+
