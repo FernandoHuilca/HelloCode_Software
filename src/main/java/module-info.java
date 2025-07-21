@@ -16,9 +16,24 @@ module Modulo_Ejercicios {
     // Exporta el paquete de controladores para que FXML pueda acceder a él
     opens Modulo_Ejercicios.Controladores to javafx.fxml;
     opens Modulo_Usuario.Controladores to javafx.fxml;
-    opens Gamificacion_Modulo.GUI.controllers to javafx.fxml;
-    opens Gamificacion_Modulo.GUI.admin to javafx.fxml;
-    opens Gamificacion_Modulo to javafx.fxml;
+
+    opens MetodosGlobales to javafx.fxml;
+
+    // Opens Modulo-Comunidad
+    opens Comunidad_Modulo.Controladores_GUI to javafx.fxml;
+    opens Comunidad_Modulo.controladores to javafx.fxml;
+    opens Comunidad_Modulo.App to javafx.fxml, javafx.graphics;
+
+    // Exports Modulo_Comunidad
+    exports Comunidad_Modulo.App;
+    exports Comunidad_Modulo.integracion;
+    exports Comunidad_Modulo.modelo;
+    exports Comunidad_Modulo.controladores;
+    exports Comunidad_Modulo.Controladores_GUI;
+    exports Comunidad_Modulo.utilidades;
+    exports Comunidad_Modulo.servicios;
+    exports Comunidad_Modulo.enums;
+
 
 
     exports Modulo_Ejercicios.application;
@@ -28,6 +43,6 @@ module Modulo_Ejercicios {
     exports Modulo_Usuario.Clases;
     exports Modulo_Usuario.Controladores;
     exports Modulo_Usuario.application;
-    exports Gamificacion_Modulo;
-    exports Gamificacion_Modulo.GUI.admin;
+    exports MetodosGlobales;
+
 } 
