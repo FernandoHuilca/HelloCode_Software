@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
 
-<VBox fx:id="mainContainer" prefHeight="852.0" prefWidth="393.0" 
+<VBox fx:id="mainContainer" prefHeight="720" prefWidth="360" 
       style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 1;"
       xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="Gamificacion_Modulo.GUI.controllers.RankingController">
@@ -37,9 +37,23 @@
           style="-fx-font-family: 'Inter Bold'; -fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: black;" 
           alignment="CENTER" wrapText="true">
       <padding>
-         <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />
+         <Insets top="20.0" bottom="10.0" left="20.0" right="20.0" />
       </padding>
    </Label>
+   
+   <!-- User Selector -->
+   <VBox alignment="CENTER">
+      <padding>
+         <Insets bottom="15.0" left="20.0" right="20.0" />
+      </padding>
+      <Label text="Ver posición de:" style="-fx-font-size: 12px; -fx-text-fill: #666666;"/>
+      <ComboBox fx:id="usuarioSelector" onAction="#cambiarUsuario" prefWidth="200" 
+                style="-fx-font-size: 12px;">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </ComboBox>
+   </VBox>
    
    <!-- Ranking Section Container -->
    <VBox fx:id="rankingSectionContainer" alignment="CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">

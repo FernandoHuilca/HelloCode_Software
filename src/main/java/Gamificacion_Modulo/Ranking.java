@@ -33,7 +33,7 @@ public class Ranking {
         });
         
         System.out.println(">> Ranking actualizado. Posicion de " + 
-                          estudiante.getEstudiante().getNombre() + ": " + 
+                          estudiante.getUsuario().getNombre() + ": " + 
                           calcularPosicion(estudiante));
     }
 
@@ -61,7 +61,7 @@ public class Ranking {
         estadisticas.put("total_estudiantes", rankingGeneral.size());
         if (!rankingGeneral.isEmpty()) {
             estadisticas.put("puntos_maximo", rankingGeneral.get(0).getPuntosTotal());
-            estadisticas.put("lider", rankingGeneral.get(0).getEstudiante().getNombre());
+            estadisticas.put("lider", rankingGeneral.get(0).getUsuario().getNombre());
         }
         return estadisticas;
     }

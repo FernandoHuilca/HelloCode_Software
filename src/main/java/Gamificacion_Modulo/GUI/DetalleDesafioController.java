@@ -1,15 +1,20 @@
 package Gamificacion_Modulo.GUI;
 
-import Gamificacion_Modulo.*;
+import java.util.List;
+
+import Gamificacion_Modulo.Desafio;
+import Gamificacion_Modulo.DesafioMensual;
+import Gamificacion_Modulo.DesafioSemanal;
+import Gamificacion_Modulo.Main;
+import Gamificacion_Modulo.ProgresoEstudiante;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
-import java.util.List;
 
 public class DetalleDesafioController {
 
@@ -92,7 +97,7 @@ public class DetalleDesafioController {
                 }
             }
 
-            System.out.println(">>> Datos de desafíos cargados para: " + progresoActual.getEstudiante().getNombre());
+            System.out.println(">>> Datos de desafíos cargados para: " + progresoActual.getUsuario().getNombre());
         } else {
             // Datos por defecto
             lblSemanal1.setText("Completa 1 actividad");
@@ -116,7 +121,7 @@ public class DetalleDesafioController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/GUI/MainGamificacion.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 393, 852);
+            Scene scene = new Scene(root, 360, 720);
             Stage stage = (Stage) iconHome.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("Sistema de Gamificación - HelloCode");

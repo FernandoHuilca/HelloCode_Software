@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import Modulo_Usuario.Clases.Usuario;
+
 public class ProgresoEstudiante {
-    private Estudiante estudiante;
+    private Usuario usuario;
     private List<Logro> logrosDesbloqueados;
     private Integer puntosTotal;
     private Integer ranking;
     private HashMap<String, Double> listaDesafios; // Hash<id, porcentaje>
     private Integer desafiosCompletados;
 
-    public ProgresoEstudiante(Estudiante estudiante) {
-        this.estudiante = estudiante;
+    public ProgresoEstudiante(Usuario usuario) {
+        this.usuario = usuario;
         this.logrosDesbloqueados = new ArrayList<>();
         this.puntosTotal = 0;
         this.ranking = 0;
@@ -70,6 +72,6 @@ public class ProgresoEstudiante {
     public List<Logro> getLogros() { return logrosDesbloqueados; }
     public Integer getPuntosTotal() { return puntosTotal; }
     public Integer getDesafiosCompletados() { return desafiosCompletados; }
-    public Estudiante getEstudiante() { return estudiante; }
+    public Usuario getUsuario() { return usuario; }
     public HashMap<String, Double> getListaDesafios() { return listaDesafios; }
 }

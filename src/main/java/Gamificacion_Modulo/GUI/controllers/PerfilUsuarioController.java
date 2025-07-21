@@ -5,10 +5,10 @@ import java.util.List;
 import Gamificacion_Modulo.Desafio;
 import Gamificacion_Modulo.DesafioMensual;
 import Gamificacion_Modulo.DesafioSemanal;
-import Gamificacion_Modulo.Estudiante;
 import Gamificacion_Modulo.Logro;
 import Gamificacion_Modulo.Main;
 import Gamificacion_Modulo.ProgresoEstudiante;
+import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -62,6 +62,9 @@ public class PerfilUsuarioController {
     
     @FXML
     private Button volverComunidadBtn;
+    
+    @FXML
+    private Button adminBtn;
     
     private int estudianteActualIndex = 0;
 
@@ -148,32 +151,42 @@ public class PerfilUsuarioController {
                 
                 int semanalesActivos = 0;
                 int mensualesActivos = 0;
-                int semanalesCompletados = 0;
-                int mensualesCompletados = 0;
                 
                 for (Desafio desafio : progreso.getDesafiosActivos()) {
                     if (desafio instanceof DesafioSemanal) {
                         semanalesActivos++;
-                        if (desafio.estaCompletado()) {
-                            semanalesCompletados++;
-                        }
                     } else if (desafio instanceof DesafioMensual) {
                         mensualesActivos++;
-                        if (desafio.estaCompletado()) {
-                            mensualesCompletados++;
-                        }
                     }
                 }
                 
-                mensaje.append("🎯 DESAFÍOS SEMANALES:\n");
-                mensaje.append("   Activos: ").append(semanalesActivos).append("\n");
-                mensaje.append("   Completados: ").append(semanalesCompletados).append("\n\n");
+                mensaje.append("🎯 DESAFÍOS ACTIVOS:\n");
+                mensaje.append("   Semanales: ").append(semanalesActivos).append("\n");
+                mensaje.append("   Mensuales: ").append(mensualesActivos).append("\n");
+                mensaje.append("   Total activos: ").append(progreso.getDesafiosActivos().size()).append("\n\n");
                 
-                mensaje.append("📅 DESAFÍOS MENSUALES:\n");
-                mensaje.append("   Activos: ").append(mensualesActivos).append("\n");
-                mensaje.append("   Completados: ").append(mensualesCompletados).append("\n\n");
+                mensaje.append("📊 TOTAL DESAFÍOS COMPLETADOS: ").append(progreso.getDesafiosCompletados()).append("\n\n");
                 
-                mensaje.append("📊 TOTAL DESAFÍOS COMPLETADOS: ").append(progreso.getDesafiosCompletados());
+                // Mostrar detalles de desafíos activos
+                if (!progreso.getDesafiosActivos().isEmpty()) {
+                    mensaje.append("📋 DETALLE DE DESAFÍOS ACTIVOS:\n");
+                    for (Desafio desafio : progreso.getDesafiosActivos()) {
+                        String tipo = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
+                        String progreso_str = "";
+                        
+                        if (desafio instanceof DesafioSemanal) {
+                            DesafioSemanal ds = (DesafioSemanal) desafio;
+                            progreso_str = " - " + ds.getActividadesCompletadas() + "/" + ds.getMetaSemanal() + 
+                                         " (" + String.format("%.1f", ds.getProgreso()) + "%)";
+                        } else if (desafio instanceof DesafioMensual) {
+                            DesafioMensual dm = (DesafioMensual) desafio;
+                            progreso_str = " - " + dm.getActividadesCompletadas() + "/" + dm.getObjetivoMensual() + 
+                                         " (" + String.format("%.1f", dm.getProgreso()) + "%)";
+                        }
+                        
+                        mensaje.append("   • ").append(desafio.getNombre()).append(" (").append(tipo).append(")").append(progreso_str).append("\n");
+                    }
+                }
             } else {
                 mensaje.append("No hay datos de progreso disponibles.");
             }
@@ -251,28 +264,28 @@ public class PerfilUsuarioController {
 
     public void actualizarDatosPerfil() {
         try {
-            List<Estudiante> estudiantes = Main.getEstudiantes();
+            List<Usuario> usuarios = Main.getUsuarios();
             List<ProgresoEstudiante> progresos = Main.getProgresos();
             
-            System.out.println(">>> Actualizando perfil - Estudiantes: " + estudiantes.size() + ", Índice actual: " + estudianteActualIndex);
+            System.out.println(">>> Actualizando perfil - Usuarios: " + usuarios.size() + ", Índice actual: " + estudianteActualIndex);
             
             // Actualizar ComboBox si los datos han cambiado
             if (estudianteSelector != null && 
-                (estudianteSelector.getItems().isEmpty() || estudianteSelector.getItems().size() != estudiantes.size())) {
+                (estudianteSelector.getItems().isEmpty() || estudianteSelector.getItems().size() != usuarios.size())) {
                 cargarEstudiantesEnComboBox();
             }
             
-            if (!estudiantes.isEmpty() && !progresos.isEmpty() && 
-                estudianteActualIndex < estudiantes.size() && estudianteActualIndex < progresos.size()) {
+            if (!usuarios.isEmpty() && !progresos.isEmpty() && 
+                estudianteActualIndex < usuarios.size() && estudianteActualIndex < progresos.size()) {
                 
-                Estudiante estudiante = estudiantes.get(estudianteActualIndex);
+                Usuario usuario = usuarios.get(estudianteActualIndex);
                 ProgresoEstudiante progreso = progresos.get(estudianteActualIndex);
                 
-                System.out.println(">>> Mostrando datos de: " + estudiante.getNombre() + " con " + progreso.getPuntosTotal() + " puntos");
+                System.out.println(">>> Mostrando datos de: " + usuario.getNombre() + " con " + progreso.getPuntosTotal() + " puntos");
                 
                 // Actualizar información básica
-                if (userName != null) userName.setText(estudiante.getNombre());
-                if (userEmail != null) userEmail.setText("@" + estudiante.getEmail().split("@")[0]);
+                if (userName != null) userName.setText(usuario.getNombre());
+                if (userEmail != null) userEmail.setText("@" + usuario.getEmail().split("@")[0]);
                 if (expPoints != null) expPoints.setText(String.valueOf(progreso.getPuntosTotal()));
                 
                 // Contar desafíos por tipo
@@ -306,24 +319,24 @@ public class PerfilUsuarioController {
         }
     }
     
-    // Método para cargar estudiantes en el ComboBox
+    // Método para cargar usuarios en el ComboBox
     private void cargarEstudiantesEnComboBox() {
         try {
-            List<Estudiante> estudiantes = Main.getEstudiantes();
-            System.out.println(">>> Cargando estudiantes en ComboBox: " + estudiantes.size() + " estudiantes encontrados");
+            List<Usuario> usuarios = Main.getUsuarios();
+            System.out.println(">>> Cargando usuarios en ComboBox: " + usuarios.size() + " usuarios encontrados");
             
-            if (estudianteSelector != null && !estudiantes.isEmpty()) {
+            if (estudianteSelector != null && !usuarios.isEmpty()) {
                 estudianteSelector.getItems().clear();
-                for (Estudiante estudiante : estudiantes) {
-                    estudianteSelector.getItems().add(estudiante.getNombre());
-                    System.out.println("   - Agregado: " + estudiante.getNombre());
+                for (Usuario usuario : usuarios) {
+                    estudianteSelector.getItems().add(usuario.getNombre());
+                    System.out.println("   - Agregado: " + usuario.getNombre());
                 }
-                // Seleccionar el primer estudiante por defecto
+                // Seleccionar el primer usuario por defecto
                 estudianteSelector.getSelectionModel().selectFirst();
                 estudianteActualIndex = 0;
-                System.out.println(">>> ComboBox cargado exitosamente con " + estudiantes.size() + " estudiantes");
+                System.out.println(">>> ComboBox cargado exitosamente con " + usuarios.size() + " usuarios");
             } else {
-                System.out.println(">>> ComboBox no pudo cargarse - selector: " + (estudianteSelector != null) + ", estudiantes: " + estudiantes.size());
+                System.out.println(">>> ComboBox no pudo cargarse - selector: " + (estudianteSelector != null) + ", usuarios: " + usuarios.size());
             }
         } catch (Exception e) {
             System.err.println("Error al cargar estudiantes en ComboBox: " + e.getMessage());
@@ -424,6 +437,18 @@ public class PerfilUsuarioController {
         if (userName != null) userName.setText(nombre);
         if (userEmail != null) userEmail.setText("@" + tag);
         if (expPoints != null) expPoints.setText(experiencia);
+    }
+    
+    // Método para abrir el panel de administración
+    @FXML
+    private void abrirPanelAdmin() {
+        try {
+            System.out.println(">>> Abriendo panel de administración...");
+            Gamificacion_Modulo.GUI.admin.AdminMainController.mostrarVentanaAdmin();
+        } catch (Exception e) {
+            System.err.println("Error al abrir panel de administración: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     // Método para limpiar recursos al cerrar

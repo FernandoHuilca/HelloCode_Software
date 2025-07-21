@@ -14,8 +14,8 @@
       fx:controller="Gamificacion_Modulo.GUI.controllers.PerfilUsuarioController"
       styleClass="gamificacion"
       spacing="20" alignment="TOP_CENTER"
-      prefWidth="393"
-      prefHeight="852">
+      prefWidth="360"
+      prefHeight="720">
 
     <stylesheets>
         <URL value="@../styles/styles.css"/>
@@ -30,12 +30,16 @@
         </StackPane>
 
         <VBox styleClass="profile-content" spacing="15">
-            <!-- Botón para volver a la comunidad -->
+            <!-- Botones de navegación -->
             <HBox alignment="CENTER" spacing="10">
                 <Button fx:id="volverComunidadBtn" onAction="#volverAComunidad" 
                         text="← Volver a Comunidad" 
                         style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 8 16; -fx-font-size: 12px;"
-                        prefWidth="200"/>
+                        prefWidth="180"/>
+                <Button fx:id="adminBtn" onAction="#abrirPanelAdmin" 
+                        text="🛠️ Admin" 
+                        style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 8 16; -fx-font-size: 12px;"
+                        prefWidth="100"/>
             </HBox>
             
             <!-- Selector de estudiante -->

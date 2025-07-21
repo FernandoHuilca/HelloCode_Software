@@ -1,9 +1,13 @@
 package Gamificacion_Modulo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import Modulo_Usuario.Clases.Usuario;
 
 public class MainConsola {
-    private static final List<Estudiante> estudiantes = new ArrayList<>();
+    private static final List<Usuario> usuarios = new ArrayList<>();
     private static final List<Logro> logrosDisponibles = new ArrayList<>();
     private static final Ranking ranking = new Ranking();
     private static final List<ProgresoEstudiante> progresos = new ArrayList<>();
@@ -20,12 +24,12 @@ public class MainConsola {
     }
     
     private static void inicializarDatos() {
-        // Crear estudiantes
-        estudiantes.add(new Estudiante("Ana García", "ana.garcia@email.com", "ana_garcia"));
-        estudiantes.add(new Estudiante("Luis Martínez", "luis.martinez@email.com", "luis_martinez"));
-        estudiantes.add(new Estudiante("María López", "maria.lopez@email.com", "maria_lopez"));
-        estudiantes.add(new Estudiante("Carlos Rodríguez", "carlos.rodriguez@email.com", "carlos_rodriguez"));
-        estudiantes.add(new Estudiante("Elena Sánchez", "elena.sanchez@email.com", "elena_sanchez"));
+        // Crear usuarios
+        usuarios.add(new Usuario("ana_garcia", "123", "Ana García", "ana.garcia@email.com"));
+        usuarios.add(new Usuario("luis_martinez", "123", "Luis Martínez", "luis.martinez@email.com"));
+        usuarios.add(new Usuario("maria_lopez", "123", "María López", "maria.lopez@email.com"));
+        usuarios.add(new Usuario("carlos_rodriguez", "123", "Carlos Rodríguez", "carlos.rodriguez@email.com"));
+        usuarios.add(new Usuario("elena_sanchez", "123", "Elena Sánchez", "elena.sanchez@email.com"));
 
         // Crear logros disponibles
         logrosDisponibles.add(new Logro("Primer Paso", "Completa tu primer desafío", "desafios_completados:1", 100));
@@ -34,9 +38,9 @@ public class MainConsola {
         logrosDisponibles.add(new Logro("Maratonista", "Completa 10 desafíos en una semana", "desafios_completados:10", 300));
         logrosDisponibles.add(new Logro("Explorador", "Prueba todos los tipos de desafíos", "logros_obtenidos:3", 200));
 
-        // Crear progresos para cada estudiante
-        for (Estudiante estudiante : estudiantes) {
-            ProgresoEstudiante progreso = new ProgresoEstudiante(estudiante);
+        // Crear progresos para cada usuario
+        for (Usuario usuario : usuarios) {
+            ProgresoEstudiante progreso = new ProgresoEstudiante(usuario);
             
             // Agregar algunos desafíos
             progreso.agregarDesafio(new DesafioSemanal(3, List.of(logrosDisponibles.get(0))));
@@ -54,7 +58,7 @@ public class MainConsola {
         }
         
         System.out.println(">>> Datos inicializados correctamente");
-        System.out.println("- Estudiantes: " + estudiantes.size());
+        System.out.println("- Usuarios: " + usuarios.size());
         System.out.println("- Logros disponibles: " + logrosDisponibles.size());
         System.out.println("- Progresos creados: " + progresos.size());
     }
@@ -99,12 +103,12 @@ public class MainConsola {
     }
     
     private static void mostrarEstudiantes() {
-        System.out.println("\n=== LISTA DE ESTUDIANTES ===");
-        for (int i = 0; i < estudiantes.size(); i++) {
-            Estudiante estudiante = estudiantes.get(i);
+        System.out.println("\n=== LISTA DE USUARIOS ===");
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario usuario = usuarios.get(i);
             ProgresoEstudiante progreso = progresos.get(i);
-            System.out.println((i + 1) + ". " + estudiante.getNombre() + 
-                             " (" + estudiante.getUsuario() + ") - " + 
+            System.out.println((i + 1) + ". " + usuario.getNombre() + 
+                             " (" + usuario.getUsername() + ") - " + 
                              progreso.getPuntosTotal() + " puntos");
         }
     }
@@ -117,7 +121,7 @@ public class MainConsola {
             ProgresoEstudiante progreso = rankingActual.get(i);
             String emoji = i == 0 ? "🥇" : i == 1 ? "🥈" : i == 2 ? "🥉" : "  ";
             System.out.println(emoji + " " + (i + 1) + ". " + 
-                             progreso.getEstudiante().getNombre() + 
+                             progreso.getUsuario().getNombre() + 
                              " - " + progreso.getPuntosTotal() + " puntos");
         }
     }
@@ -153,17 +157,17 @@ public class MainConsola {
     
     private static void gestionarProgreso() {
         System.out.println("\n=== GESTIÓN DE PROGRESO ===");
-        System.out.println("Selecciona un estudiante:");
+        System.out.println("Selecciona un usuario:");
         
-        for (int i = 0; i < estudiantes.size(); i++) {
-            System.out.println((i + 1) + ". " + estudiantes.get(i).getNombre());
+        for (int i = 0; i < usuarios.size(); i++) {
+            System.out.println((i + 1) + ". " + usuarios.get(i).getNombre());
         }
         
         System.out.print("Opción: ");
         int opcion = scanner.nextInt();
         scanner.nextLine();
         
-        if (opcion > 0 && opcion <= estudiantes.size()) {
+        if (opcion > 0 && opcion <= usuarios.size()) {
             ProgresoEstudiante progreso = progresos.get(opcion - 1);
             mostrarDetalleProgreso(progreso);
         } else {
@@ -172,7 +176,7 @@ public class MainConsola {
     }
     
     private static void mostrarDetalleProgreso(ProgresoEstudiante progreso) {
-        System.out.println("\n=== PROGRESO DE " + progreso.getEstudiante().getNombre().toUpperCase() + " ===");
+        System.out.println("\n=== PROGRESO DE " + progreso.getUsuario().getNombre().toUpperCase() + " ===");
         System.out.println("Puntos totales: " + progreso.getPuntosTotal());
         System.out.println("Logros obtenidos: " + progreso.getLogros().size());
         System.out.println("Desafíos activos: " + progreso.getDesafiosActivos().size());
@@ -201,8 +205,8 @@ public class MainConsola {
     }
     
     // Métodos para acceder a los datos desde los controladores (cuando JavaFX funcione)
-    public static List<Estudiante> getEstudiantes() {
-        return estudiantes;
+    public static List<Usuario> getUsuarios() {
+        return usuarios;
     }
     
     public static List<Logro> getLogrosDisponibles() {

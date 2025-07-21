@@ -1,10 +1,15 @@
 package Gamificacion_Modulo;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import Modulo_Usuario.Clases.Usuario;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,8 +19,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private static final List<Estudiante> estudiantes = new ArrayList<>();
+    private static final List<Usuario> usuarios = new ArrayList<>();
     private static final List<Logro> logrosDisponibles = new ArrayList<>();
+    private static final List<Desafio> desafiosDisponibles = new ArrayList<>();
     private static final Ranking ranking = new Ranking();
     private static final List<ProgresoEstudiante> progresos = new ArrayList<>();
     private static Scanner scanner;
@@ -36,7 +42,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));
             Parent root = loader.load();
             
-            Scene scene = new Scene(root, 393, 852);
+            Scene scene = new Scene(root, 360, 720);
             stage.setTitle("Sistema de Gamificación - HelloCode");
             stage.setScene(scene);
             stage.setResizable(false);
@@ -185,15 +191,49 @@ public class Main extends Application {
         launch();
     }
     
-    // Métodos para acceder a los datos desde los controladores
-    public static List<Estudiante> getEstudiantes() {
-        return estudiantes;
+    // Método para inicializar datos cuando se navega desde otro módulo
+    public static void inicializarDesdeModuloExterno() {
+        if (usuarios.isEmpty()) {
+            System.out.println(">>> Inicializando módulo de gamificación desde navegación externa");
+            inicializarDatos();
+        } else {
+            System.out.println(">>> Módulo de gamificación ya inicializado (" + usuarios.size() + " usuarios)");
+            // Recargar usuarios para sincronización automática
+            recargarUsuarios();
+        }
+        
+        // Debug: Mostrar usuarios cargados
+        System.out.println(">>> USUARIOS DISPONIBLES EN GAMIFICACIÓN:");
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario u = usuarios.get(i);
+            System.out.println("   " + (i+1) + ". " + u.getNombre() + " (" + u.getUsername() + ") - " + u.getEmail());
+        }
+        
+        // Debug: Mostrar progresos creados
+        System.out.println(">>> PROGRESOS CREADOS: " + progresos.size());
+        for (ProgresoEstudiante p : progresos) {
+            System.out.println("   - " + p.getUsuario().getNombre() + ": " + p.getPuntosTotal() + " puntos");
+        }
     }
     
-    public static List<Logro> getLogrosDisponibles() {
+    // Métodos para acceder a los datos desde los controladores
+    public static List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+    
+        public static List<Logro> getLogrosDisponibles() {
         return logrosDisponibles;
     }
-    
+
+    public static List<Desafio> getDesafiosDisponibles() {
+        return desafiosDisponibles;
+    }
+
+    public static void agregarDesafio(Desafio desafio) {
+        desafiosDisponibles.add(desafio);
+        System.out.println(">>> Desafío agregado a la lista central: " + desafio.getNombre());
+    }
+
     public static Ranking getRanking() {
         return ranking;
     }
@@ -241,18 +281,105 @@ public class Main extends Application {
     }
     
     private static void inicializarDatos() {
-        // Crear estudiante principal
-        Estudiante estudiante = new Estudiante("Juan Pérez", "juan@email.com", "juan123");
-        ProgresoEstudiante progreso = new ProgresoEstudiante(estudiante);
-        Estudiante estudiante2 = new Estudiante("Evelin Rocha", "eve@email.com", "eve123");
-        ProgresoEstudiante progreso2 = new ProgresoEstudiante(estudiante2);
-        estudiantes.add(estudiante);
-        estudiantes.add(estudiante2);
-        progresos.add(progreso);
-        progresos.add(progreso2);
+        // Cargar usuarios del módulo de usuarios
+        cargarUsuariosDesdeArchivo();
+        
+        // Crear automáticamente progresos para todos los usuarios cargados
+        for (Usuario usuario : usuarios) {
+            ProgresoEstudiante progreso = new ProgresoEstudiante(usuario);
+            progresos.add(progreso);
+            System.out.println(">>> Progreso creado para usuario: " + usuario.getNombre());
+        }
 
         // Inicializar logros predeterminados
         inicializarLogros();
+        
+        // Inicializar desafíos de ejemplo
+        inicializarDesafiosEjemplo();
+    }
+    
+    // Método público para recargar usuarios (para sincronización)
+    public static void recargarUsuarios() {
+        try {
+            List<Usuario> usuariosAnteriores = new ArrayList<>(usuarios);
+            usuarios.clear();
+            cargarUsuariosDesdeArchivo();
+            
+            // Crear progreso para usuarios nuevos
+            for (Usuario usuario : usuarios) {
+                boolean existeProgreso = progresos.stream()
+                    .anyMatch(p -> p.getUsuario().getUsername().equals(usuario.getUsername()));
+                if (!existeProgreso) {
+                    ProgresoEstudiante nuevoProgreso = new ProgresoEstudiante(usuario);
+                    progresos.add(nuevoProgreso);
+                    System.out.println(">>> Progreso creado para nuevo usuario: " + usuario.getNombre());
+                }
+            }
+            
+            // Notificar a la GUI sobre la actualización
+            notificarActualizacionInterface();
+            
+            System.out.println(">>> Usuarios recargados exitosamente. Total: " + usuarios.size());
+            
+        } catch (Exception e) {
+            System.err.println(">>> Error al recargar usuarios: " + e.getMessage());
+        }
+    }
+
+    // Método para cargar usuarios desde el archivo del módulo de usuarios
+    private static void cargarUsuariosDesdeArchivo() {
+        try {
+            InputStream inputStream = Main.class.getResourceAsStream("/Modulo_Usuario/Usuarios/usuarios.txt");
+            if (inputStream == null) {
+                inputStream = Main.class.getClassLoader().getResourceAsStream("Modulo_Usuario/Usuarios/usuarios.txt");
+            }
+            
+            if (inputStream == null) {
+                System.err.println(">>> No se pudo encontrar el archivo de usuarios. Creando usuarios por defecto.");
+                crearUsuariosDefecto();
+                return;
+            }
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    linea = linea.trim();
+                    if (!linea.isEmpty()) {
+                        Usuario usuario = Usuario.fromString(linea);
+                        if (usuario != null) {
+                            // Completar información del usuario con datos por defecto si no tiene
+                            if (usuario.getNombre() == null || usuario.getNombre().isEmpty()) {
+                                usuario.setNombre("Usuario " + usuario.getUsername());
+                            }
+                            if (usuario.getEmail() == null || usuario.getEmail().isEmpty()) {
+                                usuario.setEmail(usuario.getUsername() + "@email.com");
+                            }
+                            usuarios.add(usuario);
+                            System.out.println(">>> Usuario cargado: " + usuario.getUsername() + " - " + usuario.getNombre());
+                        }
+                    }
+                }
+            }
+            
+            if (usuarios.isEmpty()) {
+                System.out.println(">>> No se encontraron usuarios válidos. Creando usuarios por defecto.");
+                crearUsuariosDefecto();
+            }
+            
+        } catch (Exception e) {
+            System.err.println(">>> Error al cargar usuarios: " + e.getMessage());
+            e.printStackTrace();
+            crearUsuariosDefecto();
+        }
+    }
+    
+    // Método para crear usuarios por defecto si no se pueden cargar del archivo
+    private static void crearUsuariosDefecto() {
+        Usuario admin = new Usuario("admin", "1234", "Administrador", "admin@email.com");
+        Usuario usuario1 = new Usuario("usuario1", "abc", "Usuario Demo", "usuario1@email.com");
+        usuarios.add(admin);
+        usuarios.add(usuario1);
+        System.out.println(">>> Usuarios por defecto creados");
     }
     
     private static void ejecutarModoConsola() {
@@ -267,7 +394,7 @@ public class Main extends Application {
 
             switch (opcion) {
                 case 1:
-                    mostrarEstudiantes();
+                    mostrarUsuarios();
                     break;
                 case 2:
                     crearDesafioSemanal();
@@ -308,18 +435,27 @@ public class Main extends Application {
         scanner.close();
     }
 
-    private static ProgresoEstudiante buscarProgresoPorId(long idEstudiante) {
+    private static ProgresoEstudiante buscarProgresoPorUsername(String username) {
         for (ProgresoEstudiante p : progresos) {
-            if (p.getEstudiante().getId() == idEstudiante) {
+            if (p.getUsuario().getUsername().equals(username)) {
                 return p;
             }
+        }
+        return null;
+    }
+    
+    // Método temporal para compatibilidad con métodos de consola
+    private static ProgresoEstudiante buscarProgresoPorId(long id) {
+        // Como ahora usamos usernames, buscar por índice en la lista
+        if (id > 0 && id <= progresos.size()) {
+            return progresos.get((int)id - 1);
         }
         return null;
     }
 
     private static void mostrarMenu() {
         System.out.println("\n===== MENU PRINCIPAL =====");
-        System.out.println("1. Ver estudiantes");
+        System.out.println("1. Ver usuarios");
         System.out.println("2. Crear Desafio Semanal");
         System.out.println("3. Crear Desafio Mensual");
         System.out.println("4. Crear Logro Personalizado");
@@ -344,10 +480,10 @@ public class Main extends Application {
         }
     }
 
-    private static void mostrarEstudiantes() {
-        System.out.println("\n=== Lista de Estudiantes ===");
-        for (Estudiante estudiante : estudiantes) {
-            System.out.println("ID: " + estudiante.getId() + " | Nombre: " + estudiante.getNombre() + " | Correo: " + estudiante.getEmail());
+    private static void mostrarUsuarios() {
+        System.out.println("\n=== Lista de Usuarios ===");
+        for (Usuario usuario : usuarios) {
+            System.out.println("Username: " + usuario.getUsername() + " | Nombre: " + usuario.getNombre() + " | Correo: " + usuario.getEmail());
         }
     }
 
@@ -357,6 +493,27 @@ public class Main extends Application {
         logrosDisponibles.add(new Logro("Acumulador", "Obtener 500 puntos", "puntos_totales:500", 150));
         logrosDisponibles.add(new Logro("Coleccionista", "Obtener 5 logros", "logros_obtenidos:5", 300));
         System.out.println(">>> Logros predeterminados cargados: " + logrosDisponibles.size());
+    }
+    
+    private static void inicializarDesafiosEjemplo() {
+        // Solo crear desafíos de ejemplo si no hay ninguno
+        if (desafiosDisponibles.isEmpty()) {
+            // Crear algunos desafíos de ejemplo con los logros disponibles
+            List<Logro> logrosBasicos = new ArrayList<>();
+            if (!logrosDisponibles.isEmpty()) {
+                logrosBasicos.add(logrosDisponibles.get(0)); // Logro principiante
+            }
+            
+            DesafioSemanal desafioSemanalEjemplo1 = new DesafioSemanal(5, logrosBasicos);
+            DesafioSemanal desafioSemanalEjemplo2 = new DesafioSemanal(10, logrosBasicos);
+            DesafioMensual desafioMensualEjemplo = new DesafioMensual(25, logrosBasicos);
+            
+            desafiosDisponibles.add(desafioSemanalEjemplo1);
+            desafiosDisponibles.add(desafioSemanalEjemplo2);
+            desafiosDisponibles.add(desafioMensualEjemplo);
+            
+            System.out.println(">>> Desafíos de ejemplo creados: " + desafiosDisponibles.size());
+        }
     }
 
     private static void crearDesafioSemanal() {
@@ -381,7 +538,7 @@ public class Main extends Application {
         desafio.activar();
         progreso.agregarDesafio(desafio);
 
-        System.out.println(">>> Desafio semanal creado para " + progreso.getEstudiante().getNombre() + " con meta de " + meta + " actividades");
+        System.out.println(">>> Desafio semanal creado para " + progreso.getUsuario().getNombre() + " con meta de " + meta + " actividades");
         System.out.println("Logros asociados: ");
         for (Logro logro : logrosDesafio) {
             System.out.println("   * " + logro.getNombre() + " (+" + logro.getPuntos() + " pts)");
@@ -409,7 +566,7 @@ public class Main extends Application {
         desafio.activar();
         progreso.agregarDesafio(desafio);
 
-        System.out.println(">>> Desafio mensual creado para " + progreso.getEstudiante().getNombre() + " con meta de " + meta + " actividades");
+        System.out.println(">>> Desafio mensual creado para " + progreso.getUsuario().getNombre() + " con meta de " + meta + " actividades");
         System.out.println("Logros asociados: ");
         for (Logro logro : logrosDesafio) {
             System.out.println("   * " + logro.getNombre() + " (+" + logro.getPuntos() + " pts)");
@@ -486,12 +643,12 @@ public class Main extends Application {
 
         List<Desafio> desafiosActivos = progreso.getDesafiosActivos();
         if (desafiosActivos.isEmpty()) {
-            System.out.println(">>> No hay desafios activos para " + progreso.getEstudiante().getNombre() + ". Crea uno primero.");
+            System.out.println(">>> No hay desafios activos para " + progreso.getUsuario().getNombre() + ". Crea uno primero.");
             return;
         }
 
         System.out.println("\n=== SIMULAR ACTIVIDAD ===");
-        System.out.println("Desafios activos para " + progreso.getEstudiante().getNombre() + ":");
+        System.out.println("Desafios activos para " + progreso.getUsuario().getNombre() + ":");
         for (int i = 0; i < desafiosActivos.size(); i++) {
             Desafio d = desafiosActivos.get(i);
             System.out.println((i + 1) + ". " + d.getNombre() + " - " + d.getDescripcion());
@@ -539,7 +696,7 @@ public class Main extends Application {
         }
 
         System.out.println("\n=== MI PROGRESO ===");
-        System.out.println("Estudiante: " + progreso.getEstudiante().getNombre());
+        System.out.println("Usuario: " + progreso.getUsuario().getNombre());
         System.out.println("Puntos Totales: " + progreso.getPuntosTotal());
         System.out.println("Desafios Completados: " + progreso.getDesafiosCompletados());
         System.out.println("Logros Desbloqueados: " + progreso.getLogros().size());
@@ -574,7 +731,7 @@ public class Main extends Application {
                 ProgresoEstudiante p = top.get(i);
                 String medalla = (i == 0) ? "[1]" : (i == 1) ? "[2]" : (i == 2) ? "[3]" : "[" + (i+1) + "]";
                 System.out.println((i + 1) + ". " + medalla + " " +
-                        p.getEstudiante().getNombre() + " - " +
+                        p.getUsuario().getNombre() + " - " +
                         p.getPuntosTotal() + " puntos (" +
                         p.getLogros().size() + " logros)");
             }
@@ -582,7 +739,7 @@ public class Main extends Application {
 
         Map<String, Object> stats = ranking.generarEstadisticasRanking();
         System.out.println("\n=== ESTADISTICAS ===");
-        System.out.println("Total estudiantes: " + stats.get("total_estudiantes"));
+        System.out.println("Total usuarios: " + stats.get("total_estudiantes"));
         if (stats.containsKey("lider")) {
             System.out.println("Lider actual: " + stats.get("lider") + " (" + stats.get("puntos_maximo") + " puntos)");
         }
@@ -602,7 +759,7 @@ public class Main extends Application {
 
         List<Desafio> desafiosActivos = progreso.getDesafiosActivos();
         if (desafiosActivos.isEmpty()) {
-            System.out.println("   (No hay desafios activos para " + progreso.getEstudiante().getNombre() + ")");
+            System.out.println("   (No hay desafios activos para " + progreso.getUsuario().getNombre() + ")");
         } else {
             for (Desafio desafio : desafiosActivos) {
                 System.out.println("* " + desafio.getNombre() + " - " + desafio.getDescripcion());
@@ -685,14 +842,14 @@ public class Main extends Application {
             case 1:
                 visualizador = new VisualizadorEstadistico(new VisualizacionLogros(logrosDisponibles));
                 Estadistica estadisticaLogros = Estadistica.generarEstadistica(
-                        "logros_obtenidos", (double) progreso.getLogros().size(), progreso.getEstudiante());
+                        "logros_obtenidos", (double) progreso.getLogros().size(), progreso.getUsuario());
                 visualizador.visualizar(estadisticaLogros);
                 ((VisualizacionLogros) visualizador.getEstrategia()).mostrarLogrosDesbloqueados();
                 break;
             case 2:
                 visualizador = new VisualizadorEstadistico(new VisualizacionProgreso(progreso.getListaDesafios()));
                 Estadistica estadisticaProgreso = Estadistica.generarEstadistica(
-                        "desafios_en_progreso", (double) progreso.getListaDesafios().size(), progreso.getEstudiante());
+                        "desafios_en_progreso", (double) progreso.getListaDesafios().size(), progreso.getUsuario());
                 visualizador.visualizar(estadisticaProgreso);
                 ((VisualizacionProgreso) visualizador.getEstrategia()).mostrarBarrasProgreso();
                 break;

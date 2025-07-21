@@ -5,20 +5,22 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import Modulo_Usuario.Clases.Usuario;
+
 public class Estadistica {
     private static Long contadorId = 1L;
     private Long id;
     private String tipo;
     private Double valor;
     private LocalDateTime fechaGeneracion;
-    private Estudiante estudiante;
+    private Usuario usuario;
 
-    public Estadistica(String tipo, Double valor, Estudiante estudiante) {
+    public Estadistica(String tipo, Double valor, Usuario usuario) {
         if (tipo == null || tipo.isEmpty()) {
             throw new IllegalArgumentException("El tipo de estadística no puede ser nulo o vacío.");
         }
-        if (estudiante == null) {
-            throw new IllegalArgumentException("El estudiante no puede ser nulo.");
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario no puede ser nulo.");
         }
         if (valor == null || valor < 0) {
             throw new IllegalArgumentException("El valor debe ser no negativo.");
@@ -26,12 +28,12 @@ public class Estadistica {
         this.id = contadorId++;
         this.tipo = tipo;
         this.valor = valor;
-        this.estudiante = estudiante;
+        this.usuario = usuario;
         this.fechaGeneracion = LocalDateTime.now();
     }
 
-    public static Estadistica generarEstadistica(String tipo, Double valor, Estudiante estudiante) {
-        return new Estadistica(tipo, valor, estudiante);
+    public static Estadistica generarEstadistica(String tipo, Double valor, Usuario usuario) {
+        return new Estadistica(tipo, valor, usuario);
     }
 
     public void actualizarValor(Double nuevoValor) {
@@ -48,8 +50,8 @@ public class Estadistica {
         datos.put("tipo", tipo);
         datos.put("valor", valor);
         datos.put("fechaGeneracion", fechaGeneracion);
-        datos.put("estudiante_id", estudiante.getId());
-        datos.put("estudiante_nombre", estudiante.getNombre());
+        datos.put("usuario_username", usuario.getUsername());
+        datos.put("usuario_nombre", usuario.getNombre());
         return datos;
     }
 }

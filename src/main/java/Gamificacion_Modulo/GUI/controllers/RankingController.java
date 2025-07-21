@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import Gamificacion_Modulo.Estudiante;
 import Gamificacion_Modulo.Main;
 import Gamificacion_Modulo.ProgresoEstudiante;
+import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -26,13 +27,15 @@ public class RankingController implements Initializable {
 
     @FXML private VBox mainContainer;
     @FXML private Label titleLabel;
+    @FXML private ComboBox<String> usuarioSelector;
     @FXML private VBox rankingEntriesContainer;
     @FXML private Button navButton1;
     @FXML private Button navButton2; 
     @FXML private Button navButton3;
 
-    // Usuario actual (por defecto el primero de la lista)
-    private String currentUserName = "Juan Pérez";
+    // Usuario actual (será establecido dinámicamente)
+    private String currentUserName = null;
+    private int usuarioActualIndex = 0;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -43,6 +46,9 @@ public class RankingController implements Initializable {
         
         // Configurar hover effects para botones
         configurarHoverEffects();
+        
+        // Cargar usuarios en ComboBox
+        cargarUsuarios();
         
         // Cargar y mostrar ranking inicial
         cargarRanking();
@@ -64,21 +70,21 @@ public class RankingController implements Initializable {
     
     public void cargarRanking() {
         try {
-            List<Estudiante> estudiantes = Main.getEstudiantes();
+            List<Usuario> usuarios = Main.getUsuarios();
             List<ProgresoEstudiante> progresos = Main.getProgresos();
             
-            if (estudiantes.isEmpty()) {
+            if (usuarios.isEmpty()) {
                 mostrarMensajeVacio();
                 return;
             }
             
-            // Crear lista de estudiantes con sus puntuaciones
+            // Crear lista de usuarios con sus puntuaciones
             List<EstudianteRanking> estudiantesRanking = new ArrayList<>();
             
-            for (Estudiante estudiante : estudiantes) {
-                ProgresoEstudiante progreso = encontrarProgresoPorEstudiante(estudiante, progresos);
+            for (Usuario usuario : usuarios) {
+                ProgresoEstudiante progreso = encontrarProgresoPorUsuario(usuario, progresos);
                 int puntos = progreso != null ? progreso.getPuntosTotal() : 0;
-                estudiantesRanking.add(new EstudianteRanking(estudiante.getNombre(), puntos));
+                estudiantesRanking.add(new EstudianteRanking(usuario.getNombre(), puntos));
             }
             
             // Ordenar por puntuación descendente
@@ -88,7 +94,10 @@ public class RankingController implements Initializable {
             int posicionUsuario = encontrarPosicionUsuario(estudiantesRanking);
             
             // Actualizar título con posición
-            titleLabel.setText(currentUserName + " ocupas el puesto #" + posicionUsuario);
+            String mensaje = currentUserName != null ? 
+                currentUserName + " ocupas el puesto #" + posicionUsuario :
+                "Selecciona un usuario para ver su posición";
+            titleLabel.setText(mensaje);
             
             // Obtener top 7 estudiantes para mostrar
             List<EstudianteRanking> topEstudiantes = estudiantesRanking.stream()
@@ -105,14 +114,18 @@ public class RankingController implements Initializable {
         }
     }
     
-    private ProgresoEstudiante encontrarProgresoPorEstudiante(Estudiante estudiante, List<ProgresoEstudiante> progresos) {
+    private ProgresoEstudiante encontrarProgresoPorUsuario(Usuario usuario, List<ProgresoEstudiante> progresos) {
         return progresos.stream()
-                .filter(p -> p.getEstudiante().getId() == estudiante.getId())
+                .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
                 .findFirst()
                 .orElse(null);
     }
     
     private int encontrarPosicionUsuario(List<EstudianteRanking> estudiantesRanking) {
+        if (currentUserName == null) {
+            return 1; // Posición por defecto
+        }
+        
         for (int i = 0; i < estudiantesRanking.size(); i++) {
             if (estudiantesRanking.get(i).getNombre().equals(currentUserName)) {
                 return i + 1; // Posición 1-indexada
@@ -205,6 +218,51 @@ public class RankingController implements Initializable {
     private void navButton3() {
         System.out.println(">>> Ya estás en la pantalla de Ranking");
         // Refrescar ranking
+        cargarRanking();
+    }
+    
+    private void cargarUsuarios() {
+        try {
+            if (usuarioSelector != null) {
+                usuarioSelector.getItems().clear();
+                List<Usuario> usuarios = Main.getUsuarios();
+                
+                for (Usuario usuario : usuarios) {
+                    usuarioSelector.getItems().add(usuario.getNombre());
+                }
+                
+                if (!usuarios.isEmpty()) {
+                    usuarioSelector.getSelectionModel().selectFirst();
+                    usuarioActualIndex = 0;
+                    currentUserName = usuarios.get(0).getNombre();
+                }
+                
+                System.out.println(">>> Usuarios cargados en ComboBox: " + usuarios.size());
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar usuarios: " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    private void cambiarUsuario() {
+        try {
+            if (usuarioSelector != null && usuarioSelector.getSelectionModel().getSelectedIndex() >= 0) {
+                usuarioActualIndex = usuarioSelector.getSelectionModel().getSelectedIndex();
+                currentUserName = usuarioSelector.getValue();
+                System.out.println(">>> Cambiando a usuario: " + currentUserName);
+                
+                // Recargar ranking con nuevo usuario
+                cargarRanking();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cambiar usuario: " + e.getMessage());
+        }
+    }
+    
+    // Método público para actualizar la información cuando se actualicen los datos
+    public void actualizarDatosUsuario() {
+        cargarUsuarios();
         cargarRanking();
     }
     
