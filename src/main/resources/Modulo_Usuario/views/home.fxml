@@ -95,17 +95,17 @@
                     <Label text="→" style="-fx-text-fill: #424874; -fx-font-size: 20px; -fx-font-weight: bold;"/>
                 </HBox>
 
-                <!-- Módulo Reportes -->
-                <HBox style="-fx-background-color: #DCD6F7; -fx-background-radius: 16; -fx-effect: dropshadow(gaussian, #424874, 6, 0.2, 0, 2);" 
+                <!-- Módulo Gamificación -->
+                <HBox style="-fx-background-color: #DCD6F7; -fx-background-radius: 16; -fx-effect: dropshadow(gaussian, #424874, 6, 0.2, 0, 2);"
                       alignment="CENTER_LEFT" spacing="16" prefHeight="80" maxWidth="Infinity"
                       onMouseClicked="#abrirReportes">
                     <padding>
                         <Insets top="16" right="20" bottom="16" left="20"/>
                     </padding>
-                    <Label text="📊" style="-fx-font-size: 32px; -fx-text-fill: #424874;"/>
+                    <Label text="🏆" style="-fx-font-size: 32px;"/>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Módulo Reportes" style="-fx-text-fill: #424874; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                        <Label text="Ver estadísticas y reportes" style="-fx-text-fill: #6B7A99; -fx-font-size: 12px;"/>
+                        <Label text="Módulo Gamificación" style="-fx-text-fill: #424874; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                        <Label text="Ranking, logros y desafíos" style="-fx-text-fill: #424874; -fx-font-size: 12px;"/>
                     </VBox>
                     <Label text="→" style="-fx-text-fill: #424874; -fx-font-size: 20px; -fx-font-weight: bold;"/>
                 </HBox>

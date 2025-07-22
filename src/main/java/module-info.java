@@ -25,6 +25,10 @@ module Modulo_Ejercicio {
     opens Comunidad_Modulo.controladores to javafx.fxml;
     opens Comunidad_Modulo.App to javafx.fxml, javafx.graphics;
 
+    opens Gamificacion_Modulo.GUI.controllers to javafx.fxml;
+    opens Gamificacion_Modulo.GUI to javafx.fxml;
+    opens Gamificacion_Modulo.GUI.admin to javafx.fxml;
+
     // Exportaciones
     exports GestionAprendizaje_Modulo.Aplicacion;
     exports GestionAprendizaje_Modulo.Ruta;
@@ -49,6 +53,10 @@ module Modulo_Ejercicio {
     exports Modulo_Usuario.Clases;
     exports Modulo_Usuario.Controladores;
     exports Modulo_Usuario.application;
+
+    exports Gamificacion_Modulo;
+    exports Gamificacion_Modulo.GUI;
+    exports Gamificacion_Modulo.GUI.controllers;
 
     exports MetodosGlobales;
 }
