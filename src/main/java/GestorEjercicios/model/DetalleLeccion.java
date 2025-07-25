@@ -1,18 +1,18 @@
 package GestorEjercicios.model;
 
+import Modulo_Ejercicios.exercises.EjercicioSeleccion;
+
 public class DetalleLeccion {
-    private Ejercicio ejercicio;
+    private EjercicioSeleccion ejercicio;
     private ResultadoEvaluacion resultado;
 
-    public DetalleLeccion(Ejercicio ejercicio, ResultadoEvaluacion resultado) {
+    public DetalleLeccion(EjercicioSeleccion ejercicio, ResultadoEvaluacion resultado) {
         this.ejercicio = ejercicio;
         this.resultado = resultado;
     }
 
-    public Ejercicio getEjercicio() { return ejercicio; }
+    public EjercicioSeleccion getEjercicio() { return ejercicio; }
     public ResultadoEvaluacion getResultado() { return resultado; }
 
-    public void resolverEjercicio(String respuestaUsuario) {
-        this.resultado = ejercicio.resolver(respuestaUsuario);
-    }
+
 }

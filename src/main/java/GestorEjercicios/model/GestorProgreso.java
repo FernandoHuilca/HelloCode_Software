@@ -29,18 +29,24 @@ public class GestorProgreso {
      * Guarda el progreso de una lección completada
      */
     public void guardarLeccionCompletada(int numeroLeccion, Leccion leccion, double puntuacion) {
+        // Cambiado a usar EjercicioSeleccion en vez de DetalleLeccion
+        long ejerciciosCompletados = leccion.getEjerciciosSeleccion().size();
+
         LeccionCompletada leccionCompletada = new LeccionCompletada(
-            numeroLeccion,
-            leccion.getTipo(),
-            puntuacion,
-            LocalDateTime.now(),
-            leccion.getEjerciciosResueltos().size()
+                numeroLeccion,
+                leccion.getTipo(),
+                puntuacion,
+                LocalDateTime.now(),
+                ejerciciosCompletados
         );
-        
+
+        // Verificar que la lección fue agregada al progreso
+        System.out.println("Lección completada: " + leccion.obtenerResumen());
         leccionesCompletadas.put(numeroLeccion, leccionCompletada);
         guardarProgreso();
     }
-    
+
+
     /**
      * Verifica si una lección está completada
      */

@@ -4,45 +4,43 @@ import GestorEjercicios.enums.TipoLeccion;
 import GestorEjercicios.strategy.EstrategiaLeccion;
 import GestorEjercicios.strategy.EstrategiaLeccionPrueba;
 import GestorEjercicios.strategy.FabricaEstrategiasLeccion;
+import Modulo_Ejercicios.exercises.EjercicioSeleccion;
 
 import java.util.List;
 
 public class Leccion {
     private int id;
     private String nombre;
-    private List<DetalleLeccion> ejerciciosResueltos;
+    private List<EjercicioSeleccion> ejerciciosSeleccion; // Cambiar de DetalleLeccion a EjercicioSeleccion
     private TipoLeccion tipo;
     private EstrategiaLeccion estrategia;
 
-    public Leccion(int id, String nombre, List<DetalleLeccion> ejerciciosResueltos) {
+    public Leccion(int id, String nombre, List<EjercicioSeleccion> ejerciciosSeleccion) {
         this.id = id;
         this.nombre = nombre;
-        this.ejerciciosResueltos = ejerciciosResueltos;
+        this.ejerciciosSeleccion = ejerciciosSeleccion;
         this.tipo = TipoLeccion.NORMAL; // Por defecto
         this.estrategia = FabricaEstrategiasLeccion.crearEstrategia(this.tipo);
     }
 
-    public Leccion(int id, String nombre, List<DetalleLeccion> ejerciciosResueltos, TipoLeccion tipo) {
+    public int getId() {
+        return id;
+    }
+
+    public Leccion(int id, String nombre, List<EjercicioSeleccion> ejerciciosSeleccion, TipoLeccion tipo) {
         this.id = id;
         this.nombre = nombre;
-        this.ejerciciosResueltos = ejerciciosResueltos;
+        this.ejerciciosSeleccion = ejerciciosSeleccion;
         this.tipo = tipo;
         this.estrategia = FabricaEstrategiasLeccion.crearEstrategia(this.tipo);
     }
 
-    public List<DetalleLeccion> getEjerciciosResueltos() {
-        return ejerciciosResueltos;
+    public List<EjercicioSeleccion> getEjerciciosSeleccion() {
+        return ejerciciosSeleccion;
     }
 
     public String obtenerResumen() {
-        return "Lección '" + nombre + "' (" + tipo + ") con " + ejerciciosResueltos.size() + " ejercicios.";
-    }
-
-    public void procesarRespuesta(int indiceEjercicio, String respuestaUsuario) {
-        if (indiceEjercicio >= 0 && indiceEjercicio < ejerciciosResueltos.size()) {
-            DetalleLeccion detalle = ejerciciosResueltos.get(indiceEjercicio);
-            estrategia.procesarRespuesta(detalle, respuestaUsuario);
-        }
+        return "Lección '" + nombre + "' (" + tipo + ") con " + ejerciciosSeleccion.size() + " ejercicios.";
     }
 
     public TipoLeccion getTipo() {
@@ -57,20 +55,18 @@ public class Leccion {
         return estrategia.tieneEjerciciosPendientes();
     }
 
-    public List<Ejercicio> obtenerEjerciciosPendientes() {
-        return estrategia.obtenerEjerciciosPendientes();
-    }
-
     public void marcarCompletada() {
         if (tipo == TipoLeccion.PRUEBA) {
             ((EstrategiaLeccionPrueba) estrategia).marcarLeccionCompletada();
         }
     }
-
+    /*
     public Leccion crearLeccionRepaso(String nombreRepaso) {
         if (tipo == TipoLeccion.PRUEBA) {
             return ((EstrategiaLeccionPrueba) estrategia).crearLeccionRepaso(nombreRepaso);
         }
         return null;
     }
+
+     */
 }

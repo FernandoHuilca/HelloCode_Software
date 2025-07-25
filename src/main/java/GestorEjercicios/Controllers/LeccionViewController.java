@@ -80,22 +80,7 @@ public class LeccionViewController {
         rbOpcion4.setToggleGroup(toggleGroup);
     }
     
-    public void configurarLeccion(Leccion leccion, LenguajeProgramacion lenguaje, NivelDificultad dificultad) {
-        this.leccion = leccion;
-        // Convertir DetalleLeccion a Ejercicio
-        this.ejercicios = leccion.getEjerciciosResueltos().stream()
-                .map(DetalleLeccion::getEjercicio)
-                .collect(java.util.stream.Collectors.toList());
-        this.lenguaje = lenguaje;
-        this.dificultad = dificultad;
-        
-        // Configurar información de la lección
-        lblLenguaje.setText(lenguaje.toString());
-        lblDificultad.setText(dificultad.toString());
-        
-        // Mostrar el primer ejercicio
-        mostrarEjercicio(0);
-    }
+
     
     private void mostrarEjercicio(int indice) {
         if (indice < 0 || indice >= ejercicios.size()) {
