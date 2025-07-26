@@ -1,6 +1,5 @@
 package GestorEjercicios.strategy;
 
-import GestorEjercicios.model.DetalleLeccion;
 import GestorEjercicios.model.Leccion;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;  // Importar EjercicioSeleccion
 
@@ -25,13 +24,12 @@ public class EstrategiaLeccionDiagnostico implements EstrategiaLeccion {
         }
 
         // Aquí se está creando la lección con los ejercicios limitados
-        // No es necesario usar DetalleLeccion en este caso si solo necesitas el ejercicio
         List<EjercicioSeleccion> ejerciciosSeleccionados = new ArrayList<>(ejerciciosLimitados);
 
         totalEjercicios = ejerciciosSeleccionados.size();
 
         // Crear la lección con los ejercicios seleccionados
-        return new Leccion((int) (Math.random() * 1000), nombre, ejerciciosSeleccionados);
+        return new Leccion((int) (Math.random() * 1000), nombre, ejerciciosSeleccionados, GestorEjercicios.enums.TipoLeccion.DIAGNOSTICO, 0, 0);
     }
 
 

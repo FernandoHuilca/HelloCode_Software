@@ -97,8 +97,23 @@ public class LeccionController {
                 .filter(e -> e.getLenguaje() == lenguajeSeleccionado && e.getNivel() == dificultadSeleccionada)
                 .collect(Collectors.toList());
 
-        // Crear la lección con la lista de EjercicioSeleccion
-        Leccion leccion = new Leccion((int) (Math.random() * 1000), "Lección de " + tipoSeleccionado, ejercicios, tipoLeccion);
+        // Crear la lección con la lista de EjercicioSeleccion y valores de experiencia/conocimiento
+        int experiencia = 0, conocimiento = 0;
+        switch (tipoLeccion) {
+            case NORMAL:
+                experiencia = 15;
+                conocimiento = 5;
+                break;
+            case PRUEBA:
+                experiencia = 30;
+                conocimiento = 0;
+                break;
+            case DIAGNOSTICO:
+                experiencia = 0;
+                conocimiento = 0; // Se calcula al finalizar
+                break;
+        }
+        Leccion leccion = new Leccion((int) (Math.random() * 1000), "Lección de " + tipoSeleccionado + " - " + dificultadSeleccionada + " - " + lenguajeSeleccionado, ejercicios, tipoLeccion, experiencia, conocimiento);
 
         // Agregar la lección al gestor
         gestorLecciones.agregarLeccion(leccion);

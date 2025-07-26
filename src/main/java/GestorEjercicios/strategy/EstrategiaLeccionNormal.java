@@ -1,6 +1,5 @@
 package GestorEjercicios.strategy;
 
-import GestorEjercicios.model.DetalleLeccion;
 import GestorEjercicios.model.Leccion;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;  // Importar EjercicioSeleccion
 
@@ -23,7 +22,7 @@ public class EstrategiaLeccionNormal implements EstrategiaLeccion {
         }
 
         // Crear la lección directamente con los ejercicios seleccionados
-        return new Leccion((int) (Math.random() * 1000), nombre, ejerciciosLimitados);
+        return new Leccion((int) (Math.random() * 1000), nombre, ejerciciosLimitados, GestorEjercicios.enums.TipoLeccion.NORMAL, 15, 5);
     }
 
 
