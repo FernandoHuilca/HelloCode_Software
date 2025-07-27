@@ -15,8 +15,23 @@ public class HomeController {
 
     @FXML
     private void abrirLeccion(MouseEvent event) {
-        // Aquí puedes cargar el módulo de lección cuando lo tengas
-        mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_GestorEjercicios/Views/PantallaPrincipal.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
+
+            Stage stage = new Stage();
+            stage.setTitle("Hello Code Software - Módulo Lección");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            // Cerrar la pantalla actual
+            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            thisStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarError("Error al abrir el módulo de lecciones: " + e.getMessage());
+        }
     }
 
     @FXML
