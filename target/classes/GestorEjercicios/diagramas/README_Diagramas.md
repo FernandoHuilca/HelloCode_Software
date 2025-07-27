@@ -11,15 +11,23 @@ Este directorio contiene los diagramas UML que documentan la arquitectura y el c
 - **Interfaces**: `IGestorEjercicios`, `AdaptadorEjercicios`, `EstrategiaLeccion`
 - **Clases Principales**: `GestorEjerciciosEntry`, `GestorEjerciciosPrincipal`, `Leccion`
 - **Adaptadores**: `AdaptadorEjercicioSeleccion`, `AdaptadorEjercicioCompletarCodigo`
-- **Estrategias**: `EstrategiaLeccionNormal`, `EstrategiaLeccionPrueba`
-- **Modelos**: `GestorProgresoUsuario`, `ResultadoEvaluacion`
+- **Estrategias**: `EstrategiaLeccionNormal`, `EstrategiaLeccionPrueba`, `EstrategiaLeccionDiagnostico`
+- **Modelos**: `GestorProgresoUsuario`, `ResultadoEvaluacion`, `ConfiguracionGestorEjercicios`
 - **Enums**: `TipoLeccion`, `TipoEjercicio`, `NivelDificultad`, `LenguajeProgramacion`
+
+**Características Actualizadas** (v2.0):
+- ✅ **Nuevos Atributos en Leccion**: `dificultad`, `lenguaje`, `desbloqueada`
+- ✅ **Enum LenguajeProgramacion**: Agregado soporte para `CPP`
+- ✅ **Enum TipoEjercicio**: Actualizado con `MULTIPLE_CHOICE` y `ESCRIBIR_FUNCION`
+- ✅ **EstrategiaLeccionDiagnostico**: Nueva estrategia para lecciones diagnósticas
+- ✅ **ConfiguracionGestorEjercicios**: Configuraciones extendidas con nuevas constantes
 
 **Patrones de Diseño Mostrados**:
 - 🏭 **Factory Pattern**: `FabricaAdaptadores`, `FabricaEstrategiasLeccion`
-- 🔄 **Strategy Pattern**: `EstrategiaLeccion` y sus implementaciones
+- 🔄 **Strategy Pattern**: `EstrategiaLeccion` y sus implementaciones (Normal, Prueba, Diagnostico)
 - 🔌 **Adapter Pattern**: `AdaptadorEjercicios` y sus implementaciones
 - 🎯 **Singleton Pattern**: `GestorEjerciciosPrincipal`
+- 📊 **Configuration Pattern**: `ConfiguracionGestorEjercicios` con constantes centralizadas
 
 ### 2. **Diagrama de Secuencia Completo** (`DiagramaSecuenciaGestorEjercicios.puml`)
 **Descripción**: Muestra todas las interacciones detalladas entre los componentes del módulo.
@@ -176,6 +184,27 @@ GestorProgresoUsuario → EstadisticasUsuario
 - Los diagramas se actualizan automáticamente cuando se modifica el código
 - Mantener consistencia entre diagramas y código
 - Documentar nuevos patrones o componentes agregados
+
+## 📅 Changelog
+
+### v2.0 - Julio 2025 ✅ **ACTUALIZADO**
+- ✅ **Leccion**: Agregados atributos `dificultad`, `lenguaje`, `desbloqueada`
+- ✅ **LenguajeProgramacion**: Agregado soporte para `CPP`
+- ✅ **TipoEjercicio**: Actualizado con `MULTIPLE_CHOICE` y `ESCRIBIR_FUNCION`
+- ✅ **EstrategiaLeccionDiagnostico**: Nueva estrategia para lecciones diagnósticas
+- ✅ **ConfiguracionGestorEjercicios**: Nuevas constantes `EXPERIENCIA_POR_EJERCICIO`, `CONOCIMIENTO_POR_EJERCICIO`
+- ✅ **Relaciones**: Agregadas relaciones de Leccion con NivelDificultad y LenguajeProgramacion
+- ✅ **Métodos**: Agregados métodos de mapeo y cálculo de valores por defecto
+
+### v1.0 - Junio 2025
+- 🚀 **Versión inicial**: Diagrama base con clases principales
+- 🔧 **Interfaces**: IGestorEjercicios, AdaptadorEjercicios, EstrategiaLeccion
+- 📊 **Enums**: TipoLeccion, TipoEjercicio, NivelDificultad, LenguajeProgramacion
+- 🏭 **Patrones**: Factory, Strategy, Adapter, Singleton
+
+---
+
+> **💡 Nota**: Los diagramas están completamente actualizados y alineados con la implementación actual del código (excepto Controllers de UI).
 - Revisar diagramas en cada iteración del desarrollo
 
 ## 🚀 Próximos Pasos

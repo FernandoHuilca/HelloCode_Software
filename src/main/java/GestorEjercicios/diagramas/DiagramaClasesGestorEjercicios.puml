@@ -43,8 +43,8 @@ interface AdaptadorEjercicios {
 }
 
 interface EstrategiaLeccion {
-    + crearLeccion(nombre: String, ejercicios: List<AdaptadorEjercicios>): Leccion
-    + obtenerEjerciciosPendientes(): List<AdaptadorEjercicios>
+    + crearLeccion(nombre: String, ejercicios: List<EjercicioSeleccion>): Leccion
+    + obtenerEjerciciosPendientes(): List<EjercicioSeleccion>
     + tieneEjerciciosPendientes(): boolean
 }
 
@@ -56,8 +56,9 @@ enum TipoLeccion {
 }
 
 enum TipoEjercicio {
-    SELECCION_MULTIPLE
     COMPLETAR_CODIGO
+    MULTIPLE_CHOICE
+    ESCRIBIR_FUNCION
 }
 
 enum NivelDificultad {
@@ -67,9 +68,10 @@ enum NivelDificultad {
 }
 
 enum LenguajeProgramacion {
-    JAVA
     PYTHON
+    JAVA
     JAVASCRIPT
+    CPP
 }
 
 ' ===== CLASES PRINCIPALES =====
@@ -119,8 +121,12 @@ class Leccion {
     - experiencia: int
     - conocimiento: int
     - completada: boolean
+    - dificultad: NivelDificultad
+    - lenguaje: LenguajeProgramacion
+    - desbloqueada: boolean
     + Leccion(id: int, nombre: String, ejercicios: List<?>, tipo: TipoLeccion, experiencia: int, conocimiento: int)
     + Leccion(id: int, nombre: String, ejercicios: List<?>)
+    + Leccion(id: int, nombre: String, ejercicios: List<?>, tipo: TipoLeccion, experiencia: int, conocimiento: int, dificultad: NivelDificultad, lenguaje: LenguajeProgramacion)
     + getId(): int
     + getNombre(): String
     + getEjercicios(): List<AdaptadorEjercicios>
@@ -130,6 +136,10 @@ class Leccion {
     + getConocimiento(): int
     + isCompletada(): boolean
     + setCompletada(completada: boolean): void
+    + getDificultad(): NivelDificultad
+    + getLenguaje(): LenguajeProgramacion
+    + isDesbloqueada(): boolean
+    + setDesbloqueada(desbloqueada: boolean): void
     + obtenerResumen(): String
     + tieneEjerciciosPendientes(): boolean
     + marcarCompletada(): void
@@ -139,6 +149,8 @@ class Leccion {
     - convertirEjercicios(ejercicios: List<?>): List<AdaptadorEjercicios>
     - calcularExperienciaPorDefecto(): int
     - calcularConocimientoPorDefecto(): int
+    - calcularDificultadPorDefecto(): NivelDificultad
+    - calcularLenguajePorDefecto(): LenguajeProgramacion
 }
 
 class GestorLecciones {
@@ -217,23 +229,35 @@ class FabricaAdaptadores {
 ' ===== ESTRATEGIAS =====
 class EstrategiaLeccionNormal {
     - MAX_EJERCICIOS_POR_LECCION: int
-    - ejerciciosPendientes: List<AdaptadorEjercicios>
-    + crearLeccion(nombre: String, ejercicios: List<AdaptadorEjercicios>): Leccion
-    + obtenerEjerciciosPendientes(): List<AdaptadorEjercicios>
+    - ejerciciosPendientes: List<EjercicioSeleccion>
+    + crearLeccion(nombre: String, ejercicios: List<EjercicioSeleccion>): Leccion
+    + obtenerEjerciciosPendientes(): List<EjercicioSeleccion>
     + tieneEjerciciosPendientes(): boolean
 }
 
 class EstrategiaLeccionPrueba {
-    - ejerciciosPendientes: List<AdaptadorEjercicios>
-    - ejerciciosFallidos: List<AdaptadorEjercicios>
+    - ejerciciosPendientes: List<EjercicioSeleccion>
+    - ejerciciosFallidos: List<EjercicioSeleccion>
     - leccionCompletada: boolean
     - MAX_EJERCICIOS_POR_PRUEBA: int
-    + crearLeccion(nombre: String, ejercicios: List<AdaptadorEjercicios>): Leccion
-    + obtenerEjerciciosPendientes(): List<AdaptadorEjercicios>
+    + crearLeccion(nombre: String, ejercicios: List<EjercicioSeleccion>): Leccion
+    + obtenerEjerciciosPendientes(): List<EjercicioSeleccion>
     + tieneEjerciciosPendientes(): boolean
     + marcarLeccionCompletada(): void
     + obtenerCantidadEjerciciosFallidos(): int
     + limpiarEjerciciosFallidos(): void
+}
+
+class EstrategiaLeccionDiagnostico {
+    - ejerciciosPendientes: List<EjercicioSeleccion>
+    - ejerciciosCorrectos: int
+    - totalEjercicios: int
+    - MAX_EJERCICIOS_POR_DIAGNOSTICO: int
+    + crearLeccion(nombre: String, ejercicios: List<EjercicioSeleccion>): Leccion
+    + obtenerEjerciciosPendientes(): List<EjercicioSeleccion>
+    + tieneEjerciciosPendientes(): boolean
+    + evaluarDiagnostico(aciertos: int): void
+    + calcularNivelEstudiante(): String
 }
 
 class FabricaEstrategiasLeccion {
@@ -308,6 +332,8 @@ class ConfiguracionGestorEjercicios {
     + {static} MAX_EJERCICIOS_POR_LECCION_NORMAL: int
     + {static} MAX_EJERCICIOS_POR_LECCION_PRUEBA: int
     + {static} MIN_EJERCICIOS_POR_LECCION: int
+    + {static} EXPERIENCIA_POR_EJERCICIO: int
+    + {static} CONOCIMIENTO_POR_EJERCICIO: int
     + {static} calcularExperienciaGanada(experienciaBase: int, porcentajeAcierto: double): int
     + {static} calcularConocimientoGanado(conocimientoBase: int, porcentajeAcierto: double): int
     + {static} calcularReputacionGanada(experienciaGanada: int): int
@@ -340,6 +366,12 @@ Leccion --> EstrategiaLeccion : usa
 ' Leccion usa TipoLeccion
 Leccion --> TipoLeccion : usa
 
+' Leccion usa NivelDificultad
+Leccion --> NivelDificultad : usa
+
+' Leccion usa LenguajeProgramacion
+Leccion --> LenguajeProgramacion : usa
+
 ' Adaptadores implementan AdaptadorEjercicios
 AdaptadorEjercicioSeleccion ..|> AdaptadorEjercicios : implementa
 AdaptadorEjercicioCompletarCodigo ..|> AdaptadorEjercicios : implementa
@@ -351,10 +383,12 @@ FabricaAdaptadores --> AdaptadorEjercicioCompletarCodigo : crea
 ' Estrategias implementan EstrategiaLeccion
 EstrategiaLeccionNormal ..|> EstrategiaLeccion : implementa
 EstrategiaLeccionPrueba ..|> EstrategiaLeccion : implementa
+EstrategiaLeccionDiagnostico ..|> EstrategiaLeccion : implementa
 
 ' FabricaEstrategiasLeccion crea Estrategias
 FabricaEstrategiasLeccion --> EstrategiaLeccionNormal : crea
 FabricaEstrategiasLeccion --> EstrategiaLeccionPrueba : crea
+FabricaEstrategiasLeccion --> EstrategiaLeccionDiagnostico : crea
 
 ' GestorProgresoUsuario usa ProgresoUsuario
 GestorProgresoUsuario --> GestorProgresoUsuario.ProgresoUsuario : usa
