@@ -108,11 +108,11 @@ public class GestorEjerciciosPrincipal implements IGestorEjercicios {
             throw new IllegalArgumentException("La lección y el usuario no pueden ser nulos");
         }
         
-        System.out.println("Ejecutando lección '" + leccion.getNombre() + "' para usuario " + usuario.getUsername());
+        System.out.println("Ejecutando lección '" + leccion.obtenerResumen() + "' para usuario " + usuario.getUsername());
         
         // Crear un resultado de evaluación temporal
         // En una implementación real, esto se manejaría a través de la interfaz de usuario
-        return new ResultadoEvaluacion(0, 0, "Lección iniciada", false);
+        return new ResultadoEvaluacion(false, 0, 0, "Lección iniciada", false);
     }
     
     @Override
@@ -131,7 +131,7 @@ public class GestorEjerciciosPrincipal implements IGestorEjercicios {
         // Marcar la lección como completada internamente
         leccion.setCompletada(true);
         
-        System.out.println("Lección '" + leccion.getNombre() + "' marcada como completada para " + usuario.getUsername());
+        System.out.println("Lección '" + leccion.obtenerResumen() + "' marcada como completada para " + usuario.getUsername());
     }
     
     @Override
@@ -149,7 +149,14 @@ public class GestorEjerciciosPrincipal implements IGestorEjercicios {
             return new EstadisticasUsuario(0, 0, 0, 0, 0);
         }
         
-        return GestorProgresoUsuario.obtenerEstadisticasUsuario(usuario);
+        GestorProgresoUsuario.EstadisticasUsuario stats = GestorProgresoUsuario.obtenerEstadisticasUsuario(usuario);
+        return new EstadisticasUsuario(
+            stats.getExperienciaTotal(),
+            stats.getConocimientoTotal(),
+            stats.getLeccionesCompletadas(),
+            stats.getEjerciciosCorrectos(),
+            stats.getEjerciciosTotales()
+        );
     }
     
     /**

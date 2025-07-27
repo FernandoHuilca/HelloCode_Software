@@ -5,9 +5,7 @@ import GestorEjercicios.model.Leccion;
 import GestorEjercicios.enums.TipoLeccion;
 import GestorEjercicios.enums.NivelDificultad;
 import GestorEjercicios.enums.LenguajeProgramacion;
-import Modulo_Usuario.Clases.UsuarioComunidad;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;
-import Modulo_Ejercicios.exercises.EjercicioCompletarCodigo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,10 +147,10 @@ public class EjemploDificultadLenguaje {
             .collect(Collectors.toList());
         
         System.out.println("Lecciones Java Avanzadas:");
-        leccionesJavaAvanzadas.forEach(l -> System.out.println("  - " + l.getNombre()));
+        leccionesJavaAvanzadas.forEach(l -> System.out.println("  - " + l.obtenerResumen()));
         
         System.out.println("\nLecciones Python Básicas:");
-        leccionesPythonBasicas.forEach(l -> System.out.println("  - " + l.getNombre()));
+        leccionesPythonBasicas.forEach(l -> System.out.println("  - " + l.obtenerResumen()));
         
         // 5. Estadísticas generales
         System.out.println("\n5. ESTADÍSTICAS GENERALES:");
@@ -186,7 +184,7 @@ public class EjemploDificultadLenguaje {
      */
     private static void mostrarInformacionLeccion(String titulo, Leccion leccion) {
         System.out.println(titulo + ":");
-        System.out.println("  - Nombre: " + leccion.getNombre());
+        System.out.println("  - Nombre: " + leccion.obtenerResumen());
         System.out.println("  - Tipo: " + leccion.getTipo());
         System.out.println("  - Dificultad: " + leccion.getDificultad());
         System.out.println("  - Lenguaje: " + leccion.getLenguaje());
@@ -202,23 +200,29 @@ public class EjemploDificultadLenguaje {
         List<Object> ejercicios = new ArrayList<>();
         
         // Ejercicio 1: Variables en Java
-        EjercicioSeleccion ej1 = new EjercicioSeleccion();
-        ej1.setId("java_basico_1");
-        ej1.setInstruccion("¿Cuál es la forma correcta de declarar una variable en Java?");
-        ej1.setNivelDificultad("BASICO");
-        ej1.setLenguaje("JAVA");
-        ej1.setOpciones(List.of("var x = 5;", "int x = 5;", "variable x = 5;", "x = 5;"));
-        ej1.setRespuestaCorrecta("int x = 5;");
+        EjercicioSeleccion ej1 = new EjercicioSeleccion.Builder()
+            .conInstruccion("¿Cuál es la forma correcta de declarar una variable en Java?")
+            .conOpcion("var x = 5;")
+            .conOpcion("int x = 5;")
+            .conOpcion("variable x = 5;")
+            .conOpcion("x = 5;")
+            .conRespuestaCorrecta("int x = 5;")
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.BASICO)
+            .conLenguaje(Modulo_Ejercicios.exercises.Lenguaje.JAVA)
+            .construir();
         ejercicios.add(ej1);
         
         // Ejercicio 2: Tipos de datos
-        EjercicioSeleccion ej2 = new EjercicioSeleccion();
-        ej2.setId("java_basico_2");
-        ej2.setInstruccion("¿Qué tipo de dato se usa para números enteros en Java?");
-        ej2.setNivelDificultad("BASICO");
-        ej2.setLenguaje("JAVA");
-        ej2.setOpciones(List.of("float", "int", "String", "boolean"));
-        ej2.setRespuestaCorrecta("int");
+        EjercicioSeleccion ej2 = new EjercicioSeleccion.Builder()
+            .conInstruccion("¿Qué tipo de dato se usa para números enteros en Java?")
+            .conOpcion("float")
+            .conOpcion("int")
+            .conOpcion("String")
+            .conOpcion("boolean")
+            .conRespuestaCorrecta("int")
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.BASICO)
+            .conLenguaje(Modulo_Ejercicios.exercises.Lenguaje.JAVA)
+            .construir();
         ejercicios.add(ej2);
         
         return ejercicios;
@@ -231,24 +235,29 @@ public class EjemploDificultadLenguaje {
         List<Object> ejercicios = new ArrayList<>();
         
         // Ejercicio 1: Funciones en Python
-        EjercicioSeleccion ej1 = new EjercicioSeleccion();
-        ej1.setId("python_intermedio_1");
-        ej1.setInstruccion("¿Cuál es la sintaxis correcta para definir una función en Python?");
-        ej1.setNivelDificultad("INTERMEDIO");
-        ej1.setLenguaje("PYTHON");
-        ej1.setOpciones(List.of("function nombre():", "def nombre():", "func nombre():", "define nombre():"));
-        ej1.setRespuestaCorrecta("def nombre():");
+        EjercicioSeleccion ej1 = new EjercicioSeleccion.Builder()
+            .conInstruccion("¿Cuál es la sintaxis correcta para definir una función en Python?")
+            .conOpcion("function nombre():")
+            .conOpcion("def nombre():")
+            .conOpcion("func nombre():")
+            .conOpcion("define nombre():")
+            .conRespuestaCorrecta("def nombre():")
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.INTERMEDIO)
+            .conLenguaje(Modulo_Ejercicios.exercises.Lenguaje.PYTHON)
+            .construir();
         ejercicios.add(ej1);
         
         // Ejercicio 2: List comprehensions
-        EjercicioSeleccion ej2 = new EjercicioSeleccion();
-        ej2.setId("python_intermedio_2");
-        ej2.setInstruccion("¿Cuál es la forma correcta de crear una lista de números pares del 0 al 10?");
-        ej2.setNivelDificultad("INTERMEDIO");
-        ej2.setLenguaje("PYTHON");
-        ej2.setOpciones(List.of("[x for x in range(11) if x % 2 == 0]", "[x if x % 2 == 0 for x in range(11)]", 
-                                "for x in range(11): if x % 2 == 0", "list(range(0, 11, 2))"));
-        ej2.setRespuestaCorrecta("[x for x in range(11) if x % 2 == 0]");
+        EjercicioSeleccion ej2 = new EjercicioSeleccion.Builder()
+            .conInstruccion("¿Cuál es la forma correcta de crear una lista de números pares del 0 al 10?")
+            .conOpcion("[x for x in range(11) if x % 2 == 0]")
+            .conOpcion("[x if x % 2 == 0 for x in range(11)]")
+            .conOpcion("for x in range(11): if x % 2 == 0")
+            .conOpcion("list(range(0, 11, 2))")
+            .conRespuestaCorrecta("[x for x in range(11) if x % 2 == 0]")
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.INTERMEDIO)
+            .conLenguaje(Modulo_Ejercicios.exercises.Lenguaje.PYTHON)
+            .construir();
         ejercicios.add(ej2);
         
         return ejercicios;
@@ -260,24 +269,30 @@ public class EjemploDificultadLenguaje {
     private static List<Object> crearEjerciciosJavaScriptAvanzado() {
         List<Object> ejercicios = new ArrayList<>();
         
-        // Ejercicio 1: Clases en JavaScript
-        EjercicioSeleccion ej1 = new EjercicioSeleccion();
-        ej1.setId("javascript_avanzado_1");
-        ej1.setInstruccion("¿Cuál es la sintaxis correcta para definir una clase en JavaScript ES6?");
-        ej1.setNivelDificultad("AVANZADO");
-        ej1.setLenguaje("JAVASCRIPT");
-        ej1.setOpciones(List.of("class MiClase {}", "function MiClase() {}", "var MiClase = class {}", "object MiClase {}"));
-        ej1.setRespuestaCorrecta("class MiClase {}");
+        // Ejercicio 1: Clases en JavaScript (usando C como alternativa)
+        EjercicioSeleccion ej1 = new EjercicioSeleccion.Builder()
+            .conInstruccion("¿Cuál es la sintaxis correcta para definir una clase en JavaScript ES6?")
+            .conOpcion("class MiClase {}")
+            .conOpcion("function MiClase() {}")
+            .conOpcion("var MiClase = class {}")
+            .conOpcion("object MiClase {}")
+            .conRespuestaCorrecta("class MiClase {}")
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.AVANZADO)
+            .conLenguaje(Modulo_Ejercicios.exercises.Lenguaje.C)
+            .construir();
         ejercicios.add(ej1);
         
         // Ejercicio 2: Promesas
-        EjercicioSeleccion ej2 = new EjercicioSeleccion();
-        ej2.setId("javascript_avanzado_2");
-        ej2.setInstruccion("¿Qué método se usa para manejar múltiples promesas en JavaScript?");
-        ej2.setNivelDificultad("AVANZADO");
-        ej2.setLenguaje("JAVASCRIPT");
-        ej2.setOpciones(List.of("Promise.all()", "Promise.race()", "Promise.resolve()", "Promise.reject()"));
-        ej2.setRespuestaCorrecta("Promise.all()");
+        EjercicioSeleccion ej2 = new EjercicioSeleccion.Builder()
+            .conInstruccion("¿Qué método se usa para manejar múltiples promesas en JavaScript?")
+            .conOpcion("Promise.all()")
+            .conOpcion("Promise.race()")
+            .conOpcion("Promise.resolve()")
+            .conOpcion("Promise.reject()")
+            .conRespuestaCorrecta("Promise.all()")
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.AVANZADO)
+            .conLenguaje(Modulo_Ejercicios.exercises.Lenguaje.C)
+            .construir();
         ejercicios.add(ej2);
         
         return ejercicios;

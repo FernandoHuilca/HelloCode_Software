@@ -9,7 +9,6 @@ import Modulo_Usuario.Clases.Usuario;
 import Modulo_Usuario.Clases.UsuarioComunidad;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;
 import Modulo_Ejercicios.exercises.EjercicioCompletarCodigo;
-import Modulo_Ejercicios.exercises.NivelDificultad;
 import Modulo_Ejercicios.exercises.Lenguaje;
 
 import java.util.ArrayList;
@@ -110,15 +109,19 @@ public class EjemploUsoGestorEjercicios {
         
         // Mostrar estadísticas del usuario
         System.out.println("\n=== Estadísticas del usuario ===");
+        // TODO: Implementar estadísticas de usuario
+        System.out.println("Usuario: " + usuario.getUsername());
+        System.out.println("Funcionalidad de estadísticas en desarrollo...");
+        /*
         GestorEjercicios.IGestorEjercicios.EstadisticasUsuario estadisticas = 
             GestorEjerciciosEntry.obtenerEstadisticasUsuario(usuario);
         
-        System.out.println("Usuario: " + usuario.getUsername());
         System.out.println("Experiencia total: " + estadisticas.getExperienciaTotal());
         System.out.println("Conocimiento total: " + estadisticas.getConocimientoTotal());
         System.out.println("Lecciones completadas: " + estadisticas.getLeccionesCompletadas());
         System.out.println("Ejercicios correctos: " + estadisticas.getEjerciciosCorrectos() + "/" + estadisticas.getEjerciciosTotales());
         System.out.println("Porcentaje de acierto: " + String.format("%.1f%%", estadisticas.getPorcentajeAcierto() * 100));
+        */
         
         // Mostrar progreso en lecciones específicas
         System.out.println("\n=== Progreso en lecciones específicas ===");
@@ -143,7 +146,7 @@ public class EjemploUsoGestorEjercicios {
         // Ejercicio 1: Tipos de datos
         EjercicioSeleccion ejercicio1 = new EjercicioSeleccion.Builder()
             .conInstruccion("¿Cuál de los siguientes es un tipo de dato primitivo en Java?")
-            .conNivel(NivelDificultad.BASICO)
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.BASICO)
             .conLenguaje(Lenguaje.JAVA)
             .conOpcion("String")
             .conOpcion("int")
@@ -155,7 +158,7 @@ public class EjemploUsoGestorEjercicios {
         // Ejercicio 2: Variables
         EjercicioSeleccion ejercicio2 = new EjercicioSeleccion.Builder()
             .conInstruccion("¿Cómo se declara una variable constante en Java?")
-            .conNivel(NivelDificultad.BASICO)
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.BASICO)
             .conLenguaje(Lenguaje.JAVA)
             .conOpcion("var constante = 10;")
             .conOpcion("final int constante = 10;")
@@ -182,7 +185,7 @@ public class EjemploUsoGestorEjercicios {
             .conCodigoIncompleto("public int sumar(int a, int b) {\n    return ____;\n}")
             .conParteFaltante("a + b")
             .conRespuestaEsperada("a + b")
-            .conNivel(NivelDificultad.BASICO)
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.BASICO)
             .conLenguaje(Lenguaje.JAVA)
             .construir();
         
@@ -192,7 +195,7 @@ public class EjemploUsoGestorEjercicios {
             .conCodigoIncompleto("for (int i = 1; i ____ 5; i++) {\n    System.out.println(i);\n}")
             .conParteFaltante("<=")
             .conRespuestaEsperada("<=")
-            .conNivel(NivelDificultad.BASICO)
+            .conNivel(Modulo_Ejercicios.exercises.NivelDificultad.BASICO)
             .conLenguaje(Lenguaje.JAVA)
             .construir();
         
