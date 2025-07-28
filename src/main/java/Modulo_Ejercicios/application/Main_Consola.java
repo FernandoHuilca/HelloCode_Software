@@ -184,4 +184,5 @@ public class Main_Consola {
             System.out.println("Respuestas correctas: " + ejercicio.obtenerRespuestasEsperadas());
         }
     }
+    //Mandar cambios jaja
 }
