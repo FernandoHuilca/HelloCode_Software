@@ -1,7 +1,8 @@
-package Gamificacion_Modulo.GUI.admin;
+package Gamificacion_Modulo.controllers_admin;
 
-import Gamificacion_Modulo.Main;
-import Gamificacion_Modulo.ProgresoEstudiante;
+import Gamificacion_Modulo.controllers_admin.AsignarDesafioController;
+import Gamificacion_Modulo.clases.Main;
+import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

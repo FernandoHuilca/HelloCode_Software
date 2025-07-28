@@ -1,13 +1,13 @@
-package Gamificacion_Modulo.GUI.controllers;
+package Gamificacion_Modulo.controllers;
 
 import java.util.List;
 
-import Gamificacion_Modulo.Desafio;
-import Gamificacion_Modulo.DesafioMensual;
-import Gamificacion_Modulo.DesafioSemanal;
-import Gamificacion_Modulo.Logro;
-import Gamificacion_Modulo.Main;
-import Gamificacion_Modulo.ProgresoEstudiante;
+import Gamificacion_Modulo.clases.Desafio;
+import Gamificacion_Modulo.clases.DesafioMensual;
+import Gamificacion_Modulo.clases.DesafioSemanal;
+import Gamificacion_Modulo.clases.Logro;
+import Gamificacion_Modulo.clases.Main;
+import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -68,6 +68,9 @@ public class PerfilUsuarioController {
     
     private int estudianteActualIndex = 0;
 
+
+    //TODO: BORRAR LOS PRINTLN DE DEBUG CUANDO SE HAYA TERMINADO EL DESARROLLO, TAMBIEN CORREGIR EL MAIN. PARA METODOS GLOBALES
+
     // Botón 1 (izquierda) - navegar a Desafíos
     @FXML
     private void navButton1() {
@@ -114,13 +117,13 @@ public class PerfilUsuarioController {
     
     // Método para volver al módulo de usuarios
     @FXML
-    private void volverAComunidad() {
+    private void regresarHomeUsuario() {
         try {
             System.out.println(">>> Regresando al módulo de usuarios");
             
             // Cargar la pantalla de Home del módulo de usuarios
             javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/Modulo_Usuario/views/home.fxml"));
+                getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
             javafx.scene.Scene scene = new javafx.scene.Scene(fxmlLoader.load(), 360, 720);
 
             // Obtener el Stage actual
@@ -137,7 +140,9 @@ public class PerfilUsuarioController {
         }
     }
 
-    // Método para mostrar progreso de desafíos
+
+    // TODO: Corregir el Main.getprogresos() para que no use el Main directamente, sino que use un método de acceso
+        // Método para mostrar progreso de desafíos
     @FXML
     private void verProgresoDesafios() {
         System.out.println(">>> Mostrando progreso de desafíos");
@@ -170,21 +175,28 @@ public class PerfilUsuarioController {
                 // Mostrar detalles de desafíos activos
                 if (!progreso.getDesafiosActivos().isEmpty()) {
                     mensaje.append("📋 DETALLE DE DESAFÍOS ACTIVOS:\n");
+                    int contadorDesafios = 1;
                     for (Desafio desafio : progreso.getDesafiosActivos()) {
                         String tipo = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
                         String progreso_str = "";
+                        String nombreDesafio = "";
                         
                         if (desafio instanceof DesafioSemanal) {
                             DesafioSemanal ds = (DesafioSemanal) desafio;
-                            progreso_str = " - " + ds.getActividadesCompletadas() + "/" + ds.getMetaSemanal() + 
+                            progreso_str = " - " + ds.getLeccionesCompletadas() + "/" + ds.getMetaSemanal() +
                                          " (" + String.format("%.1f", ds.getProgreso()) + "%)";
+                            nombreDesafio = "Desafío Semanal #" + contadorDesafios + " (Meta: " + ds.getMetaSemanal() + " lecciones)";
                         } else if (desafio instanceof DesafioMensual) {
                             DesafioMensual dm = (DesafioMensual) desafio;
-                            progreso_str = " - " + dm.getActividadesCompletadas() + "/" + dm.getObjetivoMensual() + 
+                            Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
+                            Integer completadas = (dm.getActividadesCompletadas() != null) ? dm.getActividadesCompletadas() : 0;
+                            progreso_str = " - " + completadas + "/" + objetivo + 
                                          " (" + String.format("%.1f", dm.getProgreso()) + "%)";
+                            nombreDesafio = "Desafío Mensual #" + contadorDesafios + " (Meta: " + objetivo + " actividades)";
                         }
                         
-                        mensaje.append("   • ").append(desafio.getNombre()).append(" (").append(tipo).append(")").append(progreso_str).append("\n");
+                        mensaje.append("   • ").append(nombreDesafio).append(" (").append(tipo).append(")").append(progreso_str).append("\n");
+                        contadorDesafios++;
                     }
                 }
             } else {
@@ -221,7 +233,8 @@ public class PerfilUsuarioController {
                         mensaje.append("      ").append(logro.getDescripcion()).append("\n\n");
                     }
                 }
-                
+                //TODO: Corregir el getLogrosDisponibles() para que no use el Main directamente, sino que use un método de acceso
+
                 mensaje.append("🏅 LOGROS DISPONIBLES (").append(Main.getLogrosDisponibles().size()).append("):\n");
                 for (Logro logro : Main.getLogrosDisponibles()) {
                     boolean obtenido = progreso.getLogros().contains(logro);
@@ -251,7 +264,6 @@ public class PerfilUsuarioController {
             System.out.println(">>> Controlador de Perfil de Usuario inicializado");
             
             // Registrar este controlador para recibir notificaciones
-            Main.registrarPerfilController(this);
             
             // Cargar estudiantes y datos iniciales
             cargarEstudiantesEnComboBox();
@@ -322,6 +334,7 @@ public class PerfilUsuarioController {
     // Método para cargar usuarios en el ComboBox
     private void cargarEstudiantesEnComboBox() {
         try {
+            //TODO: Corregir el Main.getUsuarios() para que no use el Main directamente, sino que use un método de acceso
             List<Usuario> usuarios = Main.getUsuarios();
             System.out.println(">>> Cargando usuarios en ComboBox: " + usuarios.size() + " usuarios encontrados");
             
@@ -439,21 +452,6 @@ public class PerfilUsuarioController {
         if (expPoints != null) expPoints.setText(experiencia);
     }
     
-    // Método para abrir el panel de administración
-    @FXML
-    private void abrirPanelAdmin() {
-        try {
-            System.out.println(">>> Abriendo panel de administración...");
-            Gamificacion_Modulo.GUI.admin.AdminMainController.mostrarVentanaAdmin();
-        } catch (Exception e) {
-            System.err.println("Error al abrir panel de administración: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
-    // Método para limpiar recursos al cerrar
-    public void cleanup() {
-        Main.desregistrarPerfilController();
-        System.out.println(">>> Controlador de Perfil limpiado");
-    }
+
+
 }

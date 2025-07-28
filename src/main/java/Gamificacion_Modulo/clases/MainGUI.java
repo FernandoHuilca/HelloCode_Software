@@ -1,4 +1,4 @@
-package Gamificacion_Modulo.GUI;
+package Gamificacion_Modulo.clases;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

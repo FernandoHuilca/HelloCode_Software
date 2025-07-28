@@ -1,5 +1,5 @@
 
-package Gamificacion_Modulo;
+package Gamificacion_Modulo.clases;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

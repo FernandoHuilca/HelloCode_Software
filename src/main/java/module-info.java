@@ -27,6 +27,11 @@ module Modulo_Ejercicio {
 
     opens GestorEjercicios.Controllers to javafx.fxml;
 
+
+    opens Gamificacion_Modulo.controllers to javafx.fxml;
+    opens Gamificacion_Modulo.clases to javafx.fxml;
+    opens Gamificacion_Modulo.controllers_admin to javafx.fxml;
+
     // Exportaciones
     exports GestionAprendizaje_Modulo.Aplicacion;
     exports GestionAprendizaje_Modulo.Ruta;
@@ -55,6 +60,11 @@ module Modulo_Ejercicio {
     exports GestorEjercicios.Controllers;
     exports GestorEjercicios.model;
     exports GestorEjercicios.main; //Siempre me daba fallo pporque falta este export xd
+
+    exports Gamificacion_Modulo.clases;
+    exports Gamificacion_Modulo.controllers_admin;
+    exports Gamificacion_Modulo.controllers;
+    exports Gamificacion_Modulo.utils;
 
     exports MetodosGlobales;
 }

@@ -1,4 +1,4 @@
-package Gamificacion_Modulo;
+package Gamificacion_Modulo.clases;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,15 +10,14 @@ public class ProgresoEstudiante {
     private Usuario usuario;
     private List<Logro> logrosDesbloqueados;
     private Integer puntosTotal;
-    private Integer ranking;
     private HashMap<String, Double> listaDesafios; // Hash<id, porcentaje>
     private Integer desafiosCompletados;
+    private List<Desafio> desafiosActivos = new ArrayList<>();
 
     public ProgresoEstudiante(Usuario usuario) {
         this.usuario = usuario;
         this.logrosDesbloqueados = new ArrayList<>();
         this.puntosTotal = 0;
-        this.ranking = 0;
         this.listaDesafios = new HashMap<>();
         this.desafiosCompletados = 0;
     }
@@ -27,7 +26,7 @@ public class ProgresoEstudiante {
         // 1. Verificar si el desafío está completado
         if (desafio.estaCompletado()) {
             // 2. Actualizar porcentaje en lista de desafíos
-            listaDesafios.put(desafio.getId().toString(), 100.0);
+            listaDesafios.put("Xd", 100.0);
 
             // 3. Verificar si desbloquea logros
             if (desafio.verificarComplecion(this)) {
@@ -44,7 +43,7 @@ public class ProgresoEstudiante {
             } else if (desafio instanceof DesafioMensual) {
                 progreso = ((DesafioMensual) desafio).getProgreso();
             }
-            listaDesafios.put(desafio.getId().toString(), progreso);
+            listaDesafios.put("xd", progreso);
         }
     }
 
@@ -55,7 +54,6 @@ public class ProgresoEstudiante {
             System.out.println("*** Logro desbloqueado: " + logro.getNombre() + "! (+" + logro.getPuntos() + " puntos)");
         }
     }
-    private List<Desafio> desafiosActivos = new ArrayList<>();
 
     public List<Desafio> getDesafiosActivos() {
         return desafiosActivos;

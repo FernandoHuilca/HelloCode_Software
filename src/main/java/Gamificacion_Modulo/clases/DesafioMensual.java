@@ -1,4 +1,4 @@
-package Gamificacion_Modulo;
+package Gamificacion_Modulo.clases;
 
 import java.util.List;
 
@@ -7,10 +7,9 @@ public class DesafioMensual extends Desafio {
     private Integer actividadesCompletadas;
     private Integer leccionesCompletadas;
 
-    public DesafioMensual(Integer objetivoMensual, List<Logro> logros) {
-        super("Desafio Mensual", "Completar " + objetivoMensual + " actividades en el mes", logros);
-        this.objetivoMensual = objetivoMensual;
-        this.actividadesCompletadas = 0;
+    public DesafioMensual(Integer metaSemanal, int puntos, List<Logro> logros) {
+        super(logros, puntos, metaSemanal);
+        this.meta = metaSemanal;
         this.leccionesCompletadas = 0;
     }
 
@@ -24,14 +23,14 @@ public class DesafioMensual extends Desafio {
         return actividadesCompletadas >= objetivoMensual;
     }
 
-    public void actualizarActividades(Integer cantidad) {
+    public void actualizarAvance(Integer cantidad) {
         this.actividadesCompletadas += cantidad;
         System.out.println(">> Actividades mensuales: " + actividadesCompletadas + "/" + objetivoMensual);
     }
 
     public void registrarLeccion() {
         this.leccionesCompletadas++;
-        actualizarActividades(1);
+        actualizarAvance(1);
     }
 
     public Double getProgreso() {

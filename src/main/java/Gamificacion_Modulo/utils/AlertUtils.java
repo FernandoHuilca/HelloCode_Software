@@ -1,4 +1,4 @@
-package Gamificacion_Modulo.GUI.utils;
+package Gamificacion_Modulo.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
