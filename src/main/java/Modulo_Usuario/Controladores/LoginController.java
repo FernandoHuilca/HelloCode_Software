@@ -1,10 +1,12 @@
 package Modulo_Usuario.Controladores;
 
 import Modulo_Usuario.Clases.Usuario;
+import Modulo_Usuario.Clases.Roles;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -78,15 +80,29 @@ public class LoginController {
 
         if (usuarioEncontrado != null) {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/home.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 360, 720);
-
-                Stage stage = new Stage();
-                stage.setTitle("Hello Code Software - Panel Principal");
-                stage.setScene(scene);
-                stage.setResizable(false);
-                stage.show();
-
+                // Si es usuario normal, va a homeUsuario.fxml
+                if (usuarioEncontrado.getRol() == Roles.USUARIO) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
+                    Parent root = fxmlLoader.load();
+                    HomeUsuarioController homeController = fxmlLoader.getController();
+                    homeController.setUsuario(usuarioEncontrado);
+                    Scene scene = new Scene(root, 360, 640);
+                    Stage stage = new Stage();
+                    stage.setTitle("Hello Code Software - Panel Usuario");
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                } else {
+                    // Cualquier otro rol va a home.fxml
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/home.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Scene scene = new Scene(root, 360, 640);
+                    Stage stage = new Stage();
+                    stage.setTitle("Hello Code Software - Panel Admin");
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                }
                 Stage thisStage = (Stage) usuarioField.getScene().getWindow();
                 thisStage.close();
             } catch (Exception e) {

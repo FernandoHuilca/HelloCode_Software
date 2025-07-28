@@ -1,7 +1,6 @@
 package Modulo_Usuario.Controladores;
 
 
-import MetodosGlobales.MetodosFrecuentes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +21,9 @@ public class HomeController {
 
     @FXML
     private void abrirUsuarios(MouseEvent event) {
-        try {
+        try {/*
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/crud.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
+            Scene scene = new Scene(fxmlLoader.load(), 360, 640);
 
             Stage stage = new Stage();
             stage.setTitle("Hello Code Software - Módulo Usuarios");
@@ -34,7 +33,8 @@ public class HomeController {
 
             // Cerrar la pantalla actual
             Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            thisStage.close();
+            thisStage.close();*/
+            mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
         } catch (Exception e) {
             e.printStackTrace();
             mostrarError("Error al abrir el módulo de usuarios: " + e.getMessage());
@@ -43,39 +43,49 @@ public class HomeController {
 
     @FXML
     private void abrirEjercicios(MouseEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Ejercicios/views/SeleccionMultiple-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
-
-            Stage stage = new Stage();
-            stage.setTitle("Hello Code Software - Módulo Ejercicios");
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-
-            // Cerrar la pantalla actual
-            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            thisStage.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            mostrarError("Error al abrir el módulo de usuarios: " + e.getMessage());
-        }
 
         // Aquí puedes cargar el módulo de ejercicios cuando lo tengas
-        //mostrarMensaje("Módulo Ejercicios", "Este módulo estará disponible próximamente.");
+        mostrarMensaje("Módulo Ejercicios", "Este módulo estará disponible próximamente.");
 
     }
 
     @FXML
     private void abrirReportes(MouseEvent event) {
+        try {
+            /*
+            // PASO 1: Inicializar el backend del módulo de gamificación
+            System.out.println(">>> Navegando al módulo de gamificación...");
+            Gamificacion_Modulo.Main.inicializarDesdeModuloExterno();
 
-        // Aquí puedes cargar el módulo de reportes cuando lo tengas
-        mostrarMensaje("Módulo Reportes", "Este módulo estará disponible próximamente.");
+            // PASO 2: Cargar la interfaz gráfica
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
+
+            Stage stage = new Stage();
+            stage.setTitle("Hello Code Software - Gamificación");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            System.out.println(">>> Módulo de gamificación abierto con " +
+                    Gamificacion_Modulo.Main.getUsuarios().size() + " usuarios cargados");
+
+            // Cerrar la pantalla actual
+            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            thisStage.close();
+
+             */
+            mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarError("Error al abrir el módulo de gamificación: " + e.getMessage());
+        }
     }
 
     @FXML
     private void abrirComunidad(MouseEvent event) {
         try {
+            /*
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Comunidad/Views/Comunidad.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 360, 640);
 
@@ -89,6 +99,8 @@ public class HomeController {
             // Cerrar la pantalla actual
             Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             thisStage.close();
+             */
+            mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
         } catch (Exception e) {
             e.printStackTrace();
 

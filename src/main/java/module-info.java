@@ -1,4 +1,5 @@
 module Modulo_Ejercicio {
+    requires transitive javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
@@ -25,6 +26,8 @@ module Modulo_Ejercicio {
     opens Comunidad_Modulo.controladores to javafx.fxml;
     opens Comunidad_Modulo.App to javafx.fxml, javafx.graphics;
 
+    opens GestorEjercicios.Controllers to javafx.fxml;
+
     // Exportaciones
     exports GestionAprendizaje_Modulo.Aplicacion;
     exports GestionAprendizaje_Modulo.Ruta;
@@ -49,6 +52,10 @@ module Modulo_Ejercicio {
     exports Modulo_Usuario.Clases;
     exports Modulo_Usuario.Controladores;
     exports Modulo_Usuario.application;
+
+    exports GestorEjercicios.Controllers;
+    exports GestorEjercicios.filtros;
+    exports GestorEjercicios.model;
 
     exports MetodosGlobales;
 }
