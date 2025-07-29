@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class AsignarDesafioController implements Initializable {
-    
+
     @FXML private VBox mainVBox;
     @FXML private ComboBox<String> cbUsuarios;
     @FXML private Label lblInfoUsuario;
@@ -32,32 +32,32 @@ public class AsignarDesafioController implements Initializable {
     @FXML private VBox vboxDesafiosActivos;
     @FXML private Button btnCancelar;
     @FXML private Button btnAsignar;
-    
+
     private List<Usuario> usuarios;
     private List<Desafio> desafiosDisponibles;
     private List<RadioButton> radioButtonsDesafios;
     private ToggleGroup toggleGroupDesafios;
     private Usuario usuarioSeleccionado;
     private Desafio desafioSeleccionado;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         usuarios = Main.getUsuarios();
-        desafiosDisponibles = Main.getDesafiosDisponibles();
+        desafiosDisponibles = Desafio.getDesafiosDisponibles();
         radioButtonsDesafios = new ArrayList<>();
         toggleGroupDesafios = new ToggleGroup();
-        
+
         cargarUsuarios();
         cargarDesafiosDisponibles();
         configurarEventos();
-        
+
         System.out.println(">>> Asignador de desafíos inicializado");
         System.out.println(">>> Usuarios disponibles: " + usuarios.size());
         System.out.println(">>> Desafíos disponibles: " + desafiosDisponibles.size());
     }
-    
 
-    
+
+
     private void cargarUsuarios() {
         cbUsuarios.getItems().clear();
         for (int i = 0; i < usuarios.size(); i++) {
@@ -65,27 +65,27 @@ public class AsignarDesafioController implements Initializable {
             cbUsuarios.getItems().add((i+1) + " - " + usuario.getNombre());
         }
     }
-    
+
     private void cargarDesafiosDisponibles() {
         vboxDesafiosDisponibles.getChildren().clear();
         radioButtonsDesafios.clear();
-        
+
         if (desafiosDisponibles.isEmpty()) {
             Label lblVacio = new Label("No hay desafíos disponibles para asignar");
             lblVacio.setStyle("-fx-text-fill: #666666;");
             vboxDesafiosDisponibles.getChildren().add(lblVacio);
-            
+
             Label lblInstruccion = new Label("Crea desafíos usando las otras opciones del panel de administración");
             lblInstruccion.setStyle("-fx-text-fill: #888888; -fx-font-size: 11px;");
             lblInstruccion.setWrapText(true);
             vboxDesafiosDisponibles.getChildren().add(lblInstruccion);
             return;
         }
-        
+
         for (Desafio desafio : desafiosDisponibles) {
             String tipo = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
             String nombreDesafio = "";
-            
+
             if (desafio instanceof DesafioSemanal) {
                 DesafioSemanal ds = (DesafioSemanal) desafio;
                 nombreDesafio = "Desafío Semanal - " + ds.getMetaSemanal() + " lecciones";
@@ -94,28 +94,28 @@ public class AsignarDesafioController implements Initializable {
                 Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
                 nombreDesafio = "Desafío Mensual - " + objetivo + " actividades";
             }
-            
+
             RadioButton rb = new RadioButton(nombreDesafio + " (" + tipo + ")");
             rb.setToggleGroup(toggleGroupDesafios);
             rb.setWrapText(true);
             rb.setUserData(desafio);
-            
+
             // Agregar información de logros
-            Label lblLogros = new Label("   Logros asociados: " + desafio.getLogrosDisponibles().size() + 
-                                      " | Estado: " + (desafio.getEstaActivo() ? "Activo" : "Inactivo"));
+            Label lblLogros = new Label("   Logros asociados: " + desafio.getLogrosDisponibles().size() +
+                    " | Estado: " + (desafio.getEstaActivo() ? "Activo" : "Inactivo"));
             lblLogros.setStyle("-fx-text-fill: #666666; -fx-font-size: 11px;");
             lblLogros.setWrapText(true);
-            
+
             radioButtonsDesafios.add(rb);
             vboxDesafiosDisponibles.getChildren().addAll(rb, lblLogros);
-            
+
             // Espaciado entre desafíos
             if (desafiosDisponibles.indexOf(desafio) < desafiosDisponibles.size() - 1) {
                 vboxDesafiosDisponibles.getChildren().add(new Label(" ")); // Espaciador
             }
         }
     }
-    
+
     private void configurarEventos() {
         // Evento al seleccionar usuario
         cbUsuarios.setOnAction(e -> {
@@ -130,7 +130,7 @@ public class AsignarDesafioController implements Initializable {
                 }
             }
         });
-        
+
         // Evento al seleccionar desafío
         toggleGroupDesafios.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if (newToggle != null) {
@@ -142,31 +142,31 @@ public class AsignarDesafioController implements Initializable {
             }
         });
     }
-    
+
     private void actualizarInfoUsuario() {
         if (usuarioSeleccionado != null) {
             ProgresoEstudiante progreso = encontrarProgresoPorUsuario(usuarioSeleccionado);
             if (progreso != null) {
                 lblInfoUsuario.setText(String.format(
-                    "👤 Usuario: %s | ✉ Email: %s | 💎 Puntos: %d | 🏆 Logros: %d",
-                    usuarioSeleccionado.getNombre(),
-                    usuarioSeleccionado.getEmail(),
-                    progreso.getPuntosTotal(),
-                    progreso.getLogros().size()
+                        "👤 Usuario: %s | ✉ Email: %s | 💎 Puntos: %d | 🏆 Logros: %d",
+                        usuarioSeleccionado.getNombre(),
+                        usuarioSeleccionado.getEmail(),
+                        progreso.getPuntosTotal(),
+                        progreso.getLogros().size()
                 ));
                 lblInfoUsuario.setStyle("-fx-text-fill: #4CAF50;");
             }
         }
     }
-    
+
     private void cargarDesafiosActivos() {
         vboxDesafiosActivos.getChildren().clear();
-        
+
         if (usuarioSeleccionado != null) {
             ProgresoEstudiante progreso = encontrarProgresoPorUsuario(usuarioSeleccionado);
             if (progreso != null) {
                 List<Desafio> activos = progreso.getDesafiosActivos();
-                
+
                 if (activos.isEmpty()) {
                     Label lblVacio = new Label("Este usuario no tiene desafíos activos");
                     lblVacio.setStyle("-fx-text-fill: #666666;");
@@ -175,11 +175,11 @@ public class AsignarDesafioController implements Initializable {
                     Label lblTitulo = new Label("Desafíos activos:");
                     lblTitulo.setStyle("-fx-font-weight: bold;");
                     vboxDesafiosActivos.getChildren().add(lblTitulo);
-                    
+
                     for (Desafio desafio : activos) {
                         String tipo = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
                         String nombreDesafio = "";
-                        
+
                         if (desafio instanceof DesafioSemanal) {
                             DesafioSemanal ds = (DesafioSemanal) desafio;
                             nombreDesafio = "Desafío Semanal - " + ds.getMetaSemanal() + " lecciones";
@@ -188,7 +188,7 @@ public class AsignarDesafioController implements Initializable {
                             Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
                             nombreDesafio = "Desafío Mensual - " + objetivo + " actividades";
                         }
-                        
+
                         Label lblDesafio = new Label("• " + nombreDesafio + " (" + tipo + ")");
                         vboxDesafiosActivos.getChildren().add(lblDesafio);
                     }
@@ -196,12 +196,12 @@ public class AsignarDesafioController implements Initializable {
             }
         }
     }
-    
+
     private void validarFormulario() {
         boolean valid = usuarioSeleccionado != null && desafioSeleccionado != null;
         btnAsignar.setDisable(!valid);
     }
-    
+
     @FXML
     private void onAsignarClicked() {
         try {
@@ -209,77 +209,77 @@ public class AsignarDesafioController implements Initializable {
                 mostrarError("Selecciona un usuario");
                 return;
             }
-            
+
             if (desafioSeleccionado == null) {
                 mostrarError("Selecciona un desafío");
                 return;
             }
-            
+
             boolean asignado = asignarDesafioAUsuario(desafioSeleccionado, usuarioSeleccionado);
-            
+
             if (asignado) {
                 String tipoDesafio = desafioSeleccionado instanceof DesafioSemanal ? "Semanal" : "Mensual";
                 mostrarExito("¡Éxito!", "El desafío " + tipoDesafio +
-                    " ha sido asignado a " + usuarioSeleccionado.getNombre() + " exitosamente.");
-                
+                        " ha sido asignado a " + usuarioSeleccionado.getNombre() + " exitosamente.");
+
                 // Actualizar la interfaz
                 cargarDesafiosActivos();
                 actualizarInfoUsuario();
-                
+
                 // Limpiar selección
                 toggleGroupDesafios.selectToggle(null);
                 lblDesafioSeleccionado.setText("Selecciona un desafío de la lista");
                 lblDesafioSeleccionado.setStyle("-fx-text-fill: #666666;");
-                
+
                 System.out.println(">>> Desafío asignado exitosamente a " + usuarioSeleccionado.getNombre());
             } else {
                 mostrarError("No se pudo asignar el desafío. Verifica que no esté ya asignado.");
             }
-            
+
         } catch (Exception e) {
             mostrarError("Error al asignar desafío: " + e.getMessage());
             System.err.println("Error en asignación: " + e.getMessage());
         }
     }
-    
+
     private boolean asignarDesafioAUsuario(Desafio desafio, Usuario usuario) {
         ProgresoEstudiante progreso = encontrarProgresoPorUsuario(usuario);
         if (progreso == null) {
             return false;
         }
-        
+
         // Verificar que no tenga ya este desafío < Por implementar
 
-        
+
         // Activar y agregar el desafío
         desafio.activar();
         progreso.agregarDesafio(desafio);
-        
+
         String tipoDesafio = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
         System.out.println(">>> Desafío " + tipoDesafio + " asignado a " + usuario.getNombre());
         return true;
     }
-    
+
     @FXML
     private void onCancelarClicked() {
         System.out.println(">>> Cancelando asignación de desafío");
         cerrarVentana();
     }
-    
+
     private Usuario encontrarUsuarioPorIndice(int indice) {
         if (indice >= 0 && indice < usuarios.size()) {
             return usuarios.get(indice);
         }
         return null;
     }
-    
+
     private ProgresoEstudiante encontrarProgresoPorUsuario(Usuario usuario) {
-        return Main.getProgresos().stream()
-            .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
-            .findFirst()
-            .orElse(null);
+        return ProgresoEstudiante.getProgresos().stream()
+                .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
+                .findFirst()
+                .orElse(null);
     }
-    
+
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -287,7 +287,7 @@ public class AsignarDesafioController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-    
+
     private void mostrarExito(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -295,18 +295,18 @@ public class AsignarDesafioController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-    
+
     // Método para refrescar los datos cuando se abra la ventana
     public void refrescarDatos() {
         usuarios = Main.getUsuarios();
-        desafiosDisponibles = Main.getDesafiosDisponibles();
-        
+        desafiosDisponibles = Desafio.getDesafiosDisponibles();
+
         cargarUsuarios();
         cargarDesafiosDisponibles();
-        
+
         System.out.println(">>> Datos refrescados - Usuarios: " + usuarios.size() + ", Desafíos: " + desafiosDisponibles.size());
     }
-    
+
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
