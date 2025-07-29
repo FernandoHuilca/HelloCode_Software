@@ -112,7 +112,7 @@ public class Usuario extends UsuarioBase {
                 try {
                     usuario.setRol(Roles.valueOf(datos[5]));
                 } catch (Exception e) {
-                    usuario.setRol(Roles.ADMIN_USUARIO);
+                    usuario.setRol(Roles.USUARIO);
                 }
             }
             return usuario;
