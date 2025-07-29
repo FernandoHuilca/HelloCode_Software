@@ -67,5 +67,9 @@ module Modulo_Ejercicio {
     exports Gamificacion_Modulo.utils;
 
     exports MetodosGlobales;
+
+    //Exports y opens del nuevo modulo de lecciones
+    exports Nuevo_Modulo_Leccion.application;
+    opens Nuevo_Modulo_Leccion.controllers to javafx.graphics, javafx.fxml;
 }
 

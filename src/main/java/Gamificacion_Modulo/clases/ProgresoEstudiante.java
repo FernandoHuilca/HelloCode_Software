@@ -10,6 +10,9 @@ public class ProgresoEstudiante {
     private Usuario usuario;
     private List<Logro> logrosDesbloqueados;
     private Integer puntosTotal;
+    public void setPuntosTotal(Integer puntosTotal) {
+        this.puntosTotal = puntosTotal;
+    }
     private HashMap<String, Double> listaDesafios; // Hash<id, porcentaje>
     private Integer desafiosCompletados;
     private List<Desafio> desafiosActivos = new ArrayList<>();
