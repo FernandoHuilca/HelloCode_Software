@@ -42,7 +42,7 @@ public class HomeUsuarioController {
     private void irARanking(ActionEvent event) {
         try {
             // PASO 1: Inicializar el backend del módulo de gamificación
-            Gamificacion_Modulo.clases.Main.inicializarDesdeModuloExterno();
+            Main.inicializarDesdeModuloExterno();
             // Cargar Ranking.fxml
             Main.cambiarEscena("/Gamificacion_Modulo/fxml/Ranking.fxml");
         } catch (Exception e) {
@@ -102,7 +102,7 @@ public class HomeUsuarioController {
     private void irAPerfil(ActionEvent event) {
         try {
             // PASO 1: Inicializar el backend del módulo de gamificación
-            Gamificacion_Modulo.clases.Main.inicializarDesdeModuloExterno();
+            Main.inicializarDesdeModuloExterno();
 
             // PASO 2: Cargar la interfaz gráfica
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));

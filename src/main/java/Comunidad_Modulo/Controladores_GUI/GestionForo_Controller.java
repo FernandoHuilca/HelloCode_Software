@@ -1929,7 +1929,7 @@ public class GestionForo_Controller implements Initializable {
         StringBuilder infoCompartir = new StringBuilder();
 
         if (contexto.tieneComunidadActiva()) {
-            Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
+            Comunidad comunidad = contexto.getComunidadActual();
             ForoGeneral foro = comunidad.getForoGeneral();
             UsuarioComunidad usuarioActual = SesionManager.getInstancia().getUsuarioComunidad();
 
@@ -2116,7 +2116,7 @@ public class GestionForo_Controller implements Initializable {
         StringBuilder estado = new StringBuilder();
 
         if (contexto.tieneComunidadActiva()) {
-            Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
+            Comunidad comunidad = contexto.getComunidadActual();
             estado.append("✅ Comunidad: ").append(comunidad.getNombre());
 
             int usuariosConectados = comunidad.getUsuariosConectados().size();
