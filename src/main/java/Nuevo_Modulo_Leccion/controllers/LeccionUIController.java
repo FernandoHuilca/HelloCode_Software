@@ -3,15 +3,14 @@ package Nuevo_Modulo_Leccion.controllers;
 import MetodosGlobales.MetodosFrecuentes;
 import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
-import Modulo_Ejercicios.exercises.*;
+import Modulo_Ejercicios.exercises.EjercicioBase;
+import Modulo_Ejercicios.exercises.EjercicioCompletarCodigo;
+import Modulo_Ejercicios.exercises.EjercicioSeleccion;
 import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LeccionUIController {
     
@@ -79,6 +78,19 @@ public class LeccionUIController {
     public static void avanzarAlSiguienteEjercicio() {
         indiceEjercicioActual++;
         mostrarSiguienteEjercicio();
+    }
+
+
+    //Obtiene el índice del ejercicio actual para mostrar progreso
+
+    public static int getIndiceEjercicioActual() {
+        return indiceEjercicioActual;
+    }
+
+    // Obtiene el total de ejercicios en la lección actual
+
+    public static int getTotalEjercicios() {
+        return leccionActual != null ? leccionActual.getListEjercicios().size() : 0;
     }
     
 
