@@ -1,6 +1,7 @@
 package Modulo_Usuario.Controladores;
 
 
+import MetodosGlobales.SesionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +65,6 @@ public class HomeController {
     @FXML
     private void abrirComunidad(MouseEvent event) {
         try {
-            /*
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Comunidad/Views/Comunidad.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 360, 640);
 
@@ -78,8 +78,7 @@ public class HomeController {
             // Cerrar la pantalla actual
             Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             thisStage.close();
-             */
-            mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
+
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -99,6 +98,7 @@ public class HomeController {
     @FXML
     private void cerrarSesion(ActionEvent event) {
         try {
+            SesionManager.getInstancia().cerrarSesion();
             // Volver a la pantalla de login
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/login.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 360, 720);
