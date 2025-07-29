@@ -1,6 +1,6 @@
-package Gamificacion_Modulo.GUI.controllers;
+package Gamificacion_Modulo.controllers;
 
-import Gamificacion_Modulo.Main;
+import Gamificacion_Modulo.clases.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +31,8 @@ public class DesafiosController {
     @FXML
     private Button navButton3;
 
+
+    //TODO: CORREGIR LA LOGICA DE NAVEGACIÓN PARA QUE NO SE CREE UNA NUEVA INSTANCIA DEL CONTROLADOR CADA VEZ QUE SE NAVEGA A LA MISMA PANTALLA
     // Botón 1 - Desafíos (current) - se queda en esta pantalla
     @FXML
     private void navButton1() {
@@ -64,6 +66,8 @@ public class DesafiosController {
         }
     }
 
+
+    //TODO: Es necesario imprimir?
     // Método de inicialización
     @FXML
     private void initialize() {

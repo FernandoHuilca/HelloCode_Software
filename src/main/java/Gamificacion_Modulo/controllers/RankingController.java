@@ -1,4 +1,4 @@
-package Gamificacion_Modulo.GUI.controllers;
+package Gamificacion_Modulo.controllers;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import Gamificacion_Modulo.Main;
-import Gamificacion_Modulo.ProgresoEstudiante;
+import Gamificacion_Modulo.clases.Main;
+import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,10 +29,8 @@ public class RankingController implements Initializable {
     @FXML private Label titleLabel;
     @FXML private ComboBox<String> usuarioSelector;
     @FXML private VBox rankingEntriesContainer;
-    @FXML private Button navButton1;
-    @FXML private Button navButton2; 
-    @FXML private Button navButton3;
 
+    @FXML private Button volverComunidadBtn;
     // Usuario actual (será establecido dinámicamente)
     private String currentUserName = null;
     private int usuarioActualIndex = 0;
@@ -40,12 +38,9 @@ public class RankingController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println(">>> Controlador de Ranking inicializado");
+
         
-        // Registrar este controlador para recibir notificaciones
-        Main.registrarRankingController(this);
-        
-        // Configurar hover effects para botones
-        configurarHoverEffects();
+
         
         // Cargar usuarios en ComboBox
         cargarUsuarios();
@@ -54,12 +49,7 @@ public class RankingController implements Initializable {
         cargarRanking();
     }
     
-    private void configurarHoverEffects() {
-        // Hover effects para botones de navegación
-        configurarHoverButton(navButton1, "#a6b1e1", "#9fa8da");
-        configurarHoverButton(navButton2, "#a6b1e1", "#9fa8da");
-        // navButton3 ya está marcado como actual con color diferente
-    }
+
     
     private void configurarHoverButton(Button button, String normalColor, String hoverColor) {
         button.setOnMouseEntered(e -> 
@@ -190,6 +180,31 @@ public class RankingController implements Initializable {
         
         titleLabel.setText("Error en el ranking");
     }
+
+
+    @FXML
+    private void regresarHomeUsuario() {
+        try {
+            System.out.println(">>> Regresando al módulo de usuarios");
+
+            // Cargar la pantalla de Home del módulo de usuarios
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
+            javafx.scene.Scene scene = new javafx.scene.Scene(fxmlLoader.load(), 360, 720);
+
+            // Obtener el Stage actual
+            javafx.stage.Stage currentStage = (javafx.stage.Stage) volverComunidadBtn.getScene().getWindow();
+
+            // Cambiar la escena
+            currentStage.setTitle("Hello Code Software - Panel Principal");
+            currentStage.setScene(scene);
+            currentStage.centerOnScreen();
+
+        } catch (Exception e) {
+            System.err.println("Error al volver al módulo de usuarios: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
     
     // Métodos de navegación
     @FXML
@@ -280,9 +295,4 @@ public class RankingController implements Initializable {
         public int getPuntos() { return puntos; }
     }
 
-    // Método para limpiar recursos al cerrar
-    public void cleanup() {
-        Main.desregistrarRankingController();
-        System.out.println(">>> Controlador de Ranking limpiado");
-    }
 } 

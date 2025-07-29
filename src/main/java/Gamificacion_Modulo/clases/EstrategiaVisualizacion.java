@@ -1,4 +1,4 @@
-package Gamificacion_Modulo;
+package Gamificacion_Modulo.clases;
 
 public interface EstrategiaVisualizacion {
     void visualizar(Estadistica estadistica);

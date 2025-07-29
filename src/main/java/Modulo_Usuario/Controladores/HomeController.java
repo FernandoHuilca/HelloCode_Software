@@ -52,33 +52,12 @@ public class HomeController {
     @FXML
     private void abrirReportes(MouseEvent event) {
         try {
-            /*
-            // PASO 1: Inicializar el backend del módulo de gamificación
-            System.out.println(">>> Navegando al módulo de gamificación...");
-            Gamificacion_Modulo.Main.inicializarDesdeModuloExterno();
-
-            // PASO 2: Cargar la interfaz gráfica
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
-
-            Stage stage = new Stage();
-            stage.setTitle("Hello Code Software - Gamificación");
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-
-            System.out.println(">>> Módulo de gamificación abierto con " +
-                    Gamificacion_Modulo.Main.getUsuarios().size() + " usuarios cargados");
-
-            // Cerrar la pantalla actual
-            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            thisStage.close();
-
-             */
-            mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
+            System.out.println(">>> Abriendo panel de administración...");
+            Gamificacion_Modulo.clases.Main.inicializarDesdeModuloExterno();
+            Gamificacion_Modulo.controllers_admin.AdminMainController.mostrarVentanaAdmin();
         } catch (Exception e) {
+            System.err.println("Error al abrir panel de administración: " + e.getMessage());
             e.printStackTrace();
-            mostrarError("Error al abrir el módulo de gamificación: " + e.getMessage());
         }
     }
 
