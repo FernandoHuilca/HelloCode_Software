@@ -61,6 +61,27 @@ public class GestionChat_Controller implements Initializable {
     private void inicializarSistema() {
         // Obtener la instancia del contexto (singleton)
         this.contexto = ContextoSistema.getInstance();
+        
+        // Forzar la recarga de datos desde persistencia
+        System.out.println("🔄 Forzando recarga de datos desde persistencia...");
+        contexto.cargarDatosDesdePersistencia();
+        
+        // Solo mostrar información de debug si hay una comunidad activa
+        if (contexto.tieneComunidadActiva()) {
+            Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
+            int totalChats = comunidad.getChatsPrivados().size();
+            System.out.println("✅ Sistema inicializado - Chats disponibles: " + totalChats);
+            
+            // Debug adicional para verificar usuario actual
+            UsuarioComunidad usuarioActual = obtenerUsuarioActual();
+            if (usuarioActual != null) {
+                System.out.println("🔍 Usuario actual identificado: " + usuarioActual.getUsername() + " (" + usuarioActual.getNombre() + ")");
+            } else {
+                System.out.println("⚠️ No se pudo identificar usuario actual en inicialización");
+            }
+        } else {
+            System.out.println("⚠️ No hay comunidad activa después de cargar datos");
+        }
     }
 
     /**
@@ -94,7 +115,7 @@ public class GestionChat_Controller implements Initializable {
     }
 
     /**
-     * Método FXML para crear un chat privado - siguiendo lógica de consola
+     * Método FXML para crear un chat privado - mejorado para usar miembros de comunidad
      */
     @FXML
     private void crearChatPrivado() {
@@ -105,39 +126,59 @@ public class GestionChat_Controller implements Initializable {
                 return;
             }
 
-            // Obtener usuarios conectados
-            List<UsuarioComunidad> usuariosConectados = contexto.getComunidadActual().getUsuariosConectados();
-            if (usuariosConectados.size() < 2) {
-                mostrarMensajeError("⚠️ Se necesitan al menos 2 usuarios conectados para crear un chat.");
+            // Obtener usuario actual automáticamente
+            UsuarioComunidad usuarioActual = obtenerUsuarioActual();
+            if (usuarioActual == null) {
+                mostrarMensajeError("⚠️ No se pudo identificar el usuario actual.");
                 return;
             }
 
-            // Mostrar usuarios disponibles
-            StringBuilder usuariosInfo = new StringBuilder("=== USUARIOS CONECTADOS ===\n\n");
-            for (int i = 0; i < usuariosConectados.size(); i++) {
-                UsuarioComunidad usuario = usuariosConectados.get(i);
-                usuariosInfo.append(String.format("%d. %s (%s)\n",
-                        (i + 1), usuario.getNombre(), usuario.getNivelJava()));
+            // Obtener miembros de la comunidad (excluyendo al usuario actual)
+            List<UsuarioComunidad> miembrosComunidad = new ArrayList<>();
+            for (UsuarioComunidad miembro : contexto.getComunidadActual().getUsuariosMiembros()) {
+                if (!miembro.getUsername().equals(usuarioActual.getUsername())) {
+                    miembrosComunidad.add(miembro);
+                }
+            }
+            
+            // También incluir usuarios conectados que no sean el actual
+            for (UsuarioComunidad conectado : contexto.getComunidadActual().getUsuariosConectados()) {
+                if (!conectado.getUsername().equals(usuarioActual.getUsername()) && 
+                    !miembrosComunidad.contains(conectado)) {
+                    miembrosComunidad.add(conectado);
+                }
             }
 
-            // Solicitar cantidad de participantes
-            TextInputDialog cantidadDialog = new TextInputDialog();
-            cantidadDialog.setTitle("Crear Chat Privado");
-            cantidadDialog.setHeaderText(usuariosInfo.toString());
-            cantidadDialog.setContentText("¿Cuántos participantes tendrá el chat?");
+            if (miembrosComunidad.isEmpty()) {
+                mostrarMensajeError("⚠️ No hay otros miembros en la comunidad para chatear.");
+                return;
+            }
 
-            Optional<String> cantidadResult = cantidadDialog.showAndWait();
-            if (!cantidadResult.isPresent()) return;
+            // Mostrar miembros disponibles
+            StringBuilder miembrosInfo = new StringBuilder("=== MIEMBROS DE LA COMUNIDAD ===\n\n");
+            miembrosInfo.append("👤 Usuario actual: ").append(usuarioActual.getNombre()).append("\n\n");
+            miembrosInfo.append("💬 Seleccione con quién quiere chatear:\n\n");
+            
+            for (int i = 0; i < miembrosComunidad.size(); i++) {
+                UsuarioComunidad miembro = miembrosComunidad.get(i);
+                miembrosInfo.append(String.format("%d. %s (%s) - Nivel: %s\n",
+                        (i + 1), miembro.getNombre(), miembro.getUsername(), miembro.getNivelJava()));
+            }
 
-            int cantidadParticipantes;
+            // Seleccionar destinatario del mensaje
+            TextInputDialog destinatarioDialog = new TextInputDialog();
+            destinatarioDialog.setTitle("Nuevo Chat Privado");
+            destinatarioDialog.setHeaderText(miembrosInfo.toString());
+            destinatarioDialog.setContentText("Seleccione el destinatario (número):");
+
+            Optional<String> destinatarioResult = destinatarioDialog.showAndWait();
+            if (!destinatarioResult.isPresent()) return;
+
+            int indiceDestinatario;
             try {
-                cantidadParticipantes = Integer.parseInt(cantidadResult.get().trim());
-                if (cantidadParticipantes < 2) {
-                    mostrarMensajeError("❌ Se necesitan al menos 2 participantes.");
-                    return;
-                }
-                if (cantidadParticipantes > usuariosConectados.size()) {
-                    mostrarMensajeError("❌ No hay suficientes usuarios conectados.");
+                indiceDestinatario = Integer.parseInt(destinatarioResult.get().trim()) - 1;
+                if (indiceDestinatario < 0 || indiceDestinatario >= miembrosComunidad.size()) {
+                    mostrarMensajeError("❌ Índice de miembro inválido.");
                     return;
                 }
             } catch (NumberFormatException e) {
@@ -145,62 +186,43 @@ public class GestionChat_Controller implements Initializable {
                 return;
             }
 
-            // Seleccionar participantes uno por uno
-            List<UsuarioComunidad> participantes = new ArrayList<>();
-            for (int i = 0; i < cantidadParticipantes; i++) {
-                // Mostrar usuarios disponibles (excluyendo ya seleccionados)
-                StringBuilder disponiblesInfo = new StringBuilder("=== SELECCIONAR PARTICIPANTE " + (i + 1) + " ===\n\n");
-                List<UsuarioComunidad> disponibles = new ArrayList<>();
+            UsuarioComunidad destinatario = miembrosComunidad.get(indiceDestinatario);
 
-                for (int j = 0; j < usuariosConectados.size(); j++) {
-                    UsuarioComunidad usuario = usuariosConectados.get(j);
-                    if (!participantes.contains(usuario)) {
-                        disponibles.add(usuario);
-                        disponiblesInfo.append(String.format("%d. %s (%s)\n",
-                                (disponibles.size()), usuario.getNombre(), usuario.getNivelJava()));
-                    }
-                }
-
-                TextInputDialog participanteDialog = new TextInputDialog();
-                participanteDialog.setTitle("Crear Chat Privado");
-                participanteDialog.setHeaderText(disponiblesInfo.toString());
-                participanteDialog.setContentText("Seleccione participante " + (i + 1) + " (número):");
-
-                Optional<String> participanteResult = participanteDialog.showAndWait();
-                if (!participanteResult.isPresent()) return;
-
-                try {
-                    int indiceParticipante = Integer.parseInt(participanteResult.get().trim()) - 1;
-                    if (indiceParticipante < 0 || indiceParticipante >= disponibles.size()) {
-                        mostrarMensajeError("❌ Selección inválida.");
-                        return;
-                    }
-
-                    participantes.add(disponibles.get(indiceParticipante));
-                } catch (NumberFormatException e) {
-                    mostrarMensajeError("❌ Debe ingresar un número válido.");
-                    return;
-                }
-            }
-
-            // Crear el chat
-            try {
-                contexto.getComunidadActual().iniciarChatPrivado(participantes);
-
-                StringBuilder participantesNombres = new StringBuilder();
-                for (int i = 0; i < participantes.size(); i++) {
-                    participantesNombres.append(participantes.get(i).getNombre());
-                    if (i < participantes.size() - 1) {
-                        participantesNombres.append(", ");
-                    }
-                }
-
-                mostrarMensajeExito("✅ Chat privado creado exitosamente con participantes: " + participantesNombres.toString());
+            // Verificar si ya existe un chat entre estos usuarios
+            ChatPrivado chatExistente = buscarChatExistente(usuarioActual, destinatario);
+            if (chatExistente != null) {
+                mostrarMensajeInfo("ℹ️ Ya existe un chat con " + destinatario.getNombre() + ". Puede enviar mensajes directamente.");
                 actualizarInformacion();
-
-            } catch (Exception e) {
-                mostrarMensajeError("❌ Error al crear el chat: " + e.getMessage());
+                return;
             }
+
+            // Crear el chat privado
+            List<UsuarioComunidad> participantes = new ArrayList<>();
+            participantes.add(usuarioActual);
+            participantes.add(destinatario);
+
+            ChatPrivado nuevoChat = new ChatPrivado(participantes);
+            
+            // Agregar el chat a la comunidad usando el método oficial
+            Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
+            comunidad.agregarChatPrivado(nuevoChat);
+            
+            // Verificar que se agregó correctamente
+            int totalChatsPostAgregar = comunidad.getChatsPrivados().size();
+            System.out.println("🔍 Chats después de agregar a la comunidad: " + totalChatsPostAgregar);
+
+            // Guardar en persistencia
+            contexto.guardarChatPrivado(comunidad, nuevoChat);
+
+            // Verificar una vez más después de guardar
+            int totalChatsPostGuardado = contexto.getComunidadActual().getChatsPrivados().size();
+            System.out.println("🔍 Chats después de guardar en persistencia: " + totalChatsPostGuardado);
+
+            mostrarMensajeExito("✅ Chat privado creado exitosamente con " + destinatario.getNombre());
+            
+            // Actualización inmediata de la interfaz - sin Platform.runLater
+            actualizarInformacion();
+            System.out.println("🔄 Interfaz actualizada después de crear chat");
 
         } catch (Exception e) {
             mostrarMensajeError("❌ Error al crear chat privado: " + e.getMessage());
@@ -220,6 +242,8 @@ public class GestionChat_Controller implements Initializable {
             }
 
             List<ChatPrivado> chats = contexto.getComunidadActual().getChatsPrivados();
+            System.out.println("🔍 Chats detectados al enviar mensaje: " + chats.size());
+            
             if (chats.isEmpty()) {
                 mostrarMensajeError("⚠️ No hay chats privados disponibles. Primero cree uno.");
                 return;
@@ -268,46 +292,39 @@ public class GestionChat_Controller implements Initializable {
             ChatPrivado chat = chats.get(indiceChat);
             List<UsuarioComunidad> participantes = chat.getParticipantes();
 
-            // Mostrar participantes para seleccionar emisor
-            StringBuilder participantesInfo = new StringBuilder("=== PARTICIPANTES DEL CHAT ===\n\n");
-            for (int i = 0; i < participantes.size(); i++) {
-                UsuarioComunidad usuario = participantes.get(i);
-                participantesInfo.append(String.format("%d. %s (%s)\n",
-                        (i + 1), usuario.getNombre(), usuario.getNivelJava()));
-            }
-
-            // Seleccionar emisor
-            TextInputDialog emisorDialog = new TextInputDialog();
-            emisorDialog.setTitle("Enviar Mensaje");
-            emisorDialog.setHeaderText(participantesInfo.toString());
-            emisorDialog.setContentText("Seleccione el emisor (número):");
-
-            Optional<String> emisorResult = emisorDialog.showAndWait();
-            if (!emisorResult.isPresent()) return;
-
-            int indiceEmisor;
-            try {
-                indiceEmisor = Integer.parseInt(emisorResult.get().trim()) - 1;
-                if (indiceEmisor < 0 || indiceEmisor >= participantes.size()) {
-                    mostrarMensajeError("❌ Selección de emisor inválida.");
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                mostrarMensajeError("❌ Debe ingresar un número válido.");
+            // Obtener usuario actual como emisor automáticamente
+            UsuarioComunidad usuarioActual = obtenerUsuarioActual();
+            if (usuarioActual == null) {
+                mostrarMensajeError("⚠️ No se pudo identificar el usuario actual.");
                 return;
             }
 
-            UsuarioComunidad emisor = participantes.get(indiceEmisor);
+            // Verificar que el usuario actual es participante del chat usando username
+            String usernameEmisor = usuarioActual.getUsername();
+            final UsuarioComunidad emisorFinal = participantes.stream()
+                    .filter(p -> p.getUsername().equals(usernameEmisor))
+                    .findFirst()
+                    .orElse(null);
+            
+            if (emisorFinal == null) {
+                mostrarMensajeError("❌ No puedes enviar mensajes en este chat (no eres participante).");
+                System.out.println("🔍 Debug - Usuario emisor: " + usernameEmisor);
+                System.out.println("🔍 Debug - Participantes del chat: " + 
+                    participantes.stream().map(UsuarioComunidad::getUsername).reduce((a, b) -> a + ", " + b).orElse(""));
+                return;
+            }
+
+            // Mostrar información del chat y destinatarios
+            StringBuilder destinatariosInfo = new StringBuilder();
+            destinatariosInfo.append("💬 Enviando mensaje en chat con: ");
+            participantes.stream()
+                    .filter(p -> !p.getUsername().equals(emisorFinal.getUsername()))
+                    .forEach(p -> destinatariosInfo.append(p.getNombre()).append(" "));
 
             // Solicitar contenido del mensaje
             TextInputDialog mensajeDialog = new TextInputDialog();
             mensajeDialog.setTitle("Enviar Mensaje");
-            mensajeDialog.setHeaderText("Emisor: " + emisor.getNombre() + "\nEn chat con: " +
-                    participantes.stream()
-                            .filter(p -> !p.equals(emisor))
-                            .map(UsuarioComunidad::getNombre)
-                            .reduce((a, b) -> a + ", " + b)
-                            .orElse(""));
+            mensajeDialog.setHeaderText("👤 Emisor: " + emisorFinal.getNombre() + "\n" + destinatariosInfo.toString());
             mensajeDialog.setContentText("Escriba el mensaje:");
 
             Optional<String> mensajeResult = mensajeDialog.showAndWait();
@@ -320,10 +337,10 @@ public class GestionChat_Controller implements Initializable {
             // Capturar el estado inicial del moderador para detectar nuevas sanciones
             Moderador moderador = contexto.getComunidadActual().getModerador();
             List<SancionUsuario> sancionesAnteriores = new ArrayList<>(moderador.getSancionesActivas());
-            boolean estabaSancionado = moderador.usuarioEstaSancionado(emisor);
+            boolean estabaSancionado = moderador.usuarioEstaSancionado(emisorFinal);
 
             // Enviar mensaje con moderación
-            boolean mensajeEnviado = chat.enviarMensaje(contenido, emisor, moderador);
+            boolean mensajeEnviado = chat.enviarMensaje(contenido, emisorFinal, moderador);
 
             // Detectar nuevas sanciones aplicadas durante el proceso
             List<SancionUsuario> sancionesActuales = moderador.getSancionesActivas();
@@ -342,7 +359,7 @@ public class GestionChat_Controller implements Initializable {
                 if (nuevaSancion != null) {
                     String notificacion = String.format("🚫 SANCIÓN APLICADA: %s\n🚫 MENSAJE BLOQUEADO EN CHAT PRIVADO\n   Usuario: %s\n   Contenido: \"%s\"\n   Razón: Mensaje bloqueado. %s. Sanción de %d minutos aplicada.",
                             nuevaSancion.toString(),
-                            emisor.getNombre(),
+                            emisorFinal.getNombre(),
                             contenido,
                             nuevaSancion.getRazon(),
                             (int) (nuevaSancion.getFechaFin().toEpochSecond(java.time.ZoneOffset.UTC) - nuevaSancion.getFechaInicio().toEpochSecond(java.time.ZoneOffset.UTC)) / 60);
@@ -350,16 +367,16 @@ public class GestionChat_Controller implements Initializable {
                 }
             } else if (!mensajeEnviado && estabaSancionado) {
                 // Usuario ya estaba sancionado
-                SancionUsuario sancion = moderador.getSancionActiva(emisor);
+                SancionUsuario sancion = moderador.getSancionActiva(emisorFinal);
                 String notificacion = String.format("🚫 MENSAJE BLOQUEADO - Usuario %s está sancionado. Tiempo restante: %d minutos\n   Razón: %s",
-                        emisor.getNombre(), sancion.getMinutosRestantes(), sancion.getRazon());
+                        emisorFinal.getNombre(), sancion.getMinutosRestantes(), sancion.getRazon());
                 agregarNotificacionModerador(notificacion);
             }
 
             if (mensajeEnviado) {
-                String notificacion = "✅ Mensaje enviado en chat privado por " + emisor.getNombre();
+                String notificacion = "✅ Mensaje enviado en chat privado por " + emisorFinal.getNombre();
                 agregarNotificacionModerador(notificacion);
-                mostrarMensajeExito("✅ Mensaje enviado exitosamente por " + emisor.getNombre());
+                mostrarMensajeExito("✅ Mensaje enviado exitosamente por " + emisorFinal.getNombre());
             } else {
                 mostrarMensajeError("🚫 El mensaje no pudo ser enviado (contenido inapropiado o usuario sancionado).");
             }
@@ -508,6 +525,9 @@ public class GestionChat_Controller implements Initializable {
         if (contexto.tieneComunidadActiva()) {
             Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
             List<ChatPrivado> chats = comunidad.getChatsPrivados();
+            
+            // Debug para verificar chats
+            System.out.println("🔍 actualizarInformacion - Chats detectados: " + chats.size());
 
             info.append("📌 Comunidad: ").append(comunidad.getNombre()).append("\n");
             info.append("👥 Usuarios conectados: ").append(comunidad.getUsuariosConectados().size()).append("\n");
@@ -664,5 +684,46 @@ public class GestionChat_Controller implements Initializable {
             actualizarInformacion();
         }));
         timeline.play();
+    }
+
+    /**
+     * Obtiene el usuario actual de la sesión
+     */
+    private UsuarioComunidad obtenerUsuarioActual() {
+        try {
+            MetodosGlobales.SesionManager sesion = MetodosGlobales.SesionManager.getInstancia();
+            if (sesion.hayUsuarioAutenticado()) {
+                return sesion.getUsuarioComunidad();
+            }
+            
+            // Si no hay usuario en sesión, intentar obtener del primer usuario conectado
+            List<UsuarioComunidad> conectados = contexto.getComunidadActual().getUsuariosConectados();
+            if (!conectados.isEmpty()) {
+                return conectados.get(0);
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Busca si ya existe un chat privado entre dos usuarios
+     */
+    private ChatPrivado buscarChatExistente(UsuarioComunidad usuario1, UsuarioComunidad usuario2) {
+        for (ChatPrivado chat : contexto.getComunidadActual().getChatsPrivados()) {
+            List<UsuarioComunidad> participantes = chat.getParticipantes();
+            if (participantes.size() == 2) {
+                boolean tieneUsuario1 = participantes.stream()
+                        .anyMatch(p -> p.getUsername().equals(usuario1.getUsername()));
+                boolean tieneUsuario2 = participantes.stream()
+                        .anyMatch(p -> p.getUsername().equals(usuario2.getUsername()));
+                
+                if (tieneUsuario1 && tieneUsuario2) {
+                    return chat;
+                }
+            }
+        }
+        return null;
     }
 }
