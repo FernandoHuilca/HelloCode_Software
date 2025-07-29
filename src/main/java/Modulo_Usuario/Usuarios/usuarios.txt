@@ -7,3 +7,4 @@ Pr;123;pr;pr@pr.com;0;USUARIO
 prueba;123456;Prueba2;prueb2a@prueba.com;100;USUARIO
 hola;abcdefg;Hola;hola@epn.edu.ec;0;USUARIO
 JuanMateo;123456;Juan Mateo;juan.quisilema@epn.edu.ec;0;ADMINISTRADOR
+
