@@ -50,7 +50,7 @@ public class CrudController {
     private void configurarComboBoxes() {
         // Configurar tipos de usuario
         ObservableList<String> tiposUsuario = FXCollections.observableArrayList(
-           "Usuario Básico", "Usuario Comunidad", "Usuario Administrador", "Usuario Temporal"
+           "Usuario Básico", "Usuario Comunidad", "Usuario Temporal"
         );
         tipoUsuarioCombo.setItems(tiposUsuario);
         tipoUsuarioCombo.getSelectionModel().selectFirst();

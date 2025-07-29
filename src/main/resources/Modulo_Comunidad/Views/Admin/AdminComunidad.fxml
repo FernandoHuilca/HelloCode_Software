@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="360.0" styleClass="root" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Comunidad_Modulo.Controladores_GUI.EntradaComunidad_Controller">
+<AnchorPane prefHeight="720.0" prefWidth="360.0" styleClass="root" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Comunidad_Modulo.Controladores_GUI.EntradaAdminComunidad_Controller">
 
     <!-- Top bar -->
     <HBox alignment="CENTER" prefHeight="65" style="-fx-background-color: linear-gradient(to right, #DCD6F7, #A6B1E1); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.3, 0, 3);" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
@@ -35,11 +35,5 @@
         </padding>
 
         <Button fx:id="buttonVolver" onAction="#volverAHome" prefHeight="55" prefWidth="70" style="-fx-background-color: white; -fx-text-fill: #50C878; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;" text="🏠&#10;Inicio" HBox.hgrow="ALWAYS" />
-
-        <Button fx:id="btnPerfil2" onAction="#irAPerfil" prefHeight="55" prefWidth="70" style="-fx-background-color: white; -fx-text-fill: #3498DB; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;" text="👤&#10;Perfil" HBox.hgrow="ALWAYS" />
-
-        <Button fx:id="btnRanking" onAction="#irARanking" prefHeight="55" prefWidth="70" style="-fx-background-color: white; -fx-text-fill: #F1C40F; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;" text="🏆&#10;Ranking" HBox.hgrow="ALWAYS" />
-
-        <Button fx:id="btnComunidad" onAction="#irAComunidad" prefHeight="55" prefWidth="70" style="-fx-background-color: white; -fx-text-fill: #9B59B6; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;" text="👥&#10;Comunidad" HBox.hgrow="ALWAYS" />
     </HBox>
 </AnchorPane>
