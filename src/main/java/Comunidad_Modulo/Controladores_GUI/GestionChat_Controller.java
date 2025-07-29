@@ -68,7 +68,7 @@ public class GestionChat_Controller implements Initializable {
         
         // Solo mostrar información de debug si hay una comunidad activa
         if (contexto.tieneComunidadActiva()) {
-            Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
+            Comunidad comunidad = contexto.getComunidadActual();
             int totalChats = comunidad.getChatsPrivados().size();
             System.out.println("✅ Sistema inicializado - Chats disponibles: " + totalChats);
             
@@ -204,7 +204,7 @@ public class GestionChat_Controller implements Initializable {
             ChatPrivado nuevoChat = new ChatPrivado(participantes);
             
             // Agregar el chat a la comunidad usando el método oficial
-            Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
+            Comunidad comunidad = contexto.getComunidadActual();
             comunidad.agregarChatPrivado(nuevoChat);
             
             // Verificar que se agregó correctamente
@@ -523,7 +523,7 @@ public class GestionChat_Controller implements Initializable {
         info.append("=== INFORMACIÓN DE CHATS PRIVADOS ===\n\n");
 
         if (contexto.tieneComunidadActiva()) {
-            Comunidad_Modulo.modelo.Comunidad comunidad = contexto.getComunidadActual();
+            Comunidad comunidad = contexto.getComunidadActual();
             List<ChatPrivado> chats = comunidad.getChatsPrivados();
             
             // Debug para verificar chats

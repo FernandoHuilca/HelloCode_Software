@@ -52,5 +52,6 @@
       <Button fx:id="btnRanking" onAction="#irARanking" prefHeight="55" prefWidth="70" style="-fx-background-color: white; -fx-text-fill: #F1C40F; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;" text="🏆&#10;Ranking" HBox.hgrow="ALWAYS" />
 
       <Button fx:id="btnComunidad" onAction="#irAComunidad" prefHeight="55" prefWidth="70" style="-fx-background-color: white; -fx-text-fill: #9B59B6; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;" text="👥&#10;Comunidad" HBox.hgrow="ALWAYS" />
+      <Button fx:id="btnHomeUsuario" onAction="#irAHomeUsuario" prefHeight="55" prefWidth="70" style="-fx-background-color: white; -fx-text-fill: #3498DB; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;" text="👤&#10;Usuario" />
    </HBox>
 </AnchorPane>

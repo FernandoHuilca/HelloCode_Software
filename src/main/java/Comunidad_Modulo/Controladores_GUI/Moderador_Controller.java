@@ -226,7 +226,7 @@ public class Moderador_Controller implements Initializable {
         try {
             MetodosFrecuentes.cambiarVentana(
                     (Stage) btnVolver.getScene().getWindow(),
-                    "/Modulo_Comunidad/Views/Comunidad.fxml",
+                    "/Modulo_Comunidad/Views/Admin/AdminComunidad.fxml",
                     "Sistema de Comunidad"
             );
         } catch (Exception e) {

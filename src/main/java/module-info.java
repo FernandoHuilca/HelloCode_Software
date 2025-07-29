@@ -13,9 +13,9 @@ module Modulo_Ejercicio {
     requires com.almasb.fxgl.all;
     requires java.desktop;
 
-    // Abre paquetes para FXML
-    opens GestionAprendizaje_Modulo.Controladores to javafx.fxml;
-    opens GestionAprendizaje_Modulo.Aplicacion to javafx.graphics, javafx.fxml;
+    // Abre paquetes para FXML    opens GestionAprendizaje_Modulo.Controladores to javafx.fxml;
+    //    opens GestionAprendizaje_Modulo.Aplicacion to javafx.graphics, javafx.fxml;
+
 
     opens Modulo_Ejercicios.Controladores to javafx.fxml;
     opens Modulo_Usuario.Controladores to javafx.fxml;
@@ -25,19 +25,18 @@ module Modulo_Ejercicio {
     opens Comunidad_Modulo.controladores to javafx.fxml;
     opens Comunidad_Modulo.App to javafx.fxml, javafx.graphics;
 
-    opens GestorEjercicios.Controllers to javafx.fxml;
+    //opens GestorEjercicios.Controllers to javafx.fxml;
 
 
     opens Gamificacion_Modulo.controllers to javafx.fxml;
     opens Gamificacion_Modulo.clases to javafx.fxml;
     opens Gamificacion_Modulo.controllers_admin to javafx.fxml;
 
-    // Exportaciones
-    exports GestionAprendizaje_Modulo.Aplicacion;
-    exports GestionAprendizaje_Modulo.Ruta;
-    exports GestionAprendizaje_Modulo.Modelo;
-    exports GestionAprendizaje_Modulo.Repositorio;
-    exports GestionAprendizaje_Modulo.Gestor;
+    // Exportaciones    exports GestionAprendizaje_Modulo.Aplicacion;
+    //    exports GestionAprendizaje_Modulo.Ruta;
+    //    exports GestionAprendizaje_Modulo.Modelo;
+    //    exports GestionAprendizaje_Modulo.Repositorio;
+    //    exports GestionAprendizaje_Modulo.Gestor;
 
     exports Comunidad_Modulo.App;
     exports Comunidad_Modulo.integracion;
@@ -57,19 +56,15 @@ module Modulo_Ejercicio {
     exports Modulo_Usuario.Controladores;
     exports Modulo_Usuario.application;
 
-    exports GestorEjercicios.Controllers;
-    exports GestorEjercicios.model;
-    exports GestorEjercicios.main; //Siempre me daba fallo pporque falta este export xd
-
     exports Gamificacion_Modulo.clases;
     exports Gamificacion_Modulo.controllers_admin;
     exports Gamificacion_Modulo.controllers;
-    exports Gamificacion_Modulo.utils;
 
     exports MetodosGlobales;
 
     //Exports y opens del nuevo modulo de lecciones
     exports Nuevo_Modulo_Leccion.application;
+    opens Nuevo_Modulo_Leccion.application to javafx.graphics, javafx.fxml;
     opens Nuevo_Modulo_Leccion.controllers to javafx.graphics, javafx.fxml;
 }
 
