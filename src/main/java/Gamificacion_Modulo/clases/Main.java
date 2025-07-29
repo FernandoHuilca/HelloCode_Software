@@ -1,20 +1,20 @@
 package Gamificacion_Modulo.clases;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
-import Modulo_Usuario.Clases.Usuario;
 import Modulo_Usuario.Clases.Roles;
+import Modulo_Usuario.Clases.Usuario;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -214,8 +214,10 @@ public class Main extends Application {
                         .anyMatch(p -> p.getUsuario().getUsername().equals(usuario.getUsername()));
                 if (!existeProgreso) {
                     ProgresoEstudiante nuevoProgreso = new ProgresoEstudiante(usuario);
+                    // Asignar automáticamente los puntos totales basándose en la experiencia del usuario
+                    nuevoProgreso.setPuntosTotal(usuario.getXp());
                     progresos.add(nuevoProgreso);
-                    System.out.println(">>> Progreso creado para nuevo usuario: " + usuario.getNombre());
+                    System.out.println(">>> Progreso creado para nuevo usuario: " + usuario.getNombre() + " con " + usuario.getXp() + " puntos de experiencia");
                 }
             }
 
