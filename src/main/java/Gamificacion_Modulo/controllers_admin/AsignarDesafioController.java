@@ -1,15 +1,15 @@
-package Gamificacion_Modulo.GUI.admin;
+package Gamificacion_Modulo.controllers_admin;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import Gamificacion_Modulo.Desafio;
-import Gamificacion_Modulo.DesafioMensual;
-import Gamificacion_Modulo.DesafioSemanal;
-import Gamificacion_Modulo.Main;
-import Gamificacion_Modulo.ProgresoEstudiante;
+import Gamificacion_Modulo.clases.Desafio;
+import Gamificacion_Modulo.clases.DesafioMensual;
+import Gamificacion_Modulo.clases.DesafioSemanal;
+import Gamificacion_Modulo.clases.Main;
+import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -84,23 +84,25 @@ public class AsignarDesafioController implements Initializable {
         
         for (Desafio desafio : desafiosDisponibles) {
             String tipo = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
-            String meta = "";
+            String nombreDesafio = "";
             
             if (desafio instanceof DesafioSemanal) {
-                meta = " (Meta: " + ((DesafioSemanal) desafio).getMetaSemanal() + " actividades/semana)";
+                DesafioSemanal ds = (DesafioSemanal) desafio;
+                nombreDesafio = "Desafío Semanal - " + ds.getMetaSemanal() + " lecciones";
             } else if (desafio instanceof DesafioMensual) {
-                meta = " (Meta: " + ((DesafioMensual) desafio).getObjetivoMensual() + " actividades/mes)";
+                DesafioMensual dm = (DesafioMensual) desafio;
+                Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
+                nombreDesafio = "Desafío Mensual - " + objetivo + " actividades";
             }
             
-            RadioButton rb = new RadioButton();
+            RadioButton rb = new RadioButton(nombreDesafio + " (" + tipo + ")");
             rb.setToggleGroup(toggleGroupDesafios);
-            rb.setText("🎯 " + desafio.getNombre() + " (" + tipo + ")" + meta);
             rb.setWrapText(true);
             rb.setUserData(desafio);
             
             // Agregar información de logros
             Label lblLogros = new Label("   Logros asociados: " + desafio.getLogrosDisponibles().size() + 
-                                      " | Descripción: " + desafio.getDescripcion());
+                                      " | Estado: " + (desafio.getEstaActivo() ? "Activo" : "Inactivo"));
             lblLogros.setStyle("-fx-text-fill: #666666; -fx-font-size: 11px;");
             lblLogros.setWrapText(true);
             
@@ -133,7 +135,8 @@ public class AsignarDesafioController implements Initializable {
         toggleGroupDesafios.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if (newToggle != null) {
                 desafioSeleccionado = (Desafio) newToggle.getUserData();
-                lblDesafioSeleccionado.setText("✅ Desafío seleccionado: " + desafioSeleccionado.getNombre());
+                String tipoDesafio = desafioSeleccionado instanceof DesafioSemanal ? "Semanal" : "Mensual";
+                lblDesafioSeleccionado.setText("✅ Desafío seleccionado: " + tipoDesafio);
                 lblDesafioSeleccionado.setStyle("-fx-text-fill: #4CAF50;");
                 validarFormulario();
             }
@@ -175,7 +178,18 @@ public class AsignarDesafioController implements Initializable {
                     
                     for (Desafio desafio : activos) {
                         String tipo = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
-                        Label lblDesafio = new Label("• " + desafio.getNombre() + " (" + tipo + ")");
+                        String nombreDesafio = "";
+                        
+                        if (desafio instanceof DesafioSemanal) {
+                            DesafioSemanal ds = (DesafioSemanal) desafio;
+                            nombreDesafio = "Desafío Semanal - " + ds.getMetaSemanal() + " lecciones";
+                        } else if (desafio instanceof DesafioMensual) {
+                            DesafioMensual dm = (DesafioMensual) desafio;
+                            Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
+                            nombreDesafio = "Desafío Mensual - " + objetivo + " actividades";
+                        }
+                        
+                        Label lblDesafio = new Label("• " + nombreDesafio + " (" + tipo + ")");
                         vboxDesafiosActivos.getChildren().add(lblDesafio);
                     }
                 }
@@ -204,8 +218,9 @@ public class AsignarDesafioController implements Initializable {
             boolean asignado = asignarDesafioAUsuario(desafioSeleccionado, usuarioSeleccionado);
             
             if (asignado) {
-                mostrarExito("¡Éxito!", "El desafío '" + desafioSeleccionado.getNombre() + 
-                    "' ha sido asignado a " + usuarioSeleccionado.getNombre() + " exitosamente.");
+                String tipoDesafio = desafioSeleccionado instanceof DesafioSemanal ? "Semanal" : "Mensual";
+                mostrarExito("¡Éxito!", "El desafío " + tipoDesafio +
+                    " ha sido asignado a " + usuarioSeleccionado.getNombre() + " exitosamente.");
                 
                 // Actualizar la interfaz
                 cargarDesafiosActivos();
@@ -233,18 +248,15 @@ public class AsignarDesafioController implements Initializable {
             return false;
         }
         
-        // Verificar que no tenga ya este desafío
-        for (Desafio d : progreso.getDesafiosActivos()) {
-            if (d.getNombre().equals(desafio.getNombre())) {
-                return false; // Ya tiene este desafío
-            }
-        }
+        // Verificar que no tenga ya este desafío < Por implementar
+
         
         // Activar y agregar el desafío
         desafio.activar();
         progreso.agregarDesafio(desafio);
         
-        System.out.println(">>> Desafío '" + desafio.getNombre() + "' asignado a " + usuario.getNombre());
+        String tipoDesafio = desafio instanceof DesafioSemanal ? "Semanal" : "Mensual";
+        System.out.println(">>> Desafío " + tipoDesafio + " asignado a " + usuario.getNombre());
         return true;
     }
     

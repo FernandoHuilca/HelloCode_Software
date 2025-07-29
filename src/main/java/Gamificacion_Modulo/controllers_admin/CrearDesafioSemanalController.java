@@ -1,11 +1,11 @@
-package Gamificacion_Modulo.GUI.admin;
+package Gamificacion_Modulo.controllers_admin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Gamificacion_Modulo.DesafioMensual;
-import Gamificacion_Modulo.Logro;
-import Gamificacion_Modulo.Main;
+import Gamificacion_Modulo.clases.DesafioSemanal;
+import Gamificacion_Modulo.clases.Logro;
+import Gamificacion_Modulo.clases.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,13 +17,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class CrearDesafioMensualController {
+public class CrearDesafioSemanalController {
     
     @FXML
-    private Slider sliderObjetivo;
+    private Slider sliderMeta;
     
     @FXML
-    private Label lblObjetivo;
+    private Label lblMeta;
     
     @FXML
     private VBox vboxLogros;
@@ -50,15 +50,15 @@ public class CrearDesafioMensualController {
         actualizarVistaPrevia();
         
         // Listener para actualización en tiempo real del slider
-        sliderObjetivo.valueProperty().addListener((obs, oldVal, newVal) -> {
-            lblObjetivo.setText(String.valueOf(newVal.intValue()));
+        sliderMeta.valueProperty().addListener((obs, oldVal, newVal) -> {
+            lblMeta.setText(String.valueOf(newVal.intValue()));
             actualizarVistaPrevia();
         });
     }
     
     private void configurarSlider() {
-        sliderObjetivo.setValue(20); // Valor por defecto
-        lblObjetivo.setText("20");
+        sliderMeta.setValue(5); // Valor por defecto
+        lblMeta.setText("5");
     }
     
     private void cargarLogrosDisponibles() {
@@ -70,7 +70,7 @@ public class CrearDesafioMensualController {
             
             for (Logro logro : logrosDisponibles) {
                 CheckBox checkBox = new CheckBox();
-                checkBox.setText(logro.getNombre() + " - " + logro.getDescripcion() + " (+" + logro.getPuntos() + " pts)");
+                checkBox.setText(logro.getNombre() + " - " + logro.getDescripcion()) ;
                 checkBox.setUserData(logro);
                 checkBox.setWrapText(true);
                 
@@ -107,21 +107,21 @@ public class CrearDesafioMensualController {
     private void actualizarVistaPrevia() {
         vboxVistaPrevia.getChildren().clear();
         
-        int objetivo = (int) sliderObjetivo.getValue();
+        int meta = (int) sliderMeta.getValue();
         
-        Label lblNombre = new Label("📋 Desafío Mensual");
+        Label lblNombre = new Label("📋 Desafío Semanal");
         lblNombre.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         
-        Label lblDescripcion = new Label("📝 Descripción: Completar " + objetivo + " actividades en el mes");
-        Label lblObjetivoInfo = new Label("🎯 Objetivo: " + objetivo + " actividades mensuales");
+        Label lblDescripcion = new Label("📝 Descripción: Completar " + meta + " actividades en la semana");
+        Label lblMetaInfo = new Label("🎯 Meta: " + meta + " actividades semanales");
         Label lblLogros = new Label("🏆 Logros asociados: " + logrosSeleccionados.size());
         Label lblEstado = new Label("📊 Estado: Disponible para asignar");
         
-        vboxVistaPrevia.getChildren().addAll(lblNombre, lblDescripcion, lblObjetivoInfo, lblLogros, lblEstado);
+        vboxVistaPrevia.getChildren().addAll(lblNombre, lblDescripcion, lblMetaInfo, lblLogros, lblEstado);
         
         // Mostrar logros seleccionados
         for (Logro logro : logrosSeleccionados) {
-            Label lblLogro = new Label("   • " + logro.getNombre() + " (+" + logro.getPuntos() + " pts)");
+            Label lblLogro = new Label("   • " + logro.getNombre() );
             lblLogro.setStyle("-fx-text-fill: #6c757d; -fx-font-size: 12px;");
             vboxVistaPrevia.getChildren().add(lblLogro);
         }
@@ -135,7 +135,7 @@ public class CrearDesafioMensualController {
     
     @FXML
     private void onCancelarClicked(ActionEvent event) {
-        System.out.println(">>> Cancelando creación de desafío mensual");
+        System.out.println(">>> Cancelando creación de desafío semanal");
         cerrarVentana();
     }
     
@@ -143,10 +143,10 @@ public class CrearDesafioMensualController {
     private void onCrearClicked(ActionEvent event) {
         try {
             // Validaciones básicas
-            int objetivo = (int) sliderObjetivo.getValue();
+            int meta = (int) sliderMeta.getValue();
             
-            if (objetivo < 10 || objetivo > 100) {
-                mostrarAlerta("Error", "El objetivo debe estar entre 10 y 100 actividades");
+            if (meta < 1 || meta > 20) {
+                mostrarAlerta("Error", "La meta debe estar entre 1 y 20 actividades");
                 return;
             }
             
@@ -158,39 +158,31 @@ public class CrearDesafioMensualController {
                 }
             }
             
-            // Crear el desafío mensual
-            DesafioMensual desafio = new DesafioMensual(objetivo, new ArrayList<>(logrosSeleccionados));
+            // Crear el desafío semanal
+            DesafioSemanal desafio = new DesafioSemanal(meta, 200, new ArrayList<>(logrosSeleccionados));
             
             // Agregar a la lista central de desafíos
             Main.agregarDesafio(desafio);
             
             // Mensaje de éxito
             String mensaje = String.format(
-                "¡Desafío mensual creado exitosamente!\n\n" +
-                "Objetivo: %d actividades mensuales\n" +
+                "¡Desafío semanal creado exitosamente!\n\n" +
+                "Meta: %d actividades semanales\n" +
                 "Logros asociados: %d\n" +
                 "Estado: Disponible para asignar\n\n" +
                 "Usa 'Asignar Desafío a Usuario' para asignarlo.",
-                objetivo,
+                meta,
                 logrosSeleccionados.size()
             );
             
             mostrarAlerta("Éxito", mensaje);
             
-            System.out.println(">>> DESAFÍO MENSUAL CREADO EXITOSAMENTE");
-            System.out.println("ID del desafío: " + desafio.getId());
-            System.out.println("Objetivo: " + objetivo + " actividades mensuales");
-            System.out.println("Descripción: " + desafio.getDescripcion());
-            System.out.println("Logros asociados (" + logrosSeleccionados.size() + "):");
-            for (Logro logro : logrosSeleccionados) {
-                System.out.println("   * " + logro.getNombre() + " (+" + logro.getPuntos() + " pts)");
-            }
-            System.out.println("Estado: Disponible para asignar a usuarios");
+
             
             cerrarVentana();
             
         } catch (Exception e) {
-            System.err.println("Error al crear desafío mensual: " + e.getMessage());
+            System.err.println("Error al crear desafío semanal: " + e.getMessage());
             mostrarAlerta("Error", "Error al crear el desafío: " + e.getMessage());
         }
     }

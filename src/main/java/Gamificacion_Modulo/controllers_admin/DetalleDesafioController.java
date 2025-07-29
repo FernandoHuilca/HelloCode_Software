@@ -1,12 +1,12 @@
-package Gamificacion_Modulo.GUI;
+package Gamificacion_Modulo.controllers_admin;
 
 import java.util.List;
 
-import Gamificacion_Modulo.Desafio;
-import Gamificacion_Modulo.DesafioMensual;
-import Gamificacion_Modulo.DesafioSemanal;
-import Gamificacion_Modulo.Main;
-import Gamificacion_Modulo.ProgresoEstudiante;
+import Gamificacion_Modulo.clases.Desafio;
+import Gamificacion_Modulo.clases.DesafioSemanal;
+import Gamificacion_Modulo.clases.DesafioMensual;
+import Gamificacion_Modulo.clases.Main;
+import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,36 +60,41 @@ public class DetalleDesafioController {
             for (Desafio desafio : desafiosActivos) {
                 if (desafio instanceof DesafioSemanal && semanalCount < 3) {
                     DesafioSemanal ds = (DesafioSemanal) desafio;
-                    String progreso = ds.getActividadesCompletadas() + "/" + ds.getMetaSemanal();
+                    String progreso = ds.getLeccionesCompletadas() + "/" + ds.getMetaSemanal();
+                    String nombreDesafio = "Completa " + ds.getMetaSemanal() + " lección" + (ds.getMetaSemanal() > 1 ? "es" : "");
                     switch (semanalCount) {
                         case 0:
-                            lblSemanal1.setText(desafio.getNombre());
+                            lblSemanal1.setText(nombreDesafio);
                             lblProgresoSemanal1.setText(progreso);
                             break;
                         case 1:
-                            lblSemanal2.setText(desafio.getNombre());
+                            lblSemanal2.setText(nombreDesafio);
                             lblProgresoSemanal2.setText(progreso);
                             break;
                         case 2:
-                            lblSemanal3.setText(desafio.getNombre());
+                            lblSemanal3.setText(nombreDesafio);
                             lblProgresoSemanal3.setText(progreso);
                             break;
                     }
                     semanalCount++;
                 } else if (desafio instanceof DesafioMensual && mensualCount < 3) {
                     DesafioMensual dm = (DesafioMensual) desafio;
-                    String progreso = dm.getActividadesCompletadas() + "/" + dm.getObjetivoMensual();
+                    // Use meta from parent class as fallback if objetivoMensual is null
+                    Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
+                    Integer completadas = (dm.getActividadesCompletadas() != null) ? dm.getActividadesCompletadas() : 0;
+                    String progreso = completadas + "/" + objetivo;
+                    String nombreDesafio = "Completa " + objetivo + " actividad" + (objetivo > 1 ? "es" : "");
                     switch (mensualCount) {
                         case 0:
-                            lblMensual1.setText(desafio.getNombre());
+                            lblMensual1.setText(nombreDesafio);
                             lblProgresoMensual1.setText(progreso);
                             break;
                         case 1:
-                            lblMensual2.setText(desafio.getNombre());
+                            lblMensual2.setText(nombreDesafio);
                             lblProgresoMensual2.setText(progreso);
                             break;
                         case 2:
-                            lblMensual3.setText(desafio.getNombre());
+                            lblMensual3.setText(nombreDesafio);
                             lblProgresoMensual3.setText(progreso);
                             break;
                     }

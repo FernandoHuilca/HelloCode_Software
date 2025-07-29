@@ -1,19 +1,17 @@
-package Gamificacion_Modulo.GUI.admin;
+package Gamificacion_Modulo.controllers_admin;
 
-import Gamificacion_Modulo.Logro;
-import Gamificacion_Modulo.Main;
+import Gamificacion_Modulo.clases.Logro;
+import Gamificacion_Modulo.clases.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -26,22 +24,7 @@ public class CrearLogroController {
     private TextArea txtDescripcion;
     
     @FXML
-    private RadioButton rbDesafios;
-    
-    @FXML
-    private RadioButton rbPuntos;
-    
-    @FXML
-    private RadioButton rbLogros;
-    
-    @FXML
-    private Spinner<Integer> spinnerDesafios;
-    
-    @FXML
-    private Spinner<Integer> spinnerPuntos;
-    
-    @FXML
-    private Spinner<Integer> spinnerLogros;
+    private Spinner<Integer> spinnerPuntosRequeridos;
     
     @FXML
     private Slider sliderPuntos;
@@ -58,60 +41,20 @@ public class CrearLogroController {
     @FXML
     private Button btnCrear;
     
-    private ToggleGroup criterioGroup;
-    
     @FXML
     public void initialize() {
-        configurarToggleGroup();
         configurarSpinners();
         configurarSlider();
         configurarListeners();
         actualizarVistaPrevia();
     }
     
-    private void configurarToggleGroup() {
-        criterioGroup = new ToggleGroup();
-        rbDesafios.setToggleGroup(criterioGroup);
-        rbPuntos.setToggleGroup(criterioGroup);
-        rbLogros.setToggleGroup(criterioGroup);
-        
-        // Seleccionar desafíos por defecto
-        rbDesafios.setSelected(true);
-        spinnerDesafios.setDisable(false);
-        
-        // Configurar listeners para radio buttons
-        rbDesafios.setOnAction(e -> {
-            spinnerDesafios.setDisable(false);
-            spinnerPuntos.setDisable(true);
-            spinnerLogros.setDisable(true);
-            actualizarVistaPrevia();
-        });
-        
-        rbPuntos.setOnAction(e -> {
-            spinnerDesafios.setDisable(true);
-            spinnerPuntos.setDisable(false);
-            spinnerLogros.setDisable(true);
-            actualizarVistaPrevia();
-        });
-        
-        rbLogros.setOnAction(e -> {
-            spinnerDesafios.setDisable(true);
-            spinnerPuntos.setDisable(true);
-            spinnerLogros.setDisable(false);
-            actualizarVistaPrevia();
-        });
-    }
-    
     private void configurarSpinners() {
-        // Configurar valores de los spinners
-        spinnerDesafios.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 1));
-        spinnerPuntos.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(100, 5000, 500, 100));
-        spinnerLogros.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 3));
+        // Configurar valores del spinner de puntos requeridos
+        spinnerPuntosRequeridos.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(100, 10000, 500, 100));
         
-        // Hacer que los spinners sean editables
-        spinnerDesafios.setEditable(true);
-        spinnerPuntos.setEditable(true);
-        spinnerLogros.setEditable(true);
+        // Hacer que el spinner sea editable
+        spinnerPuntosRequeridos.setEditable(true);
     }
     
     private void configurarSlider() {
@@ -129,9 +72,7 @@ public class CrearLogroController {
         txtNombre.textProperty().addListener((obs, oldVal, newVal) -> actualizarVistaPrevia());
         txtDescripcion.textProperty().addListener((obs, oldVal, newVal) -> actualizarVistaPrevia());
         
-        spinnerDesafios.valueProperty().addListener((obs, oldVal, newVal) -> actualizarVistaPrevia());
-        spinnerPuntos.valueProperty().addListener((obs, oldVal, newVal) -> actualizarVistaPrevia());
-        spinnerLogros.valueProperty().addListener((obs, oldVal, newVal) -> actualizarVistaPrevia());
+        spinnerPuntosRequeridos.valueProperty().addListener((obs, oldVal, newVal) -> actualizarVistaPrevia());
     }
     
     private void actualizarVistaPrevia() {
@@ -170,25 +111,7 @@ public class CrearLogroController {
     }
     
     private String obtenerCriterioTexto() {
-        if (rbDesafios.isSelected()) {
-            return "Completar " + spinnerDesafios.getValue() + " desafíos";
-        } else if (rbPuntos.isSelected()) {
-            return "Obtener " + spinnerPuntos.getValue() + " puntos";
-        } else if (rbLogros.isSelected()) {
-            return "Desbloquear " + spinnerLogros.getValue() + " logros";
-        }
-        return "Sin criterio definido";
-    }
-    
-    private String obtenerCriterioSistema() {
-        if (rbDesafios.isSelected()) {
-            return "desafios_completados:" + spinnerDesafios.getValue();
-        } else if (rbPuntos.isSelected()) {
-            return "puntos_totales:" + spinnerPuntos.getValue();
-        } else if (rbLogros.isSelected()) {
-            return "logros_obtenidos:" + spinnerLogros.getValue();
-        }
-        return "desafios_completados:1"; // Valor por defecto
+        return "Obtener " + spinnerPuntosRequeridos.getValue() + " puntos";
     }
     
     @FXML
@@ -213,11 +136,6 @@ public class CrearLogroController {
                 return;
             }
             
-            if (criterioGroup.getSelectedToggle() == null) {
-                mostrarAlerta("Error", "Debe seleccionar un criterio de desbloqueo");
-                return;
-            }
-            
             // Verificar que no existe un logro con el mismo nombre
             for (Logro logro : Main.getLogrosDisponibles()) {
                 if (logro.getNombre().equalsIgnoreCase(nombre)) {
@@ -226,11 +144,11 @@ public class CrearLogroController {
                 }
             }
             
-            // Crear el logro
-            String criterio = obtenerCriterioSistema();
+            // Crear el logro con el puntaje umbral requerido
+            int puntajeUmbral = spinnerPuntosRequeridos.getValue();
             int puntos = (int) sliderPuntos.getValue();
             
-            Logro nuevoLogro = new Logro(nombre, descripcion, criterio, puntos);
+            Logro nuevoLogro = new Logro(nombre, descripcion, puntajeUmbral);
             Main.getLogrosDisponibles().add(nuevoLogro);
             
             // Mensaje de éxito
@@ -247,7 +165,7 @@ public class CrearLogroController {
             
             System.out.println(">>> Logro personalizado creado!");
             System.out.println("* " + nombre + " - " + descripcion);
-            System.out.println("  Criterio: " + criterio + " | Recompensa: +" + puntos + " pts");
+            System.out.println("  Criterio: Obtener " + puntajeUmbral + " puntos | Recompensa: +" + puntos + " pts");
             
             cerrarVentana();
             

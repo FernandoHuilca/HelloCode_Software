@@ -1,16 +1,16 @@
-package Gamificacion_Modulo.GUI.admin;
+package Gamificacion_Modulo.controllers_admin;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import Gamificacion_Modulo.Desafio;
-import Gamificacion_Modulo.DesafioMensual;
-import Gamificacion_Modulo.DesafioSemanal;
-import Gamificacion_Modulo.Logro;
-import Gamificacion_Modulo.Main;
-import Gamificacion_Modulo.ProgresoEstudiante;
+import Gamificacion_Modulo.clases.Desafio;
+import Gamificacion_Modulo.clases.DesafioMensual;
+import Gamificacion_Modulo.clases.DesafioSemanal;
+import Gamificacion_Modulo.clases.Logro;
+import Gamificacion_Modulo.clases.Main;
+import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -139,7 +139,7 @@ public class SimularActividadController implements Initializable {
                         
                         if (desafio instanceof DesafioSemanal) {
                             DesafioSemanal ds = (DesafioSemanal) desafio;
-                            progreso_str = " - Progreso: " + ds.getActividadesCompletadas() + "/" + ds.getMetaSemanal();
+                            progreso_str = " - Progreso: " + ds.getLeccionesCompletadas() + "/" + ds.getMetaSemanal();
                         } else if (desafio instanceof DesafioMensual) {
                             DesafioMensual dm = (DesafioMensual) desafio;
                             progreso_str = " - Progreso: " + dm.getActividadesCompletadas() + "/" + dm.getObjetivoMensual();
@@ -147,7 +147,7 @@ public class SimularActividadController implements Initializable {
                         
                         RadioButton rb = new RadioButton();
                         rb.setToggleGroup(toggleGroupDesafios);
-                        rb.setText("🎯 " + desafio.getNombre() + " (" + tipo + ")" + progreso_str);
+                        rb.setText("🎯 " + " (" + tipo + ")" + progreso_str);
                         rb.setWrapText(true);
                         rb.setUserData(desafio);
                         
@@ -162,7 +162,7 @@ public class SimularActividadController implements Initializable {
     private void actualizarDesafioSeleccionado() {
         if (desafioSeleccionado != null) {
             String tipo = desafioSeleccionado instanceof DesafioSemanal ? "Semanal" : "Mensual";
-            lblDesafioSeleccionado.setText("✅ Desafío seleccionado: " + desafioSeleccionado.getNombre() + " (" + tipo + ")");
+            lblDesafioSeleccionado.setText("✅ Desafío seleccionado: ");
             lblDesafioSeleccionado.setStyle("-fx-text-fill: #4CAF50;");
         } else {
             lblDesafioSeleccionado.setText("Selecciona un desafío de la lista");
@@ -207,7 +207,6 @@ public class SimularActividadController implements Initializable {
             resultados.append("🎮 SIMULACIÓN DE ACTIVIDADES\n");
             resultados.append("===========================\n\n");
             resultados.append("👤 Usuario: ").append(usuarioSeleccionado.getNombre()).append("\n");
-            resultados.append("🎯 Desafío: ").append(desafioSeleccionado.getNombre()).append("\n");
             resultados.append("📊 Actividades completadas: ").append(actividades).append("\n\n");
             
             // Progreso antes
@@ -216,9 +215,9 @@ public class SimularActividadController implements Initializable {
             
             // Completar actividades en el desafío
             if (desafioSeleccionado instanceof DesafioSemanal) {
-                ((DesafioSemanal) desafioSeleccionado).actualizarActividades(actividades);
+                ((DesafioSemanal) desafioSeleccionado).actualizarAvance(actividades);
             } else if (desafioSeleccionado instanceof DesafioMensual) {
-                ((DesafioMensual) desafioSeleccionado).actualizarActividades(actividades);
+                ((DesafioMensual) desafioSeleccionado).actualizarAvance(actividades);
             }
             
             // Evaluar progreso y logros
@@ -236,13 +235,13 @@ public class SimularActividadController implements Initializable {
             // Verificar si el desafío se completó
             if (desafioSeleccionado.estaCompletado()) {
                 resultados.append("🎉 ¡DESAFÍO COMPLETADO!\n");
-                resultados.append("• ").append(desafioSeleccionado.getNombre()).append(" se ha completado exitosamente\n");
+                resultados.append("• ").append("CC nombre desafio").append(" se ha completado exitosamente\n");
             }
             
             // Mostrar progreso del desafío
             if (desafioSeleccionado instanceof DesafioSemanal) {
                 DesafioSemanal ds = (DesafioSemanal) desafioSeleccionado;
-                resultados.append("• Progreso semanal: ").append(ds.getActividadesCompletadas())
+                resultados.append("• Progreso semanal: ").append(ds.getLeccionesCompletadas())
                           .append("/").append(ds.getMetaSemanal())
                           .append(" (").append(String.format("%.1f", ds.getProgreso())).append("%)\n");
             } else if (desafioSeleccionado instanceof DesafioMensual) {
@@ -260,13 +259,11 @@ public class SimularActividadController implements Initializable {
                     if (i < logrosActuales.size()) {
                         Logro logro = logrosActuales.get(i);
                         resultados.append("• ").append(logro.getNombre())
-                                  .append(" (+").append(logro.getPuntos()).append(" pts)\n");
+                                  .append(" (+").append("CC 200").append(" pts)\n");
                     }
                 }
             }
-            
-            // Actualizar las interfaces
-            Main.notificarActualizacionInterface();
+
             
             // Actualizar información y desafíos
             actualizarInfoUsuario();
