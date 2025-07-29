@@ -47,13 +47,6 @@ public class Moderador_Controller implements Initializable {
         inicializarSistema();
         configuracionInterfazModerador();
         actualizarInformacion();
-
-        if (!esModeradorAutenticado()) {
-            txtAreaInformacion.setText("⛔ Acceso denegado: esta sección solo es para moderadores.");
-            deshabilitarControles();
-        }
-        System.out.println("✅ Controlador de Moderador inicializado correctamente");
-        configurarControlesHistorial();
     }
 
     private void inicializarSistema() {
@@ -66,22 +59,6 @@ public class Moderador_Controller implements Initializable {
         txtNombreUsuarioEliminar.setPromptText("Username");
         txtNombreComunidad.setPromptText("Nombre Comunidad");
         txtComunidadEliminar.setPromptText("Nombre de la Comunidad a Eliminar");
-    }
-
-    /* Deshabilitacion de Controles Para Usuarios Normales */
-
-    private void deshabilitarControles() {
-        btnEliminarUsuario.setDisable(true);
-        btnListarUsuarios.setDisable(true);
-        txtNombreUsuarioEliminar.setDisable(true);
-        txtNombreComunidad.setDisable(true);
-        comboComunidades.setDisable(true);
-        comboTipoGrupo.setDisable(true);
-        comboGrupos.setDisable(true);
-        btnVerHistorial.setDisable(true);
-        txtAreaHistorial.setDisable(true);
-        btnEliminarComunidad.setDisable(true);
-        txtComunidadEliminar.setDisable(true);
     }
 
     /* Eliminación de un Usuario de una Comunidad */
@@ -232,12 +209,6 @@ public class Moderador_Controller implements Initializable {
         } catch (Exception e) {
             mostrarMensajeError("Error al volver: " + e.getMessage());
         }
-    }
-
-    private boolean esModeradorAutenticado() {
-        MetodosGlobales.SesionManager sesion = MetodosGlobales.SesionManager.getInstancia();
-        return sesion.hayUsuarioAutenticado() &&
-           sesion.getUsuarioComunidad().getRol() == Roles.ADMINISTRADOR;
     }
 
     private void actualizarInformacion() {
