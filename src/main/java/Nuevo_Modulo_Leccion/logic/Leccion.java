@@ -7,13 +7,11 @@ import java.util.List;
 
 public class Leccion {
     //Una lección tiene o está compuesta por varios ejercicios:
-    List<EjercicioBase> listEjercicios;
+    private List<EjercicioBase> listEjercicios;
 
     public Leccion() {
         listEjercicios = new ArrayList<EjercicioBase>();
     }
-
-
 
     public void agregarEjercicio(EjercicioBase nuevoEjercicio) {
         listEjercicios.add(nuevoEjercicio);
@@ -21,5 +19,13 @@ public class Leccion {
 
     public int getNumEjercicios() {
         return listEjercicios.size();
+    }
+
+    /**
+     * Obtiene la lista de ejercicios de la lección
+     * @return Lista de ejercicios
+     */
+    public List<EjercicioBase> getListEjercicios() {
+        return listEjercicios;
     }
 }
