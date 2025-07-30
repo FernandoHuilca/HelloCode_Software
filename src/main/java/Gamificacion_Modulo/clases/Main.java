@@ -164,38 +164,6 @@ public class Main extends Application {
         return sesionManager.getUsuarios();
     }
 
-
-    /**
-     * Obtiene el progreso del usuario actualmente logueado
-     * @return ProgresoEstudiante del usuario logueado o null si no hay usuario logueado o no tiene progreso
-     */
-    public static ProgresoEstudiante getProgresoUsuarioLogueado() {
-        try {
-            SesionManager sesionManager = SesionManager.getInstancia();
-            Usuario usuarioLogueado = sesionManager.getUsuarioAutenticado();
-
-            if (usuarioLogueado == null) {
-                System.out.println(">>> No hay usuario logueado en el sistema");
-                return null;
-            }
-
-            // Buscar el progreso del usuario logueado
-            for (ProgresoEstudiante progreso : ProgresoEstudiante.getProgresos()) {
-                if (progreso.getUsuario().getUsername().equals(usuarioLogueado.getUsername())) {
-                    System.out.println(">>> Progreso encontrado para usuario logueado: " + usuarioLogueado.getNombre());
-                    return progreso;
-                }
-            }
-
-            System.out.println(">>> No se encontró progreso para el usuario logueado: " + usuarioLogueado.getNombre());
-            return null;
-
-        } catch (Exception e) {
-            System.err.println(">>> Error al obtener progreso del usuario logueado: " + e.getMessage());
-            return null;
-        }
-    }
-
     /**
      * Obtiene el usuario actualmente logueado
      * @return Usuario logueado o null si no hay usuario logueado
