@@ -90,9 +90,9 @@ public class RankingController implements Initializable {
                     "Selecciona un usuario para ver su posición";
             titleLabel.setText(mensaje);
 
-            // Obtener top 7 estudiantes para mostrar
+            // Obtener estudiantes para mostrar
             List<EstudianteRanking> topEstudiantes = estudiantesRanking.stream()
-                    .limit(7)
+                    .limit(100)
                     .collect(Collectors.toList());
 
             // Crear entradas de ranking
