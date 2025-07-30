@@ -133,6 +133,7 @@ public class Usuario extends UsuarioBase {
     }
 
     public void registrarCurso() {
+        if(curso == null) return;
         String rutaArchivo = "src/main/java/Modulo_Usuario/Usuarios/cursosDelUsuario.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo, true))) {
             // Unir todos los datos con ;
