@@ -1,0 +1,103 @@
+@startuml
+package Modulo_Usuario {
+
+    class Usuario {
+            - nombre : String
+            - email : String
+            - usuario : String
+            - exp : Integer
+            + Usuario(nombre: String, email: String, usuario: String, exp: Integer)
+            + getExp() : Integer
+        }
+
+}
+
+package "Gamificacion_Modulo" {
+
+    class Logro {
+        - nombre : String
+        - descripcion : String
+        - puntajeUmbral : Integer
+        - fechaObtencion : Date
+        - logrosDisponibles: List<Logro>
+        - logrosDesbloqueados: List<Logro>
+        + Logro(nombre: String, descripcion: String, criterios: String, umbral: Integer)
+        + verificarComplecion(progreso: ProgresoEstudiante) : Boolean
+        'Hablar de agregarLogro
+        +agregarLogro(logro: Logro))
+    }
+
+    abstract class Desafio {
+        - puntosRecompensa : Integer
+        - fechaInicio : LocalDateTime
+        - fechaFin : LocalDateTime
+        - estaActivo : Boolean
+        - logrosDisponibles : List<Logro>
+        - leccionesCompletadas : Integer
+        - meta : Integer
+        'Cual es la diferencia entre verificarComplecion y estaCompletado?
+        + Desafio(logros: List<Logro>)
+        + activar() : void
+        + desactivar() : void
+        + verificarComplecion(estudiante: ProgresoEstudiante) : Boolean
+        + desbloquearLogro(logro: Logro, estudiante: ProgresoEstudiante) : Boolean
+        + completarDesafio(estudiante: ProgresoEstudiante) : void
+        + estaCompletado() : Boolean
+        + simularDesafio()
+    }
+
+    class DesafioSemanal {
+
+        + DesafioSemanal(metaSemanal: Integer, logros: List<Logro>)
+        + estaCompletado() : Boolean
+        + actualizarAvanze(cantidad: Integer) : void
+    }
+
+    class DesafioMensual {
+
+        + DesafioMensual(objetivoMensual: Integer, logros: List<Logro>)
+        + estaCompletado() : Boolean
+        + actualizarActividades(cantidad: Integer) : void
+    }
+
+    class ProgresoEstudiante {
+        - usuario : Usuario
+        - logrosDesbloqueados : List<Logro>
+        - puntosTotal : Integer
+        - desafiosCompletados : Integer
+        - desafiosActivos : Lista<Desafio>
+
+        + ProgresoEstudiante(usuario: Usuario)
+        + agregarLogro(logro: Logro) : void
+        + actualizarProgreso(desafio: Desafio) : void
+        + actualizarLogro(logro: Logro) : void
+        + actualizarDesafio(desafio: Desafio) : void
+        + actualizarPuntos(puntos: Integer) : void
+    }
+
+    class Ranking {
+        - rankingGeneral : List<ProgresoEstudiante>
+        -INSTANCE
+        - Ranking()
+        + getInstance() : Ranking
+        + actualizarRanking(estudiante: ProgresoEstudiante) : void
+        + obtenerRankingGeneral() : List<ProgresoEstudiante>
+        + calcularPosicion(estudiante: ProgresoEstudiante) : Integer
+    }
+    Ranking ->Ranking: getInstance()
+    ' Relaciones de Herencia
+    Desafio <|-- DesafioSemanal
+    Desafio <|-- DesafioMensual
+
+    ' Relaciones de Composición
+    ProgresoEstudiante *-- Usuario : "contiene"
+
+
+    ' Relaciones de Dependencia
+    Logro <.. ProgresoEstudiante : "cumpleCriterios()"
+    Desafio <. ProgresoEstudiante : "completarDesafio()"
+    Ranking <-- ProgresoEstudiante : "actualizarRanking()"
+
+}
+
+@enduml
