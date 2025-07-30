@@ -1,14 +1,8 @@
 package GestionAprendizaje_Modulo.Controladores;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
-import GestionAprendizaje_Modulo.Logica.Curso;
-import GestionAprendizaje_Modulo.Logica.NodoRuta;
-import GestionAprendizaje_Modulo.Logica.ProgresoLecciones;
-import GestionAprendizaje_Modulo.Logica.Ruta;
 import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
 import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
 import Nuevo_Modulo_Leccion.logic.Leccion;
@@ -53,74 +47,52 @@ public class RutaController {
 
         // Obtener la lista de lecciones desde el repositorio
         List<Leccion> listLecciones = LeccionRepository.getLecciones();
-        List<Leccion> leccionesFiltradas = filtrarLeccionesPorLenguaje(listLecciones, lenguajeSeleccionado);
 
-        if (leccionesFiltradas.isEmpty()) {
-            System.err.println("[RutaController] No se encontraron lecciones para el lenguaje seleccionado: " + lenguajeSeleccionado);
+        if (listLecciones.isEmpty()) {
+            System.err.println("[RutaController] No se encontraron lecciones disponibles.");
             return;
         }
 
-        // 1. "JALAR" LA ESTRUCTURA DE DATOS YA PROCESADA
-        // Le pedimos al manager la lista de cursos que él ya construyó al inicio de la app.
-        List<Curso> cursos = AprendizajeManager.getInstancia().getCursos();
-
-        // Comprobación de seguridad: ¿Se construyó algún curso con alguna ruta?
-        if (cursos.isEmpty() || cursos.get(0).getRutas().isEmpty()) {
-            System.err.println("[RutaController] No se encontraron rutas construidas en el Manager. La vista estará vacía.");
-            return; // No hay nada que dibujar.
-        }
-
-        // Para esta demostración, tomamos la primera ruta del primer curso.
-        // En una aplicación real, esta información (qué curso y qué ruta mostrar)
-        // vendría de la pantalla anterior.
-        Ruta rutaParaMostrar = cursos.get(0).getRutas().get(0);
-
-        // 2. CONSTRUIR LA VISTA (LOS NODITOS) BASADO EN LOS DATOS OBTENIDOS
-        construirNodosVisuales(rutaParaMostrar.getNodos(), leccionesFiltradas);
-
-        // Mostrar el progreso de lecciones completadas
-        System.out.println("Lecciones completadas: " + ProgresoLecciones.getLeccionesCompletadas());
+        // Dibujar los nodos visuales con las lecciones disponibles
+        construirNodosVisuales(listLecciones);
     }
 
     /**
      * Dibuja los "noditos" en la pantalla a partir de la lista de NodoRuta.
      * @param nodosDeLaRuta La lista de objetos NodoRuta que ya tienen su lección asignada.
      */
-    private void construirNodosVisuales(List<NodoRuta> nodosDeLaRuta, List<Leccion> listLecciones) {
+    private void construirNodosVisuales(List<Leccion> listLecciones) {
         // Posiciones predefinidas (X, Y) para cada nodito en la pantalla.
         // Puedes añadir o quitar coordenadas para cambiar el diseño visual de la ruta.
         double[][] positions = {
                 {50, 50}, {150, 120}, {80, 200}, {200, 280}, {120, 360}
         };
 
-        System.out.println("[RutaController] Dibujando " + nodosDeLaRuta.size() + " nodos en la pantalla.");
+        System.out.println("[RutaController] Dibujando " + listLecciones.size() + " nodos en la pantalla.");
 
-        // Creamos un "nodito" visual por cada objeto NodoRuta que exista en el modelo.
-        for (int i = 0; i < nodosDeLaRuta.size(); i++) {
-            // Asegurarnos de no intentar dibujar más nodos que posiciones tengamos definidas.
+        for (int i = 0; i < listLecciones.size(); i++) {
             if (i >= positions.length) {
-                System.err.println("[RutaController] Advertencia: Hay más nodos en el modelo que posiciones definidas. El nodo " + (i + 1) + " no se dibujará.");
+                System.err.println("[RutaController] Advertencia: Hay más lecciones que posiciones definidas. El nodo " + (i + 1) + " no se dibujará.");
                 break;
             }
 
-            NodoRuta nodo = nodosDeLaRuta.get(i);
-            // Crear el botón que representará el nodo.
+            Leccion leccion = listLecciones.get(i);
             Button nodoButton = new Button("L" + (i + 1));
-            // (Puedes cambiar el color si el nodo está completado: nodo.isCompletado())
             nodoButton.setStyle("-fx-background-color: #50C878; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 80px; -fx-min-height: 80px; -fx-max-width: 80px; -fx-max-height: 80px; -fx-cursor: hand;");
-
-            // Posicionar el botón en la pantalla usando su orden como índice.
             nodoButton.setLayoutX(positions[i][0]);
             nodoButton.setLayoutY(positions[i][1]);
+            nodoButton.setTooltip(new Tooltip("Lección con " + leccion.getNumEjercicios() + " ejercicios"));
 
-            // Guardamos el objeto Leccion del nodo dentro del botón. Esto es crucial.
-            Leccion leccionDelNodo = listLecciones.get(i % listLecciones.size());
-            nodoButton.setTooltip(new Tooltip("Lección con " + leccionDelNodo.getNumEjercicios() + " ejercicios"));
+            nodoButton.setOnAction(event -> {
+                try {
+                    // Pasar la ruta de la pantalla de ruta al método mostrarUnaLeccion
+                    LeccionUIController.mostrarUnaLeccion(leccion, (Stage) rootPane.getScene().getWindow(), "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Error al abrir la lección: " + e.getMessage());
+                }
+            });
 
-            // --- CONFIGURACIÓN DEL CLIC PARA ABRIR LA LECCIÓN ---
-            nodoButton.setOnAction(event -> abrirLeccion(leccionDelNodo));
-
-            // Añadir el botón, ya configurado, al panel visual.
             nodoContainer.getChildren().add(nodoButton);
         }
     }
@@ -151,34 +123,6 @@ public class RutaController {
             rootPane.getChildren().setAll(recursosPane);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private List<Leccion> filtrarLeccionesPorLenguaje(List<Leccion> lecciones, String lenguaje) {
-        List<Leccion> leccionesFiltradas = new ArrayList<>();
-        for (Leccion leccion : lecciones) {
-            if (leccion.getListEjercicios().stream().anyMatch(ejercicio -> 
-                ejercicio.getLenguaje().name().equalsIgnoreCase(lenguaje))) {
-                leccionesFiltradas.add(leccion);
-            }
-        }
-        return leccionesFiltradas;
-    }
-
-    private void abrirLeccion(Leccion leccion) {
-        try {
-            // Incrementar el progreso de lecciones completadas
-            ProgresoLecciones.incrementarLeccionesCompletadas();
-
-            // Mostrar la lección utilizando el método del controlador de lecciones
-            LeccionUIController.mostrarUnaLeccion(
-                leccion,
-                (Stage) rootPane.getScene().getWindow(),
-                "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml" // Ruta para regresar a la pantalla de ruta
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error al abrir la lección: " + e.getMessage());
         }
     }
 }
