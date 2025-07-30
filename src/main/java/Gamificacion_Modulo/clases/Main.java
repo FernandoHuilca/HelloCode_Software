@@ -165,6 +165,33 @@ public class Main extends Application {
     }
 
     /**
+     * Obtiene solo los usuarios con rol USUARIO (estudiantes) que tienen progreso en gamificación
+     * @return Lista de usuarios con rol USUARIO únicamente
+     */
+    public static List<Usuario> getUsuariosEstudiantes() {
+        try {
+            SesionManager sesionManager = SesionManager.getInstancia();
+            List<Usuario> todosLosUsuarios = sesionManager.getUsuarios();
+            
+            if (todosLosUsuarios == null) {
+                return new ArrayList<>();
+            }
+            
+            // Filtrar solo usuarios con rol USUARIO
+            List<Usuario> usuariosEstudiantes = todosLosUsuarios.stream()
+                    .filter(usuario -> usuario.getRol() == Roles.USUARIO)
+                    .collect(java.util.stream.Collectors.toList());
+                    
+            System.out.println(">>> Usuarios estudiantes obtenidos: " + usuariosEstudiantes.size());
+            return usuariosEstudiantes;
+            
+        } catch (Exception e) {
+            System.err.println(">>> Error al obtener usuarios estudiantes: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
      * Obtiene el usuario actualmente logueado
      * @return Usuario logueado o null si no hay usuario logueado
      */

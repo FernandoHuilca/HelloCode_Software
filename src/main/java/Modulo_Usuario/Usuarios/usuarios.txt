@@ -10,4 +10,4 @@ JuanMateo;123456;Juan Mateo;juan.quisilema@epn.edu.ec;0;ADMINISTRADOR
 Evelin;123456;Evelin Rocha;evelinrocha@epn.edu;0;USUARIO
 Jose;1234567;Jose;joserocapod0842@gmail.com;0;USUARIO
 esteban;esteban;esteban;esteban@god.ec;0;USUARIO
-tarek;tarek;tarek;tarek@god.com;0;USUARIO
+tarek;tarek;tarek;tarek@god.com;0;ADMINISTRADOR
