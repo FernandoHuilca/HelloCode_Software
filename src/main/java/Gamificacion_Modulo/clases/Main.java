@@ -1,10 +1,9 @@
 package Gamificacion_Modulo.clases;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import MetodosGlobales.SesionManager;
-import Modulo_Usuario.Clases.Roles;
+import Modulo_Usuario.Clases.TipoDeAcceso;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -198,7 +197,7 @@ public class Main extends Application {
             if (usuariosDesdeManager != null && !usuariosDesdeManager.isEmpty()) {
                 // Crear progreso para usuarios nuevos
                 for (Usuario usuario : usuariosDesdeManager) {
-                    if (usuario.getRol() == Roles.USUARIO) {
+                    if (usuario.getRol() == TipoDeAcceso.USUARIO) {
                         // Completar información del usuario con datos por defecto si no tiene
                         if (usuario.getNombre() == null || usuario.getNombre().isEmpty() || usuario.getNombre().equals("null")) {
                             usuario.setNombre("Usuario " + usuario.getUsername());

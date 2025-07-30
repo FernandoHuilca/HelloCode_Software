@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import MetodosGlobales.SesionManager;
-import Modulo_Usuario.Clases.Roles;
+import Modulo_Usuario.Clases.TipoDeAcceso;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,7 +88,7 @@ public class LoginController {
             try {
                 SesionManager.getInstancia().iniciarSesion(usuarioEncontrado);
                 // Si es usuario normal, va a homeUsuario.fxml
-                if (usuarioEncontrado.getRol() == Roles.USUARIO) {
+                if (usuarioEncontrado.getRol() == TipoDeAcceso.USUARIO) {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
                     Parent root = fxmlLoader.load();
                     HomeUsuarioController homeController = fxmlLoader.getController();

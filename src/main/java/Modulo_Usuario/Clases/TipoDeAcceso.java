@@ -1,6 +1,6 @@
 package Modulo_Usuario.Clases;
 
-public enum Roles {
+public enum TipoDeAcceso {
     USUARIO,
     ADMINISTRADOR
 }

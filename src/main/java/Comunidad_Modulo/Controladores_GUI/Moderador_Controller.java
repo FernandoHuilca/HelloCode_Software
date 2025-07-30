@@ -17,7 +17,6 @@ import Comunidad_Modulo.modelo.ForoGeneral;
 import Comunidad_Modulo.modelo.GrupoDiscusion;
 import Comunidad_Modulo.modelo.GrupoCompartir;
 import Comunidad_Modulo.modelo.Solucion;
-import Modulo_Usuario.Clases.Roles;
 
 import java.util.List;
 import java.util.stream.Collectors;
