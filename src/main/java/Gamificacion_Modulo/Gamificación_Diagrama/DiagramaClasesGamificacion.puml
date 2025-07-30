@@ -67,7 +67,7 @@ package "Gamificacion_Modulo" {
         - desafiosCompletados : Integer
         - desafiosActivos : Lista<Desafio>
 
-        + ProgresoEstudiante(estudiante: Estudiante)
+        + ProgresoEstudiante(usuario: Usuario)
         + agregarLogro(logro: Logro) : void
         + actualizarProgreso(desafio: Desafio) : void
         + actualizarLogro(logro: Logro) : void
@@ -94,10 +94,9 @@ package "Gamificacion_Modulo" {
 
 
     ' Relaciones de Dependencia
-    Logro ..> ProgresoEstudiante : "cumpleCriterios()"
-    Desafio .> ProgresoEstudiante : "verificarComplecion()"
-    Desafio .> ProgresoEstudiante : "completarDesafio()"
-    Ranking ..> ProgresoEstudiante : "actualizarRanking()"
+    Logro <.. ProgresoEstudiante : "cumpleCriterios()"
+    Desafio <. ProgresoEstudiante : "completarDesafio()"
+    Ranking <-- ProgresoEstudiante : "actualizarRanking()"
 
 }
 
