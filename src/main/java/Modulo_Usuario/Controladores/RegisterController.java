@@ -149,8 +149,10 @@ public class RegisterController {
     }
 
     private void verificarGuardarUsuario(Usuario nuevoUsuario) {
+
         if (guardarUsuario(nuevoUsuario)) {
             mostrarMensaje("Usuario registrado exitosamente", false);
+            Gamificacion_Modulo.clases.Main.crearProgresoEstudiante();
             limpiarCampos();
 
             // Esperar un momento y volver al login

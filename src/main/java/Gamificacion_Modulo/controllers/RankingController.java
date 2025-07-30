@@ -35,88 +35,88 @@ public class RankingController implements Initializable {
     private String currentUserName = null;
     // Ya no necesitamos índice porque siempre mostramos el usuario logueado
     // private int usuarioActualIndex = 0;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println(">>> Controlador de Ranking inicializado");
 
-        
 
-        
+
+
         // Cargar usuarios en ComboBox
         cargarUsuarios();
-        
+
         // Cargar y mostrar ranking inicial
         cargarRanking();
     }
-    
 
-    
+
+
     private void configurarHoverButton(Button button, String normalColor, String hoverColor) {
-        button.setOnMouseEntered(e -> 
-            button.setStyle("-fx-background-color: " + hoverColor + "; -fx-background-radius: 5; -fx-border-radius: 5;"));
-        button.setOnMouseExited(e -> 
-            button.setStyle("-fx-background-color: " + normalColor + "; -fx-background-radius: 5; -fx-border-radius: 5;"));
+        button.setOnMouseEntered(e ->
+                button.setStyle("-fx-background-color: " + hoverColor + "; -fx-background-radius: 5; -fx-border-radius: 5;"));
+        button.setOnMouseExited(e ->
+                button.setStyle("-fx-background-color: " + normalColor + "; -fx-background-radius: 5; -fx-border-radius: 5;"));
     }
-    
+
     public void cargarRanking() {
         try {
             List<Usuario> usuarios = Main.getUsuarios();
-            List<ProgresoEstudiante> progresos = Main.getProgresos();
-            
+            List<ProgresoEstudiante> progresos = ProgresoEstudiante.getProgresos();
+
             if (usuarios.isEmpty()) {
                 mostrarMensajeVacio();
                 return;
             }
-            
+
             // Crear lista de usuarios con sus puntuaciones
             List<EstudianteRanking> estudiantesRanking = new ArrayList<>();
-            
+
             for (Usuario usuario : usuarios) {
                 ProgresoEstudiante progreso = encontrarProgresoPorUsuario(usuario, progresos);
                 int puntos = progreso != null ? progreso.getPuntosTotal() : 0;
                 estudiantesRanking.add(new EstudianteRanking(usuario.getNombre(), puntos));
             }
-            
+
             // Ordenar por puntuación descendente
             estudiantesRanking.sort((e1, e2) -> Integer.compare(e2.getPuntos(), e1.getPuntos()));
-            
+
             // Encontrar posición del usuario actual
             int posicionUsuario = encontrarPosicionUsuario(estudiantesRanking);
-            
+
             // Actualizar título con posición
-            String mensaje = currentUserName != null ? 
-                currentUserName + " ocupas el puesto #" + posicionUsuario :
-                "Selecciona un usuario para ver su posición";
+            String mensaje = currentUserName != null ?
+                    currentUserName + " ocupas el puesto #" + posicionUsuario :
+                    "Selecciona un usuario para ver su posición";
             titleLabel.setText(mensaje);
-            
-            // Obtener top 7 estudiantes para mostrar
+
+            // Obtener estudiantes para mostrar
             List<EstudianteRanking> topEstudiantes = estudiantesRanking.stream()
-                    .limit(7)
+                    .limit(100)
                     .collect(Collectors.toList());
-            
+
             // Crear entradas de ranking
             crearEntradasRanking(topEstudiantes);
-            
+
         } catch (Exception e) {
             System.err.println("Error al cargar ranking: " + e.getMessage());
             e.printStackTrace();
             mostrarMensajeError();
         }
     }
-    
+
     private ProgresoEstudiante encontrarProgresoPorUsuario(Usuario usuario, List<ProgresoEstudiante> progresos) {
         return progresos.stream()
                 .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
                 .findFirst()
                 .orElse(null);
     }
-    
+
     private int encontrarPosicionUsuario(List<EstudianteRanking> estudiantesRanking) {
         if (currentUserName == null) {
             return 1; // Posición por defecto
         }
-        
+
         for (int i = 0; i < estudiantesRanking.size(); i++) {
             if (estudiantesRanking.get(i).getNombre().equals(currentUserName)) {
                 return i + 1; // Posición 1-indexada
@@ -124,30 +124,30 @@ public class RankingController implements Initializable {
         }
         return estudiantesRanking.size(); // Si no se encuentra, última posición
     }
-    
+
     private void crearEntradasRanking(List<EstudianteRanking> topEstudiantes) {
         rankingEntriesContainer.getChildren().clear();
-        
+
         for (int i = 0; i < topEstudiantes.size(); i++) {
             EstudianteRanking estudiante = topEstudiantes.get(i);
-            
+
             // Container para cada entrada
             HBox rankingItem = new HBox();
             rankingItem.setAlignment(Pos.CENTER_LEFT);
             rankingItem.setPrefWidth(295);
-            
+
             // Nombre del estudiante
             Label nameLabel = new Label(estudiante.getNombre());
             nameLabel.setFont(Font.font("Inter", FontWeight.BOLD, 18));
-            
+
             // Espaciador
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
-            
+
             // Puntuación
             Label expLabel = new Label(estudiante.getPuntos() + " EXP");
             expLabel.setFont(Font.font("Inter", FontWeight.BOLD, 18));
-            
+
             // Resaltar usuario actual
             if (estudiante.getNombre().equals(currentUserName)) {
                 nameLabel.setTextFill(Color.BLUE);
@@ -156,29 +156,29 @@ public class RankingController implements Initializable {
                 nameLabel.setTextFill(Color.BLACK);
                 expLabel.setTextFill(Color.BLACK);
             }
-            
+
             rankingItem.getChildren().addAll(nameLabel, spacer, expLabel);
             rankingEntriesContainer.getChildren().add(rankingItem);
         }
     }
-    
+
     private void mostrarMensajeVacio() {
         rankingEntriesContainer.getChildren().clear();
         Label mensajeVacio = new Label("No hay estudiantes registrados");
         mensajeVacio.setFont(Font.font("Inter", FontWeight.NORMAL, 16));
         mensajeVacio.setTextFill(Color.GRAY);
         rankingEntriesContainer.getChildren().add(mensajeVacio);
-        
+
         titleLabel.setText("Ranking no disponible");
     }
-    
+
     private void mostrarMensajeError() {
         rankingEntriesContainer.getChildren().clear();
         Label mensajeError = new Label("Error al cargar el ranking");
         mensajeError.setFont(Font.font("Inter", FontWeight.NORMAL, 16));
         mensajeError.setTextFill(Color.RED);
         rankingEntriesContainer.getChildren().add(mensajeError);
-        
+
         titleLabel.setText("Error en el ranking");
     }
 
@@ -206,7 +206,7 @@ public class RankingController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     // Métodos de navegación
     @FXML
     private void navButton1() {
@@ -218,7 +218,7 @@ public class RankingController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void navButton2() {
         System.out.println(">>> Navegando a Perfil de Usuario desde Ranking");
@@ -229,22 +229,22 @@ public class RankingController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void navButton3() {
         System.out.println(">>> Ya estás en la pantalla de Ranking");
         // Refrescar ranking
         cargarRanking();
     }
-    
+
     private void cargarUsuarios() {
         try {
             if (usuarioSelector != null) {
                 usuarioSelector.getItems().clear();
-                
+
                 // Obtener solo el usuario logueado actual
                 Usuario usuarioLogueado = Main.getUsuarioLogueado();
-                
+
                 if (usuarioLogueado != null) {
                     usuarioSelector.getItems().add(usuarioLogueado.getNombre());
                     usuarioSelector.getSelectionModel().selectFirst();
@@ -261,7 +261,7 @@ public class RankingController implements Initializable {
             System.err.println("Error al cargar usuario logueado: " + e.getMessage());
         }
     }
-    
+
     @FXML
     private void cambiarUsuario() {
         try {
@@ -269,7 +269,7 @@ public class RankingController implements Initializable {
                 // Ya no cambiamos índice, siempre es el usuario logueado
                 currentUserName = usuarioSelector.getValue();
                 System.out.println(">>> Usuario seleccionado (siempre el logueado): " + currentUserName);
-                
+
                 // Recargar ranking con nuevo usuario
                 cargarRanking();
             }
@@ -277,23 +277,23 @@ public class RankingController implements Initializable {
             System.err.println("Error al cambiar usuario: " + e.getMessage());
         }
     }
-    
+
     // Método público para actualizar la información cuando se actualicen los datos
     public void actualizarDatosUsuario() {
         cargarUsuarios();
         cargarRanking();
     }
-    
+
     // Clase interna para manejar datos de ranking
     private static class EstudianteRanking {
         private String nombre;
         private int puntos;
-        
+
         public EstudianteRanking(String nombre, int puntos) {
             this.nombre = nombre;
             this.puntos = puntos;
         }
-        
+
         public String getNombre() { return nombre; }
         public int getPuntos() { return puntos; }
     }
