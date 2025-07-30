@@ -22,18 +22,18 @@ public class LeccionRepository {
         //Creo lecciones y a ellas les agrego ejercicios_______________________________________
         Leccion leccionAux = new Leccion();
         leccionAux.agregarEjercicio(listEjerciciosAux.get(0));
+        leccionAux.agregarEjercicio(listEjerciciosAux.get(103));
         leccionAux.agregarEjercicio(listEjerciciosAux.get(1));
-        leccionAux.agregarEjercicio(listEjerciciosAux.get(2));
 
         Leccion leccionAux2 = new Leccion();
+        leccionAux2.agregarEjercicio(listEjerciciosAux.get(2));
+        leccionAux2.agregarEjercicio(listEjerciciosAux.get(104));
         leccionAux2.agregarEjercicio(listEjerciciosAux.get(3));
-        leccionAux2.agregarEjercicio(listEjerciciosAux.get(4));
-        leccionAux2.agregarEjercicio(listEjerciciosAux.get(5));
 
         Leccion leccionAux3 = new Leccion();
-        leccionAux3.agregarEjercicio(listEjerciciosAux.get(6));
-        leccionAux3.agregarEjercicio(listEjerciciosAux.get(7));
-        leccionAux3.agregarEjercicio(listEjerciciosAux.get(8));
+        leccionAux3.agregarEjercicio(listEjerciciosAux.get(4));
+        leccionAux3.agregarEjercicio(listEjerciciosAux.get(5));
+        leccionAux3.agregarEjercicio(listEjerciciosAux.get(105));
         //_____________________________________________________________________________________
         //Agrego las lecciones a la lista:
         lecciones.add(leccionAux);
