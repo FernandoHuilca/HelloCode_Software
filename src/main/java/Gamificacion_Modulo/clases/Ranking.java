@@ -42,7 +42,7 @@ public final class Ranking {
     }
 
     public List<ProgresoEstudiante> obtenerRankingGeneral() {
-        return new ArrayList<>(rankingGeneral);
+        return this.rankingGeneral;
     }
 
     public Integer calcularPosicion(ProgresoEstudiante estudiante) {

@@ -54,6 +54,10 @@ public abstract class Desafio {
         desbloquearLogro(estudiante);
     }
 
+    public void actualizarAvance(Integer cantidad) {
+        this.leccionesCompletadas += cantidad;
+    }
+
     public List<Logro> getLogrosDisponibles() {
         return logrosDisponibles;
     }
