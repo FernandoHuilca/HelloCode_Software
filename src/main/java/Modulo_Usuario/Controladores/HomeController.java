@@ -16,12 +16,6 @@ import javafx.stage.Stage;
 public class HomeController {
 
     @FXML
-    private void abrirLeccion(MouseEvent event) {
-        // Aquí puedes cargar el módulo de lección cuando lo tengas
-        mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
-    }
-
-    @FXML
     private void abrirUsuarios(MouseEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/crud.fxml"));
@@ -45,9 +39,26 @@ public class HomeController {
 
     @FXML
     private void abrirEjercicios(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Ejercicios/views/CrudEjercicios.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 360, 640);
 
+            Stage stage = new Stage();
+            stage.setTitle("Hello Code Software - Módulo Ejercicios");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            // Cerrar la pantalla actual
+            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            thisStage.close();
+            //mostrarMensaje("Módulo Lecciones", "Este módulo estará disponible próximamente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarError("Error al abrir el módulo de usuarios: " + e.getMessage());
+        }
         // Aquí puedes cargar el módulo de ejercicios cuando lo tengas
-        mostrarMensaje("Módulo Ejercicios", "Este módulo estará disponible próximamente.");
+        //mostrarMensaje("Módulo Ejercicios", "Este módulo estará disponible próximamente.");
 
     }
 

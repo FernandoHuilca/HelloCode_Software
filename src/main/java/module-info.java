@@ -66,5 +66,15 @@ module Modulo_Ejercicio {
     exports Nuevo_Modulo_Leccion.application;
     opens Nuevo_Modulo_Leccion.application to javafx.graphics, javafx.fxml;
     opens Nuevo_Modulo_Leccion.controllers to javafx.graphics, javafx.fxml;
+
+    // Exportaciones y aperturas necesarias para GestionAprendizaje_Modulo
+    exports GestionAprendizaje_Modulo.Aplicacion to javafx.graphics, javafx.fxml;
+    exports GestionAprendizaje_Modulo.Controladores to javafx.fxml;
+    exports GestionAprendizaje_Modulo.Modelo;
+
+    opens GestionAprendizaje_Modulo.Controladores to javafx.fxml;
+    opens GestionAprendizaje_Modulo.Aplicacion to javafx.graphics, javafx.fxml;
+    opens GestionAprendizaje_Modulo.Modelo to javafx.fxml;
+
 }
 
