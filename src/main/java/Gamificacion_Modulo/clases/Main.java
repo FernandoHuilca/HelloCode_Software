@@ -12,8 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
 
+public class Main extends Application {
+    //TODO: VER PORQUE AHORA NO SE GUARDA LOS LOGROS ASIGNADOS DESPUES DE CERRAR SESION.
     public static void main(String[] args) {
         // Inicializar datos del sistema
         inicializarDatos();
@@ -39,11 +40,7 @@ public class Main extends Application {
     }
 
     //TODO: Cambiar todos estos datos a clases que controlen y llamen
-    private static final List<Usuario> usuarios = new ArrayList<>();
-    private static final List<Logro> logrosDisponibles = new ArrayList<>();
-    private static final List<Desafio> desafiosDisponibles = new ArrayList<>();
-    private static final Ranking ranking = Ranking.getInstance();
-    private static final List<ProgresoEstudiante> progresos = new ArrayList<>();
+
 
     // Campo para almacenar el Stage principal para navegación
     private static Stage primaryStage;
@@ -51,7 +48,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage; // Almacenar referencia del Stage principal
-
         try {
             // Prioridad 1: Cargar PerfilUsuario.fxml (Progreso - interfaz principal)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));
@@ -130,86 +126,42 @@ public class Main extends Application {
 
     // Método para inicializar datos cuando se navega desde otro módulo
     public static void inicializarDesdeModuloExterno() {
-        if (usuarios.isEmpty()) {
+        SesionManager sesionManager = SesionManager.getInstancia();
+        List<Usuario> usuariosDelSistema = sesionManager.getUsuarios();
+
+        if (usuariosDelSistema == null || usuariosDelSistema.isEmpty()) {
             System.out.println(">>> Inicializando módulo de gamificación desde navegación externa");
             inicializarDatos();
         } else {
-            System.out.println(">>> Módulo de gamificación ya inicializado (" + usuarios.size() + " usuarios)");
+            System.out.println(">>> Módulo de gamificación ya inicializado (" + usuariosDelSistema.size() + " usuarios)");
             // Recargar usuarios para sincronización automática
             crearProgresoEstudiante();
         }
 
         // Debug: Mostrar usuarios cargados
         System.out.println(">>> USUARIOS DISPONIBLES EN GAMIFICACIÓN:");
-        for (int i = 0; i < usuarios.size(); i++) {
-            Usuario u = usuarios.get(i);
-            System.out.println("   " + (i + 1) + ". " + u.getNombre() + " (" + u.getUsername() + ") - " + u.getEmail());
+        List<Usuario> usuariosParaDebug = sesionManager.getUsuarios();
+        if (usuariosParaDebug != null) {
+            for (int i = 0; i < usuariosParaDebug.size(); i++) {
+                Usuario u = usuariosParaDebug.get(i);
+                System.out.println("   " + (i + 1) + ". " + u.getNombre() + " (" + u.getUsername() + ") - " + u.getEmail());
+            }
         }
 
         // Debug: Mostrar progresos creados
-        System.out.println(">>> PROGRESOS CREADOS: " + progresos.size());
-        for (ProgresoEstudiante p : progresos) {
+        System.out.println(">>> PROGRESOS CREADOS: " + ProgresoEstudiante.getProgresos().size());
+        for (ProgresoEstudiante p : ProgresoEstudiante.getProgresos()) {
             System.out.println("   - " + p.getUsuario().getNombre() + ": " + p.getPuntosTotal() + " puntos");
         }
     }
 
 
-    //TODO: METODOS QUE SI USAN OTRAS CLASES Y TOCA ARREGLAR
+    //TODO: ESTE GETUSUARIOS DEBEMOS MOVER A CADA UNA DE LAS CLASES QUE SE LLAMAN O CREAR LA CLASE INICIALIZADOR
 
     // Métodos para acceder a los datos desde los controladores
     public static List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public static List<Logro> getLogrosDisponibles() {
-        return logrosDisponibles;
-    }
-
-    public static List<Desafio> getDesafiosDisponibles() {
-        return desafiosDisponibles;
-    }
-
-    public static void agregarDesafio(Desafio desafio) {
-        desafiosDisponibles.add(desafio);
-    }
-
-    public static Ranking getRanking() {
-        return ranking;
-    }
-
-    public static List<ProgresoEstudiante> getProgresos() {
-        return progresos;
-    }
-
-    /**
-     * Obtiene el progreso del usuario actualmente logueado
-     * @return ProgresoEstudiante del usuario logueado o null si no hay usuario logueado o no tiene progreso
-     */
-    public static ProgresoEstudiante getProgresoUsuarioLogueado() {
-        try {
-            SesionManager sesionManager = SesionManager.getInstancia();
-            Usuario usuarioLogueado = sesionManager.getUsuarioAutenticado();
-            
-            if (usuarioLogueado == null) {
-                System.out.println(">>> No hay usuario logueado en el sistema");
-                return null;
-            }
-            
-            // Buscar el progreso del usuario logueado
-            for (ProgresoEstudiante progreso : progresos) {
-                if (progreso.getUsuario().getUsername().equals(usuarioLogueado.getUsername())) {
-                    System.out.println(">>> Progreso encontrado para usuario logueado: " + usuarioLogueado.getNombre());
-                    return progreso;
-                }
-            }
-            
-            System.out.println(">>> No se encontró progreso para el usuario logueado: " + usuarioLogueado.getNombre());
-            return null;
-            
-        } catch (Exception e) {
-            System.err.println(">>> Error al obtener progreso del usuario logueado: " + e.getMessage());
-            return null;
-        }
+        SesionManager sesionManager = SesionManager.getInstancia();
+        return sesionManager.getUsuarios();
     }
 
     /**
@@ -226,13 +178,10 @@ public class Main extends Application {
         }
     }
 
-    //TODO: CREAR UNA NUEVA CLASE PARA INICIALIZAR LOS DATOS, se quito el bucle porque hacia lo mismo de crearProgresoEstudiante
     private static void inicializarDatos() {
         // Crear automáticamente progresos para todos los usuarios cargados desde SesionManager
         crearProgresoEstudiante();
-        // Inicializar logros predeterminados
-        inicializarLogros();
-
+        // Los logros se inicializan automáticamente en la clase Logro
     }
 
     // Método público para recargar usuarios (para sincronización)
@@ -242,14 +191,12 @@ public class Main extends Application {
      * */
     public static void crearProgresoEstudiante() {
         try {
-            usuarios.clear();
-            
             // Obtener usuarios desde SesionManager
             SesionManager sesionManager = SesionManager.getInstancia();
             List<Usuario> usuariosDesdeManager = sesionManager.getUsuarios();
-            
+
             if (usuariosDesdeManager != null && !usuariosDesdeManager.isEmpty()) {
-                // Filtrar solo usuarios con rol USUARIO
+                // Crear progreso para usuarios nuevos
                 for (Usuario usuario : usuariosDesdeManager) {
                     if (usuario.getRol() == Roles.USUARIO) {
                         // Completar información del usuario con datos por defecto si no tiene
@@ -260,44 +207,26 @@ public class Main extends Application {
                             usuario.setEmail(usuario.getUsername() + "@email.com");
                         }
 
-                        if (usuario.getRol() == Roles.USUARIO){
-                            usuarios.add(usuario);
-                            System.out.println(">>> Usuario cargado: " + usuario.getUsername() + " - " + usuario.getNombre());
+                        boolean existeProgreso = ProgresoEstudiante.getProgresos().stream()
+                                .anyMatch(p -> p.getUsuario().getUsername().equals(usuario.getUsername()));
+                        if (!existeProgreso) {
+                            ProgresoEstudiante nuevoProgreso = new ProgresoEstudiante(usuario);
+                            // Asignar automáticamente los puntos totales basándose en la experiencia del usuario
+                            nuevoProgreso.setPuntosTotal(usuario.getXp());
+                            ProgresoEstudiante.getProgresos().add(nuevoProgreso);
+                            System.out.println(">>> Progreso creado para nuevo usuario: " + usuario.getNombre() + " con " + usuario.getXp() + " puntos de experiencia");
                         }
+                        System.out.println(">>> Usuario cargado: " + usuario.getUsername() + " - " + usuario.getNombre());
                     }
                 }
             } else {
                 System.out.println(">>> No hay usuarios disponibles en SesionManager");
             }
 
-            // Crear progreso para usuarios nuevos
-            for (Usuario usuario : usuarios) {
-
-                boolean existeProgreso = progresos.stream()
-                        .anyMatch(p -> p.getUsuario().getUsername().equals(usuario.getUsername()));
-                if (!existeProgreso) {
-                    ProgresoEstudiante nuevoProgreso = new ProgresoEstudiante(usuario);
-                    // Asignar automáticamente los puntos totales basándose en la experiencia del usuario
-                    nuevoProgreso.setPuntosTotal(usuario.getXp());
-                    progresos.add(nuevoProgreso);
-                    System.out.println(">>> Progreso creado para nuevo usuario: " + usuario.getNombre() + " con " + usuario.getXp() + " puntos de experiencia");
-                }
-            }
-
-            System.out.println(">>> Usuarios recargados exitosamente. Total: " + usuarios.size());
+            System.out.println(">>> Usuarios recargados exitosamente. Total: " + (usuariosDesdeManager != null ? usuariosDesdeManager.size() : 0));
 
         } catch (Exception e) {
             System.err.println(">>> Error al recargar usuarios: " + e.getMessage());
         }
-    }
-
-    //TODO: Mover a alguna clase que maneje el inicializador de logros
-
-    private static void inicializarLogros() {
-        logrosDisponibles.add(new Logro("Principiante", "Completar tu primer desafio",  100));
-        logrosDisponibles.add(new Logro("Dedicado", "Completar 3 desafios", 250));
-        logrosDisponibles.add(new Logro("Acumulador", "Obtener 500 puntos", 150));
-        logrosDisponibles.add(new Logro("Coleccionista", "Obtener 5 logros", 300));
-        System.out.println(">>> Logros predeterminados cargados: " + logrosDisponibles.size());
     }
 }
