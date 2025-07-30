@@ -1,3 +1,9 @@
+¿Qué tipo de bucle evalúa la condición antes de ejecutar el bloque?|do-while,for,if,switch|for|BASICO|JAVA
+¿Qué valor imprime este bucle? for(int i=0;i<3;i++){System.out.print(i);}|012,123,345,000,321|012|BASICO|JAVA
+¿Qué palabra se usa para continuar con la siguiente iteración de un bucle?|break,skip,continue|continue|BASICO|JAVA
+¿Qué palabra se usa para salir completamente de un bucle en Java?|exit,end,stop,break,return|break|BASICO|JAVA
+¿Cuántas veces se ejecuta este bucle? for(int i=1;i<=4;i++){...}|2,3,4,5,6|4|BASICO|JAVA
+¿Cuál de estos bucles se ejecuta al menos una vez, aunque la condición sea falsa?|for,while,do-while,if,foreach|do-while|BASICO|JAVA
 ¿Cuál de estos es un tipo de dato entero en Java?|String,boolean,double,int,Integer|int,Integer|BASICO|JAVA
 ¿Qué tipo se usa para verdadero o falso?|String,boolean,double,int|boolean|BASICO|JAVA
 ¿Cuáles de estos son tipos de datos primitivos en Java?|int,String,double,boolean,Integer,char|int,double,boolean,char|BASICO|JAVA

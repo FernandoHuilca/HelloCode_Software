@@ -144,20 +144,43 @@ public class LeccionUIController {
     /**
      * Muestra la pantalla de lección completada
      */
-    private static void mostrarLeccionCompletada() {
+    /*private static void mostrarLeccionCompletada() {
         try {
-            MetodosFrecuentes.mostrarAlerta("¡Felicidades!", "Has completado todos los ejercicios de la lección.");
+            MetodosFrecuentes.mostrarVentana("/Nuevo_Modulo_Leccion/views/ResumenLeccionCompletada.fxml", "Resumen");
+            //MetodosFrecuentes.mostrarAlerta("¡Felicidades!", "Has completado todos los ejercicios de la lección.");
             // Abrir la ventana final que fue pasada por parámetro
             if (rutaFXMLVentanaFinal != null && !rutaFXMLVentanaFinal.isEmpty()) {
                 MetodosFrecuentes.mostrarVentana(rutaFXMLVentanaFinal, "Menú de Lecciones");
             }
             // Aquí puedes agregar lógica adicional para mostrar estadísticas, XP ganado, etc.
-            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            MetodosFrecuentes.mostrarAlerta("Error", "Error al mostrar lección completada: " + e.getMessage());
+        }
+    }*/
+    private static void mostrarLeccionCompletada() {
+        try {
+            FXMLLoader loader = new FXMLLoader(LeccionUIController.class.getResource("/Nuevo_Modulo_Leccion/views/ResumenLeccionCompletada.fxml"));
+            Parent root = loader.load();
+
+            Stage resumenStage = new Stage();
+            resumenStage.setTitle("Resumen de la Lección");
+            resumenStage.setScene(new Scene(root));
+            resumenStage.setResizable(false);
+
+            resumenStage.showAndWait();
+
+            if (rutaFXMLVentanaFinal != null && !rutaFXMLVentanaFinal.isEmpty()) {
+                MetodosFrecuentes.mostrarVentana(rutaFXMLVentanaFinal, "Menú de Lecciones");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             MetodosFrecuentes.mostrarAlerta("Error", "Error al mostrar lección completada: " + e.getMessage());
         }
     }
+
 
 
 }

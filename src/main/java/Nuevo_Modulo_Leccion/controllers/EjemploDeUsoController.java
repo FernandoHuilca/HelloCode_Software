@@ -23,6 +23,9 @@ public class EjemploDeUsoController {
         Stage stage = (Stage) buttonLeccionUno.getScene().getWindow();
         List<Leccion> leccionList = LeccionRepository.getLecciones();
         LeccionUIController.mostrarUnaLeccion(leccionList.get(0),stage,"/Nuevo_Modulo_Leccion/views/ejemploDeUso.fxml");
+        //LeccionUIController.mostrarUnaLeccion(leccionList.get(1),stage,"/Nuevo_Modulo_Leccion/views/ejemploDeUso.fxml");
+        //LeccionUIController.mostrarUnaLeccion(leccionList.get(2),stage,"/Nuevo_Modulo_Leccion/views/ejemploDeUso.fxml");
+
     }
 
 
