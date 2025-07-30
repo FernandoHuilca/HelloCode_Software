@@ -1,16 +1,13 @@
 package Nuevo_Modulo_Leccion.controllers;
 
 import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
-import GestionAprendizaje_Modulo.Logica.Ruta;
-import MetodosGlobales.LeccionesCompletadas;
-import MetodosGlobales.MetodosFrecuentes;
-import MetodosGlobales.SesionManager;
+import Conexion.MetodosFrecuentes;
+import Conexion.SesionManager;
 import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
 import Modulo_Ejercicios.exercises.EjercicioBase;
 import Modulo_Ejercicios.exercises.EjercicioCompletarCodigo;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;
-import Modulo_Usuario.Clases.Usuario;
 import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

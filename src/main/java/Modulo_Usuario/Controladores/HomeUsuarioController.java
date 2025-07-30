@@ -1,8 +1,8 @@
 package Modulo_Usuario.Controladores;
 
 import Gamificacion_Modulo.clases.Main;
-import MetodosGlobales.MetodosFrecuentes;
-import MetodosGlobales.SesionManager;
+import Conexion.MetodosFrecuentes;
+import Conexion.SesionManager;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

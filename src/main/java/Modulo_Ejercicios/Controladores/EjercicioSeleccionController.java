@@ -1,7 +1,7 @@
 package Modulo_Ejercicios.Controladores;
 
-import MetodosGlobales.LeccionesCompletadas;
-import MetodosGlobales.MetodosFrecuentes;
+import Conexion.LeccionesCompletadas;
+import Conexion.MetodosFrecuentes;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;
 import Modulo_Ejercicios.exercises.Respuesta;
 import Modulo_Ejercicios.exercises.RespuestaString;

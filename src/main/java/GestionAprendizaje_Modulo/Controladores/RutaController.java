@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
-import MetodosGlobales.MetodosFrecuentes;
+import Conexion.MetodosFrecuentes;
 import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
 import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
 import Nuevo_Modulo_Leccion.logic.Leccion;

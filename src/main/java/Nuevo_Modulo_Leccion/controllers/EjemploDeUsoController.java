@@ -1,6 +1,5 @@
 package Nuevo_Modulo_Leccion.controllers;
 
-import MetodosGlobales.MetodosFrecuentes;
 import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
 import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXML;

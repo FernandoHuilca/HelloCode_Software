@@ -2,7 +2,7 @@ package Comunidad_Modulo.Controladores_GUI;
 
 import Comunidad_Modulo.controladores.ContextoSistema;
 import Comunidad_Modulo.modelo.Comunidad;
-import MetodosGlobales.MetodosFrecuentes;
+import Conexion.MetodosFrecuentes;
 import Modulo_Usuario.Clases.UsuarioComunidad;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

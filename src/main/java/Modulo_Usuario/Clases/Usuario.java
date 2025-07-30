@@ -1,7 +1,7 @@
 package Modulo_Usuario.Clases;
 
 import GestionAprendizaje_Modulo.Logica.Curso;
-import MetodosGlobales.LeccionesCompletadas;
+import Conexion.LeccionesCompletadas;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

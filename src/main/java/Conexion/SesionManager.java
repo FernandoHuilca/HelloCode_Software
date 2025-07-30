@@ -1,4 +1,4 @@
-package MetodosGlobales;
+package Conexion;
 
 import GestionAprendizaje_Modulo.Logica.Curso;
 import Modulo_Usuario.Clases.Usuario;
