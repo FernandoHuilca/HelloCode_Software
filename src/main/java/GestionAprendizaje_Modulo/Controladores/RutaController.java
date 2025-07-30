@@ -3,6 +3,7 @@ package GestionAprendizaje_Modulo.Controladores;
 import java.io.IOException;
 import java.util.List;
 
+import MetodosGlobales.MetodosFrecuentes;
 import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
 import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
 import Nuevo_Modulo_Leccion.logic.Leccion;
@@ -33,6 +34,7 @@ public class RutaController {
     @FXML private Pane nodoContainer;    // El panel del FXML donde se dibujarán los nodos.
     @FXML private AnchorPane rootPane;   // El panel raíz de la ventana, para obtener el Stage.
     @FXML private Label tituloLenguajeLabel; // Agregar un label para el título del lenguaje
+    @FXML private Button btnBack;
 
     /**
      * El método initialize se ejecuta automáticamente después de que el FXML ha sido cargado.
@@ -102,14 +104,7 @@ public class RutaController {
      */
     @FXML
     private void manejarAtras() {
-        try {
-            // Cambia esta ruta a la vista a la que quieras regresar.
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/DashboardEstudiante.fxml"));
-            AnchorPane dashboardPane = loader.load();
-            rootPane.getChildren().setAll(dashboardPane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+         MetodosFrecuentes.cambiarVentana((Stage) rootPane.getScene().getWindow(), "/Modulo_Usuario/views/homeUsuario.fxml", "Perfil de Usuario");
     }
 
     /**
