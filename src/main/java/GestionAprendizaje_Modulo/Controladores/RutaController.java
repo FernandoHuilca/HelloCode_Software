@@ -1,13 +1,16 @@
 package GestionAprendizaje_Modulo.Controladores;
 
+import java.io.IOException;
+import java.util.List;
+
 import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
 import GestionAprendizaje_Modulo.Logica.Curso;
 import GestionAprendizaje_Modulo.Logica.NodoRuta;
 import GestionAprendizaje_Modulo.Logica.Ruta;
+import MetodosGlobales.MetodosFrecuentes;
 import MetodosGlobales.SesionManager;
 import Modulo_Usuario.Clases.Usuario;
 import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
-import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -16,9 +19,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * =================================================================================
@@ -151,16 +151,10 @@ public class RutaController {
         }
     }
 
-    @FXML
+   @FXML
     private void manejarAtras() {
-        try {
-            // Asegúrate de que esta es la ruta correcta a la pantalla anterior.
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
-            AnchorPane pane = loader.load();
-            rootPane.getChildren().setAll(pane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    MetodosFrecuentes.cambiarVentana((Stage) rootPane.getScene().getWindow(), "/Modulo_Usuario/views/homeUsuario.fxml", "Perfil de Usuario");
+
     }
 
     @FXML
