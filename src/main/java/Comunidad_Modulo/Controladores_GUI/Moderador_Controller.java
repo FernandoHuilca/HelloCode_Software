@@ -47,6 +47,7 @@ public class Moderador_Controller implements Initializable {
         inicializarSistema();
         configuracionInterfazModerador();
         actualizarInformacion();
+        configurarControlesHistorial();
     }
 
     private void inicializarSistema() {
@@ -330,9 +331,27 @@ public class Moderador_Controller implements Initializable {
                 historial.append("Nivel Java: ").append(grupo.getNivelJava()).append("\n");
                 historial.append("Tema: ").append(grupo.getTipoTema()).append("\n\n");
                 
-                historial.append("👥 Miembros: ").append(grupo.getMiembros().size()).append("\n");
+                // Mostrar miembros específicos del grupo
+                historial.append("👥 Miembros del Grupo: ").append(grupo.getMiembros().size()).append("\n");
                 for (UsuarioComunidad miembro : grupo.getMiembros()) {
-                    historial.append("  • ").append(miembro.getUsername()).append("\n");
+                    historial.append("  • ").append(miembro.getUsername()).append(" [Unido al grupo]\n");
+                }
+                
+                // Mostrar todos los miembros de la comunidad
+                historial.append("\n👥 Todos los miembros de la comunidad: ").append(comunidad.getUsuariosMiembros().size()).append("\n");
+                for (UsuarioComunidad miembro : comunidad.getUsuariosMiembros()) {
+                    boolean estaEnGrupo = grupo.getMiembros().stream()
+                            .anyMatch(m -> m.getUsername().equals(miembro.getUsername()));
+                    boolean estaConectado = comunidad.getUsuariosConectados().stream()
+                            .anyMatch(u -> u.getUsername().equals(miembro.getUsername()));
+                    
+                    String estado = estaEnGrupo ? "[✅ En grupo]" : "[⚪ Necesita unirse al grupo]";
+                    String conexion = estaConectado ? " [🟢 Conectado]" : " [🔴 Desconectado]";
+                    historial.append("  • ").append(miembro.getUsername()).append(" ").append(estado).append(conexion).append("\n");
+                }
+                
+                if (grupo.getMiembros().isEmpty()) {
+                    historial.append("\n💡 Tip: Los usuarios deben ir a 'Gestión de Foro' y usar 'Unirse a Grupo' para participar en este grupo específico.\n");
                 }
                 
             } else {
@@ -344,9 +363,27 @@ public class Moderador_Controller implements Initializable {
                 historial.append("Nivel Java: ").append(grupo.getNivelJava()).append("\n");
                 historial.append("Tema: ").append(grupo.getTipoTema()).append("\n\n");
                 
-                historial.append("👥 Miembros: ").append(grupo.getMiembros().size()).append("\n");
+                // Mostrar miembros específicos del grupo
+                historial.append("👥 Miembros del Grupo: ").append(grupo.getMiembros().size()).append("\n");
                 for (UsuarioComunidad miembro : grupo.getMiembros()) {
-                    historial.append("  • ").append(miembro.getUsername()).append("\n");
+                    historial.append("  • ").append(miembro.getUsername()).append(" [Unido al grupo]\n");
+                }
+                
+                // Mostrar todos los miembros de la comunidad
+                historial.append("\n👥 Todos los miembros de la comunidad: ").append(comunidad.getUsuariosMiembros().size()).append("\n");
+                for (UsuarioComunidad miembro : comunidad.getUsuariosMiembros()) {
+                    boolean estaEnGrupo = grupo.getMiembros().stream()
+                            .anyMatch(m -> m.getUsername().equals(miembro.getUsername()));
+                    boolean estaConectado = comunidad.getUsuariosConectados().stream()
+                            .anyMatch(u -> u.getUsername().equals(miembro.getUsername()));
+                    
+                    String estado = estaEnGrupo ? "[✅ En grupo]" : "[⚪ Necesita unirse al grupo]";
+                    String conexion = estaConectado ? " [🟢 Conectado]" : " [🔴 Desconectado]";
+                    historial.append("  • ").append(miembro.getUsername()).append(" ").append(estado).append(conexion).append("\n");
+                }
+                
+                if (grupo.getMiembros().isEmpty()) {
+                    historial.append("\n💡 Tip: Los usuarios deben ir a 'Gestión de Foro' y usar 'Unirse a Grupo' para participar en este grupo específico.\n");
                 }
                 
                 historial.append("\n💡 Soluciones Compartidas:\n");
