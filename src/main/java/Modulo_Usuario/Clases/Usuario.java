@@ -1,24 +1,32 @@
 package Modulo_Usuario.Clases;
 
+import GestionAprendizaje_Modulo.Logica.Curso;
+import MetodosGlobales.LeccionesCompletadas;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Usuario extends UsuarioBase {
     private String nombre;
     private String email;
     private int xp;
-    private Roles rol;
+    private TipoDeAcceso rol;
+    private Curso curso;
 
 
     // Constructor por defecto
     public Usuario() {
         super();
         this.xp = 0;
-        this.rol = Roles.USUARIO;
+        this.rol = TipoDeAcceso.USUARIO;
     }
 
     // Constructor con parámetros
     public Usuario(String username, String password) {
         super(username, password);
         this.xp = 0;
-        this.rol = Roles.USUARIO;
+        this.rol = TipoDeAcceso.USUARIO;
     }
 
     // Constructor completo
@@ -27,7 +35,7 @@ public class Usuario extends UsuarioBase {
         this.nombre = nombre;
         this.email = email;
         this.xp = 0;
-        this.rol = Roles.USUARIO;
+        this.rol = TipoDeAcceso.USUARIO;
     }
 
     // Constructor con XP
@@ -36,10 +44,10 @@ public class Usuario extends UsuarioBase {
         this.nombre = nombre;
         this.email = email;
         this.xp = xp;
-        this.rol = Roles.USUARIO;
+        this.rol = TipoDeAcceso.USUARIO;
     }
 
-    public Usuario(String username, String password, String nombre, String email, int xp, Roles rol) {
+    public Usuario(String username, String password, String nombre, String email, int xp, TipoDeAcceso rol) {
         super(username, password);
         this.nombre = nombre;
         this.email = email;
@@ -55,11 +63,11 @@ public class Usuario extends UsuarioBase {
         return xp;
     }
 
-    public Roles getRol() {
+    public TipoDeAcceso getRol() {
         return rol;
     }
 
-    public void setRol(Roles rol) {
+    public void setRol(TipoDeAcceso rol) {
         this.rol = rol;
     }
 
@@ -110,13 +118,34 @@ public class Usuario extends UsuarioBase {
             }
             if (datos.length >= 6) {
                 try {
-                    usuario.setRol(Roles.valueOf(datos[5]));
+                    usuario.setRol(TipoDeAcceso.valueOf(datos[5]));
                 } catch (Exception e) {
-                    usuario.setRol(Roles.USUARIO);
+                    usuario.setRol(TipoDeAcceso.USUARIO);
                 }
             }
             return usuario;
         }
         return null;
     }
-} 
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public void registrarCurso() {
+        String rutaArchivo = "src/main/java/Modulo_Usuario/Usuarios/cursosDelUsuario.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo, true))) {
+            // Unir todos los datos con ;
+            String linea = String.join(";",
+                    getUsername(),
+                    curso.getId(),
+                    String.valueOf(LeccionesCompletadas.getLeccionesCompletadas())
+            );
+            writer.write(linea);
+            writer.newLine();
+            System.out.println("Datos guardados correctamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar el archivo: " + e.getMessage());
+        }
+    }
+}

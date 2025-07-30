@@ -1,5 +1,6 @@
 package GestionAprendizaje_Modulo.Controladores;
 
+import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;

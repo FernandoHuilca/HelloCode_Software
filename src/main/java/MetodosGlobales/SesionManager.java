@@ -1,5 +1,6 @@
 package MetodosGlobales;
 
+import GestionAprendizaje_Modulo.Logica.Curso;
 import Modulo_Usuario.Clases.Usuario;
 import Modulo_Usuario.Clases.UsuarioComunidad;
 import Modulo_Usuario.Clases.NivelJava;
@@ -132,5 +133,9 @@ public class SesionManager {
         if (usuarioComunidad != null) {
             usuarioComunidad.setReputacion(nuevaReputacion);
         }
+    }
+
+    public void setCurso(List<Curso> cursos) {
+        usuarioAutenticado.setCurso(cursos.get(0));
     }
 }

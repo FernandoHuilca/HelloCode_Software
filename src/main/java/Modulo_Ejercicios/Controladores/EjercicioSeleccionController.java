@@ -1,5 +1,6 @@
 package Modulo_Ejercicios.Controladores;
 
+import MetodosGlobales.LeccionesCompletadas;
 import MetodosGlobales.MetodosFrecuentes;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;
 import Modulo_Ejercicios.exercises.Respuesta;
@@ -314,6 +315,7 @@ public class EjercicioSeleccionController implements Initializable {
             
             switch (tipoRespuesta) {
                 case CORRECTO:
+                    LeccionesCompletadas.set(LeccionesCompletadas.getLeccionesCompletadas() +1);
                     respuestasCorrectasUsuario.add(true);
                     mostrarFeedback(tipoRespuesta, "¡Excelente trabajo! Tu respuesta es completamente correcta.", null);
                     break;

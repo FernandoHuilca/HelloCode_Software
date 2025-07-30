@@ -1,11 +1,16 @@
 package Nuevo_Modulo_Leccion.controllers;
 
+import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
+import GestionAprendizaje_Modulo.Logica.Ruta;
+import MetodosGlobales.LeccionesCompletadas;
 import MetodosGlobales.MetodosFrecuentes;
+import MetodosGlobales.SesionManager;
 import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
 import Modulo_Ejercicios.exercises.EjercicioBase;
 import Modulo_Ejercicios.exercises.EjercicioCompletarCodigo;
 import Modulo_Ejercicios.exercises.EjercicioSeleccion;
+import Modulo_Usuario.Clases.Usuario;
 import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +23,7 @@ public class LeccionUIController {
     private static Leccion leccionActual;
     private static int indiceEjercicioActual = 0;
     private static String rutaFXMLVentanaFinal; // nueva variable
+
     /**
      * Método principal para mostrar una lección con ejercicios mixtos
      * Detecta automáticamente los tipos de ejercicios y carga la vista apropiada
@@ -78,6 +84,7 @@ public class LeccionUIController {
     public static void avanzarAlSiguienteEjercicio() {
         indiceEjercicioActual++;
         mostrarSiguienteEjercicio();
+        System.out.println(indiceEjercicioActual);
     }
 
 
@@ -109,7 +116,7 @@ public class LeccionUIController {
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             MetodosFrecuentes.mostrarAlerta("Error", "Error al cargar ejercicio de selección: " + e.getMessage());
@@ -134,7 +141,8 @@ public class LeccionUIController {
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
-            
+
+
         } catch (Exception e) {
             e.printStackTrace();
             MetodosFrecuentes.mostrarAlerta("Error", "Error al cargar ejercicio de completar código: " + e.getMessage());
@@ -174,7 +182,7 @@ public class LeccionUIController {
             if (rutaFXMLVentanaFinal != null && !rutaFXMLVentanaFinal.isEmpty()) {
                 MetodosFrecuentes.mostrarVentana(rutaFXMLVentanaFinal, "Menú de Lecciones");
             }
-
+            SesionManager.getInstancia().setCurso(AprendizajeManager.getInstancia().getCursos());
         } catch (Exception e) {
             e.printStackTrace();
             MetodosFrecuentes.mostrarAlerta("Error", "Error al mostrar lección completada: " + e.getMessage());

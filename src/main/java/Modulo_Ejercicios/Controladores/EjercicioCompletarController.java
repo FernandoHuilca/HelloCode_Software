@@ -1,5 +1,6 @@
 package Modulo_Ejercicios.Controladores;
 
+import MetodosGlobales.LeccionesCompletadas;
 import MetodosGlobales.MetodosFrecuentes;
 import Modulo_Ejercicios.exercises.EjercicioCompletarCodigo;
 import Modulo_Ejercicios.exercises.Respuesta;
@@ -183,6 +184,7 @@ public class EjercicioCompletarController implements Initializable {
 
             if (resultado.getPorcentajeDeAcerto() == 100) {
                 // Respuesta correcta
+                LeccionesCompletadas.set(LeccionesCompletadas.getLeccionesCompletadas() +1);
                 respuestasCorrectasUsuario.add(true);
                 mostrarFeedbackCorrecto();
                 

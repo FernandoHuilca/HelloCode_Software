@@ -3,6 +3,7 @@ package GestionAprendizaje_Modulo.Controladores;
 import java.io.IOException;
 import java.util.List;
 
+import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
 import MetodosGlobales.MetodosFrecuentes;
 import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
 import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
@@ -42,6 +43,7 @@ public class RutaController {
      */
     @FXML
     private void initialize() {
+        AprendizajeManager.getInstancia().construirDatosDePrueba();
         System.out.println("[RutaController] Inicializando. Obteniendo datos pre-construidos del Manager...");
 
         String lenguajeSeleccionado = DashboardEstudianteController.getLenguajeSeleccionado();
@@ -61,7 +63,7 @@ public class RutaController {
 
     /**
      * Dibuja los "noditos" en la pantalla a partir de la lista de NodoRuta.
-     * @param nodosDeLaRuta La lista de objetos NodoRuta que ya tienen su lección asignada.
+     * @param //nodosDeLaRuta La lista de objetos NodoRuta que ya tienen su lección asignada.
      */
     private void construirNodosVisuales(List<Leccion> listLecciones) {
         // Posiciones predefinidas (X, Y) para cada nodito en la pantalla.
