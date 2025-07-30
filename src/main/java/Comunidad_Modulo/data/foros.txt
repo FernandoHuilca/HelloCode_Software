@@ -8,3 +8,4 @@ Java Principiantes;COMPARTIR;prueba6;Principiante;Sintaxis;churito
 Java Principiantes;DISCUSION;Hola;Principiante;Algoritmos;Sistema
 JAVA LEARN;DISCUSION;otraprueba;Principiante;Estructuras de Datos;Sistema
 Java prueba 2;DISCUSION;esta es una prueba;Principiante;Estructuras de Datos;medardito
+Holaa;DISCUSION;Holaasasjdfkas;Principiante;Sintaxis;hola
