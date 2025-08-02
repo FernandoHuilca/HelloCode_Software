@@ -8,15 +8,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/CursosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/CursosController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/DiagnosticoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/DiagnosticoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/RecursosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/RecursosController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/RutaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestionAprendizaje_Modulo/Controladores/RutaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Modulo_Usuario/Controladores/HomeUsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Modulo_Usuario/Controladores/HomeUsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/GestionAprendizaje_Modulo/Vistas/Contenedores.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/GestionAprendizaje_Modulo/Vistas/Ruta.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/GestionAprendizaje_Modulo/Vistas/Ruta.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/RecursosController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/RecursosController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/GestionAprendizaje_Modulo/Vistas/Diagnostico.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/GestionAprendizaje_Modulo/Vistas/Diagnostico.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/CursosController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/CursosController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/DiagnosticoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/DiagnosticoController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/RutaController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Controladores/RutaController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Vistas/Ruta.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Vistas/Ruta.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Modulo_Usuario/Controladores/HomeUsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Modulo_Usuario/Controladores/HomeUsuarioController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Vistas/Contenedores.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Vistas/Diagnostico.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GestionAprendizaje_Modulo/Vistas/Diagnostico.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +100,8 @@
       <updated>1754020326929</updated>
       <workItem from="1754020328564" duration="3530000" />
       <workItem from="1754055686266" duration="7439000" />
-      <workItem from="1754082968500" duration="17455000" />
+      <workItem from="1754082968500" duration="19660000" />
+      <workItem from="1754152064927" duration="2621000" />
     </task>
     <servers />
   </component>

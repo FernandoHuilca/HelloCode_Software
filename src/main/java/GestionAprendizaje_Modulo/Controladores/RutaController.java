@@ -159,8 +159,10 @@ public class RutaController {
 
         // Coordenadas (X, Y) para cada nodo.
         double[][] posiciones = {
-                {50, 50}, {150, 120}, {80, 200}, {200, 280}, {120, 360}
+                {50, 50}, {150, 120}, {80, 200}, {200, 280}, {120, 360},
+                {300, 100}, {400, 180}, {500, 260}, {350, 330}, {600, 400}  // Agregamos más posiciones
         };
+
 
         System.out.println("[RutaController] Dibujando " + nodosDeLaRuta.size() + " nodos para el usuario " + usuarioActual.getUsername());
 
@@ -176,11 +178,11 @@ public class RutaController {
             // Aplicamos un estilo diferente si el nodo está completado.
             if (estaCompletado) {
                 // Estilo para nodo completado (ej. azul)
-                boton.setStyle("-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 30px; -fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px; -fx-cursor: hand;");
+                boton.setStyle("-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 40px; -fx-min-height: 40px; -fx-max-width: 40px; -fx-max-height: 40px; -fx-cursor: hand;");
                 boton.setTooltip(new Tooltip("Lección COMPLETADA"));
             } else {
                 // Estilo para nodo pendiente (ej. verde)
-                boton.setStyle("-fx-background-color: #50C878; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 30px; -fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px; -fx-cursor: hand;");
+                boton.setStyle("-fx-background-color: #50C878; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 40px; -fx-min-height: 40px; -fx-max-width: 40px; -fx-max-height: 40px; -fx-cursor: hand;");
                 boton.setTooltip(new Tooltip("Lección con " + nodo.getLeccion().getNumEjercicios() + " ejercicios"));
             }
 

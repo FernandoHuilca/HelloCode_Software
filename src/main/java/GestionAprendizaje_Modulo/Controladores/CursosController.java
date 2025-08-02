@@ -73,7 +73,7 @@ public class CursosController {
 
             // Obtener el controlador de la vista Diagnóstico
             DiagnosticoController diagnosticoController = loader.getController();
-            diagnosticoController.setDiagnostico(lenguaje); // Pasar el nombre del lenguaje al controlador
+            diagnosticoController.setDiagnosticoText(lenguaje); // Pasar el nombre del lenguaje al controlador
 
             // Obtener el stage actual y cambiar la escena
             Stage stage = (Stage) btnJava.getScene().getWindow(); // Usamos cualquier botón para obtener el Stage
