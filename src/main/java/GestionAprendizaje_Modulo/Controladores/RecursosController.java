@@ -65,7 +65,7 @@ public class RecursosController {
     @FXML
     private void manejarAtras() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Contenedores.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Ruta.fxml"));
             AnchorPane rutaPane = loader.load();
             rootPane.getChildren().setAll(rutaPane);
         } catch (Exception e) {

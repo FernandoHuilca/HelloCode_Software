@@ -59,7 +59,7 @@ public class HomeUsuarioController {
 
     @FXML
     private void irAHome(ActionEvent event) {
-        MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(), "/GestionAprendizaje_Modulo/Vistas/Contenedores.fxml", "Contenedores");
+        MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(), "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", "Ruta de Aprendizaje");
     }
 
     @FXML

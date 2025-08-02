@@ -20,9 +20,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * =================================================================================
+ * Controlador de la Vi	sta de Ruta - Versión Final con Progreso de Usuario
+ * =================================================================================
+ * Este controlador es la capa de VISTA (presentación) de la ruta de aprendizaje.
+ * Es consciente del usuario logueado y muestra su progreso individual,
+ * permitiéndole interactuar con las lecciones y guardando su avance.
+ */
 public class RutaController {
 
-    @FXML private Pane nodoContainer;    // El panel donde se dibujarán los nodos.
+    @FXML private Pane nodoContainer;    // El panel del FXML donde se dibujarán los nodos.
     @FXML private AnchorPane rootPane;   // El panel raíz de la ventana, para obtener el Stage.
     @FXML private Label tituloLenguajeLabel; // El label para mostrar el título de la ruta.
 
@@ -34,10 +42,19 @@ public class RutaController {
     @FXML private Button btnAdd;
     @FXML private Button btnLibrary;
 
-    private Usuario usuarioActual;  // Usuario que está usando la aplicación
+    /**
+     * Atributo para mantener una referencia al usuario que está usando la pantalla.
+     * Se obtiene del SesionManager al iniciar.
+     */
+    private Usuario usuarioActual;
 
+    /**
+     * El método initialize se ejecuta automáticamente después de que el FXML ha sido cargado.
+     * Es el punto de partida para construir la vista dinámica.
+     */
     @FXML
     private void initialize() {
+        System.out.println("[RutaController] Inicializando...");
         System.out.println("[RutaController] Inicializando...");
 
         // Configuración de la acción del botón 'Recursos'
@@ -46,56 +63,48 @@ public class RutaController {
             abrirRecursos();  // Llamar al método para manejar la acción
         });
 
-        // Cargar datos de prueba
+        // --- ¡ACCIÓN CLAVE! LA CARGA DE DATOS SE INICIA AQUÍ ---
         try {
+            // 1. Llamamos al manager para que construya toda la estructura de datos.
             AprendizajeManager.getInstancia().construirDatosDePrueba();
         } catch (Exception e) {
-            System.err.println("Error al cargar datos en RutaController");
+            System.err.println("!!! ERROR FATAL DURANTE LA CONSTRUCCIÓN DE DATOS en RutaController !!!");
             e.printStackTrace();
+            // Mostrar un mensaje de error en la UI
             tituloLenguajeLabel.setText("Error al cargar datos");
-            return;
+            return; // Detener si la construcción falla.
         }
-
-        // Obtener el usuario actual
+        // 1. OBTENER EL USUARIO ACTUAL DE LA SESIÓN
         this.usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+
+        // Comprobación de seguridad: si no hay un usuario logueado, la funcionalidad
+        // de progreso no funcionará. Es crucial manejar este caso.
         if (usuarioActual == null) {
-            System.err.println("No hay usuario en la sesión.");
+            System.err.println("[RutaController] ¡ERROR CRÍTICO! No hay ningún usuario en la sesión. No se puede mostrar ni guardar el progreso.");
             tituloLenguajeLabel.setText("Usuario Desconocido");
+            // En una aplicación real, aquí podrías redirigir a la pantalla de login.
             return;
         }
+        System.out.println("[RutaController] Vista cargada para el usuario: " + usuarioActual.getUsername());
 
-        System.out.println("[RutaController] Usuario: " + usuarioActual.getUsername());
-
-        // Obtener la estructura de la ruta
+        // 2. OBTENER LA ESTRUCTURA DE LA RUTA (la "plantilla")
+        // Se asume que AprendizajeManager ya fue inicializado al arrancar la app.
         List<Curso> cursos = AprendizajeManager.getInstancia().getCursos();
+
         if (cursos.isEmpty() || cursos.get(0).getRutas().isEmpty()) {
-            System.err.println("[RutaController] No hay cursos o rutas disponibles.");
+            System.err.println("[RutaController] No hay cursos o rutas disponibles en el Manager.");
             return;
         }
 
-        // Cargar la ruta
+        // Para esta demo, mostramos la primera ruta del primer curso.
         Ruta ruta = cursos.get(0).getRutas().get(0);
-        tituloLenguajeLabel.setText(ruta.getNombre()); // Mostrar nombre de la ruta
+        tituloLenguajeLabel.setText(ruta.getNombre()); // Actualizar el título de la vista
 
-        // Dibujar los nodos con el progreso del usuario
+        // 3. DIBUJAR LA VISTA, AHORA CONSCIENTE DEL PROGRESO DEL USUARIO
         construirNodosVisuales(ruta.getNodos());
 
         // Vincular los botones con sus respectivas acciones
         configurarBotones();
-    }
-
-    private void abrirRecursos() {
-        try {
-            // Cargar el archivo FXML de la vista de recursos
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Recursos.fxml"));
-            AnchorPane recursosPane = loader.load();  // Cargar el contenido de la vista de recursos
-
-            // Cambiar la escena en el Stage actual
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.getScene().setRoot(recursosPane); // Cambiar la escena al nuevo panel
-        } catch (IOException e) {
-            e.printStackTrace();  // Mostrar error si algo falla al cargar el FXML
-        }
     }
 
     // Función para configurar los botones de la barra inferior
@@ -140,6 +149,10 @@ public class RutaController {
         });
     }
 
+    /**
+     * Dibuja los "noditos" en la pantalla, comprobando el progreso del usuario para cada uno.
+     * @param nodosDeLaRuta La lista de objetos NodoRuta que componen la ruta "plantilla".
+     */
     private void construirNodosVisuales(List<NodoRuta> nodosDeLaRuta) {
         // Limpiamos el contenedor antes de (re)dibujar para evitar duplicados al actualizar.
         nodoContainer.getChildren().clear();
@@ -163,11 +176,11 @@ public class RutaController {
             // Aplicamos un estilo diferente si el nodo está completado.
             if (estaCompletado) {
                 // Estilo para nodo completado (ej. azul)
-                boton.setStyle("-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-size: 10px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 40px; -fx-min-height: 40px; -fx-max-width: 40px; -fx-max-height: 40px; -fx-cursor: hand;");
+                boton.setStyle("-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 30px; -fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px; -fx-cursor: hand;");
                 boton.setTooltip(new Tooltip("Lección COMPLETADA"));
             } else {
                 // Estilo para nodo pendiente (ej. verde)
-                boton.setStyle("-fx-background-color: #50C878; -fx-text-fill: white; -fx-font-size: 10px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 40px; -fx-min-height: 40px; -fx-max-width: 40px; -fx-max-height: 40px; -fx-cursor: hand;");
+                boton.setStyle("-fx-background-color: #50C878; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 30px; -fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px; -fx-cursor: hand;");
                 boton.setTooltip(new Tooltip("Lección con " + nodo.getLeccion().getNumEjercicios() + " ejercicios"));
             }
 
@@ -197,6 +210,23 @@ public class RutaController {
         }
     }
 
+    @FXML
+    private void manejarAtras() {
+        MetodosFrecuentes.cambiarVentana((Stage) rootPane.getScene().getWindow(), "/Modulo_Usuario/views/homeUsuario.fxml", "Perfil de Usuario");
 
+    }
 
+    private void abrirRecursos() {
+        try {
+            // Cargar el archivo FXML de la vista de recursos
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Recursos.fxml"));
+            AnchorPane recursosPane = loader.load();  // Cargar el contenido de la vista de recursos
+
+            // Cambiar la escena en el Stage actual
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.getScene().setRoot(recursosPane); // Cambiar la escena al nuevo panel
+        } catch (IOException e) {
+            e.printStackTrace();  // Mostrar error si algo falla al cargar el FXML
+        }
+    }
 }

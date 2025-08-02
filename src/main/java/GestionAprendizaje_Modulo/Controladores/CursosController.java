@@ -32,7 +32,7 @@ public class CursosController {
         btnVolver.setOnAction(event -> {
             try {
                 // Cargar el archivo FXML de la vista anterior
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Contenedores.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Ruta.fxml"));
                 AnchorPane rutaPane = loader.load(); // Cargar la vista anterior
 
                 // Obtener el stage actual y cambiar la escena
