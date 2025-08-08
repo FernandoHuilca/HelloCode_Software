@@ -1,4 +1,4 @@
-package Modulo_Ejercicios.exercises;
+package Modulo_Ejercicios.logic;
 
 public enum Lenguaje {
     JAVA,

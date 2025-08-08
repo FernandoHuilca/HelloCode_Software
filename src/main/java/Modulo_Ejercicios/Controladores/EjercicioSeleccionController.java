@@ -1,10 +1,10 @@
 package Modulo_Ejercicios.Controladores;
 
 import MetodosGlobales.MetodosFrecuentes;
-import Modulo_Ejercicios.exercises.EjercicioSeleccion;
-import Modulo_Ejercicios.exercises.Respuesta;
-import Modulo_Ejercicios.exercises.RespuestaString;
-import Modulo_Ejercicios.exercises.ResultadoDeEvaluacion;
+import Modulo_Ejercicios.logic.EjercicioSeleccion;
+import Modulo_Ejercicios.logic.Respuesta;
+import Modulo_Ejercicios.logic.RespuestaString;
+import Modulo_Ejercicios.logic.ResultadoDeEvaluacion;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

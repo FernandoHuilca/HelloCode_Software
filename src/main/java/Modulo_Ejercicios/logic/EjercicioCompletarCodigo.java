@@ -1,6 +1,8 @@
-package Modulo_Ejercicios.exercises;
+package Modulo_Ejercicios.logic;
 
 import java.util.ArrayList;
+
+import Nuevo_Modulo_Leccion.logic.TemaLeccion;
 
 /**
  * Clase que representa un ejercicio de completar código
@@ -17,8 +19,8 @@ public class EjercicioCompletarCodigo extends EjercicioBase {
      */
     private EjercicioCompletarCodigo(String instruccion, String codigoIncompleto, 
                                    ArrayList<String> partesFaltantes, ArrayList<String> respuestasEsperadas,
-                                   NivelDificultad nivelDificultad, Lenguaje lenguaje) {
-        super(instruccion, respuestasEsperadas, nivelDificultad, lenguaje);
+                                   NivelDificultad nivelDificultad, Lenguaje lenguaje, TemaLeccion temaLeccion) {
+        super(instruccion, respuestasEsperadas, nivelDificultad, lenguaje, temaLeccion);
         this.codigoIncompleto = codigoIncompleto;
         generarPartesDelCodigo(codigoIncompleto, "____");
         this.partesFaltantes = partesFaltantes;
@@ -113,6 +115,7 @@ public class EjercicioCompletarCodigo extends EjercicioBase {
         private ArrayList<String> respuestasEsperadas = new ArrayList<>();
         private NivelDificultad nivelDificultad = NivelDificultad.BASICO;
         private Lenguaje lenguaje = Lenguaje.JAVA;
+        private TemaLeccion temaLeccion = TemaLeccion.OTRO;
 
         /**
          * Establece la instrucción del ejercicio
@@ -179,6 +182,14 @@ public class EjercicioCompletarCodigo extends EjercicioBase {
         }
 
         /**
+         * Establece el tema de la lección
+         */
+        public Builder conTema(TemaLeccion temaLeccion) {
+            this.temaLeccion = temaLeccion;
+            return this;
+        }
+
+        /**
          * Construye y valida el EjercicioCompletarCodigo
          * @return EjercicioCompletarCodigo construido
          * @throws IllegalArgumentException si faltan parámetros requeridos
@@ -206,8 +217,9 @@ public class EjercicioCompletarCodigo extends EjercicioBase {
             if (lenguaje == null) {
                 throw new IllegalArgumentException("El lenguaje es requerido");
             }
+            
 
-            return new EjercicioCompletarCodigo(instruccion, codigoIncompleto, partesFaltantes, respuestasEsperadas, nivelDificultad, lenguaje);
+            return new EjercicioCompletarCodigo(instruccion, codigoIncompleto, partesFaltantes, respuestasEsperadas, nivelDificultad, lenguaje, temaLeccion);
         }
     }
 } 

@@ -49,7 +49,7 @@ module Modulo_Ejercicio {
 
     exports Modulo_Ejercicios.application;
     exports Modulo_Ejercicios.otrosModulos;
-    exports Modulo_Ejercicios.exercises;
+    exports Modulo_Ejercicios.logic;
     exports Modulo_Ejercicios.DataBase;
 
     exports Modulo_Usuario.Clases;

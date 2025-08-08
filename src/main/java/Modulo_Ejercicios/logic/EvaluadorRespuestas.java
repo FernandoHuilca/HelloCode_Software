@@ -1,4 +1,4 @@
-package Modulo_Ejercicios.exercises;
+package Modulo_Ejercicios.logic;
 
 import java.util.ArrayList;
 

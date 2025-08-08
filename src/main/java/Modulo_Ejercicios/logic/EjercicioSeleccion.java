@@ -1,6 +1,8 @@
-package Modulo_Ejercicios.exercises;
+package Modulo_Ejercicios.logic;
 
 import java.util.ArrayList;
+import Nuevo_Modulo_Leccion.logic.TemaLeccion;
+
 
 public class EjercicioSeleccion extends EjercicioBase {
     private ArrayList<String> opcionesDeSeleccion;
@@ -9,8 +11,8 @@ public class EjercicioSeleccion extends EjercicioBase {
      * Constructor privado para usar con Builder
      */
     private EjercicioSeleccion(String instruccion, ArrayList<String> opcionesDeSeleccion, ArrayList<String> respuestasCorrectas,
-                              NivelDificultad nivelDeDificultad, Lenguaje lenguaje) {
-        super(instruccion, respuestasCorrectas, nivelDeDificultad, lenguaje);
+                              NivelDificultad nivelDeDificultad, Lenguaje lenguaje, TemaLeccion temaLeccion) {
+        super(instruccion, respuestasCorrectas, nivelDeDificultad, lenguaje, temaLeccion);
         this.opcionesDeSeleccion = opcionesDeSeleccion;
     }
     
@@ -67,6 +69,7 @@ public class EjercicioSeleccion extends EjercicioBase {
         private ArrayList<String> respuestasCorrectas = new ArrayList<>();
         private NivelDificultad nivelDificultad = NivelDificultad.BASICO;
         private Lenguaje lenguaje = Lenguaje.JAVA;
+        private TemaLeccion temaLeccion = TemaLeccion.OTRO;
 
         /**
          * Establece la instrucción del ejercicio
@@ -125,6 +128,14 @@ public class EjercicioSeleccion extends EjercicioBase {
         }
 
         /**
+         * Establece el tema de la lección
+         */
+        public Builder conTema(TemaLeccion temaLeccion) {
+            this.temaLeccion = temaLeccion;
+            return this;
+        }
+
+        /**
          * Construye y valida el EjercicioSeleccion
          * @return EjercicioSeleccion construido
          * @throws IllegalArgumentException si faltan parámetros requeridos
@@ -147,7 +158,7 @@ public class EjercicioSeleccion extends EjercicioBase {
                 throw new IllegalArgumentException("El lenguaje es requerido");
             }
 
-            return new EjercicioSeleccion(instruccion, opcionesDeSeleccion, respuestasCorrectas, nivelDificultad, lenguaje);
+            return new EjercicioSeleccion(instruccion, opcionesDeSeleccion, respuestasCorrectas, nivelDificultad, lenguaje, temaLeccion);
         }
     }
 }

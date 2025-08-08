@@ -1,4 +1,5 @@
-package Modulo_Ejercicios.exercises;
+package Modulo_Ejercicios.logic;
+
 
 public class ResultadoDeEvaluacion {
     private double porcentajeDeAcerto;

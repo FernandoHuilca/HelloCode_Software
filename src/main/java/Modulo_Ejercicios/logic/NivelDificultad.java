@@ -1,4 +1,5 @@
-package Modulo_Ejercicios.exercises;
+package Modulo_Ejercicios.logic;
+
 
 public enum NivelDificultad {
     PRINCIPIANTE("Ideal para empezar desde cero"),
