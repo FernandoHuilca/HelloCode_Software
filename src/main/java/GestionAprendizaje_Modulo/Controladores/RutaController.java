@@ -548,7 +548,7 @@ public class RutaController {
             nodoBoton.setOnAction(e -> {
                 NodoRuta nodoClicado = (NodoRuta) ((Button) e.getSource()).getUserData();
                 Stage stage = (Stage) contenidoVBox.getScene().getWindow();
-                LeccionUIController.mostrarUnaLeccion(nodoClicado.getLeccion(), stage, "/Nuevo_Modulo_Leccion/views/leccionView.fxml");
+                LeccionUIController.mostrarUnaLeccion(nodoClicado.getLeccion(), stage, "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml");
                 AprendizajeManager.getInstancia().marcarNodoComoCompletado(usuarioActual, nodoClicado);
                 construirContenedoresVisuales();
             });
