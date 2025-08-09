@@ -197,16 +197,6 @@
 
 package GestionAprendizaje_Modulo.Logica;
 
-import GestionAprendizaje_Modulo.Logica.Ruta;
-import GestionAprendizaje_Modulo.Logica.NodoRuta;
-import MetodosGlobales.LeccionesCompletadas;
-import Modulo_Ejercicios.logic.Lenguaje;
-import Modulo_Ejercicios.logic.NivelDificultad;
-import Modulo_Usuario.Clases.Usuario;
-import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
-import Nuevo_Modulo_Leccion.logic.Leccion;
-import Nuevo_Modulo_Leccion.logic.TemaLeccion;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -217,6 +207,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import MetodosGlobales.LeccionesCompletadas;
+import Modulo_Ejercicios.logic.Lenguaje;
+import Modulo_Ejercicios.logic.NivelDificultad;
+import Modulo_Usuario.Clases.Usuario;
+import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
+import Nuevo_Modulo_Leccion.logic.Leccion;
+import Nuevo_Modulo_Leccion.logic.TemaLeccion;
 
 /**
  * =================================================================================
@@ -234,7 +232,7 @@ public class AprendizajeManager {
     private static AprendizajeManager instancia;
     private final List<Ruta> rutasPlantilla;
     private final Map<String, Map<String, Boolean>> progresoPorUsuario;
-    private final Path RUTA_ARCHIVO_PROGRESO = Paths.get("progreso_usuarios.txt");
+    private final Path RUTA_ARCHIVO_PROGRESO = Paths.get("src/main/resources/GestionAprendizaje_Modulo/data/progreso_usuarios.txt");
 
     private AprendizajeManager() {
         this.rutasPlantilla = new ArrayList<>();

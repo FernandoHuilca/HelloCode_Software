@@ -1,10 +1,5 @@
 package GestionAprendizaje_Modulo.Repositorio;
 
-import GestionAprendizaje_Modulo.Modelo.Articulo;
-import GestionAprendizaje_Modulo.Modelo.DocumentoPDF;
-import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
-import GestionAprendizaje_Modulo.Modelo.Video;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import GestionAprendizaje_Modulo.Modelo.Articulo;
+import GestionAprendizaje_Modulo.Modelo.DocumentoPDF;
+import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
+import GestionAprendizaje_Modulo.Modelo.Video;
 
 public class RecursoRepository {
 
@@ -33,7 +33,7 @@ public class RecursoRepository {
     public void cargarRecursosDesdeTXT() {
         if (!bancoDeRecursos.isEmpty()) return;
         System.out.println("[RecursoRepository] Cargando recursos desde recursos.txt...");
-        try (InputStream is = getClass().getResourceAsStream("/recursos.txt");
+        try (InputStream is = getClass().getResourceAsStream("/GestionAprendizaje_Modulo/data/recursos.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(is), StandardCharsets.UTF_8))) {
             reader.lines().forEach(linea -> {
                 if (linea.isBlank()) return;

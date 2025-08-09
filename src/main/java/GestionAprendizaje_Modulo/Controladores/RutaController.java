@@ -421,34 +421,35 @@
 
 package GestionAprendizaje_Modulo.Controladores;
 
-import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
-import GestionAprendizaje_Modulo.Logica.NodoRuta;
-import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
-import GestionAprendizaje_Modulo.Logica.Ruta;
-import GestionAprendizaje_Modulo.Repositorio.RecursoRepository;
-import MetodosGlobales.MetodosFrecuentes;
-import MetodosGlobales.SesionManager;
-import Nuevo_Modulo_Leccion.logic.TemaLeccion;
-import Modulo_Usuario.Clases.Usuario;
-import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
-import Nuevo_Modulo_Leccion.logic.Leccion;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
+import GestionAprendizaje_Modulo.Logica.NodoRuta;
+import GestionAprendizaje_Modulo.Logica.Ruta;
+import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
+import GestionAprendizaje_Modulo.Repositorio.RecursoRepository;
+import MetodosGlobales.MetodosFrecuentes;
+import MetodosGlobales.SesionManager;
+import Modulo_Usuario.Clases.Usuario;
+import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
+import Nuevo_Modulo_Leccion.logic.TemaLeccion;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * =================================================================================
@@ -468,6 +469,11 @@ public class RutaController {
     private void initialize() {
         System.out.println("[RutaController] Inicializando...");
         RecursoRepository.getInstancia().cargarRecursosDesdeTXT();
+        
+        // Línea de depuración para verificar la carga de recursos
+        List<RecursoAprendizaje> todosLosRecursos = RecursoRepository.getInstancia().buscarRecursosPorLenguajeYTema("JAVA", "TIPOS_Y_OPERADORES");
+        System.out.println("[DEBUG] Recursos encontrados para JAVA/TIPOS_Y_OPERADORES: " + todosLosRecursos.size());
+        
         // 1. INICIAR LA CONSTRUCCIÓN DE DATOS EN EL MANAGER
         AprendizajeManager.getInstancia().construirDatosDePrueba();
 
