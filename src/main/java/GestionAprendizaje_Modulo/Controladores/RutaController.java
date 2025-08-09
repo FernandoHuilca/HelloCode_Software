@@ -484,8 +484,9 @@ public class RutaController {
             return;
         }
 
-        // 3. "JALAR" LA RUTA DE JAVA POR DEFECTO
-        this.rutaActual = AprendizajeManager.getInstancia().getRutaPorNombre("C");
+        // 3. "JALAR" LA RUTA SEGÚN EL LENGUAJE SELECCIONADO
+        String lenguaje = DiagnosticoController.lenguajeSeleccionado;
+        this.rutaActual = AprendizajeManager.getInstancia().getRutaPorNombre(lenguaje);
 
         if (this.rutaActual == null) {
             System.err.println("[RutaController] No se pudo obtener la ruta por defecto 'Java' del Manager.");
@@ -506,6 +507,12 @@ public class RutaController {
         contenidoVBox.setSpacing(20);
         if (rutaActual == null) return;
 
+        // Leer el nivel seleccionado del Diagnóstico
+        String nivel = DiagnosticoController.nivelSeleccionado;
+        int maxTemas = 1; // Por defecto solo 1 tema (Básico)
+        if ("Intermedio".equalsIgnoreCase(nivel)) maxTemas = 2;
+        else if ("Avanzado".equalsIgnoreCase(nivel)) maxTemas = Integer.MAX_VALUE;
+
         Map<TemaLeccion, List<NodoRuta>> nodosPorTema = rutaActual.getNodos().stream()
                 .filter(nodo -> nodo.getLeccion() != null && !nodo.getLeccion().getListEjercicios().isEmpty())
                 .collect(Collectors.groupingBy(
@@ -514,19 +521,19 @@ public class RutaController {
                         Collectors.toList()
                 ));
 
+        int temaIndex = 0;
         for (Map.Entry<TemaLeccion, List<NodoRuta>> grupo : nodosPorTema.entrySet()) {
             TemaLeccion temaEnum = grupo.getKey();
             List<NodoRuta> nodosDelTema = grupo.getValue();
             nodosDelTema.sort(Comparator.comparingInt(NodoRuta::getOrden));
-            VBox contenedorUI = crearContenedorUI(temaEnum, nodosDelTema);
+            boolean desbloqueado = temaIndex < maxTemas;
+            VBox contenedorUI = crearContenedorUI(temaEnum, nodosDelTema, desbloqueado);
             contenidoVBox.getChildren().add(contenedorUI);
+            temaIndex++;
         }
     }
 
-    /**
-     * CORREGIDO: La lógica del bucle ha sido reestructurada para funcionar correctamente.
-     */
-    private VBox crearContenedorUI(TemaLeccion temaEnum, List<NodoRuta> nodos) {
+    private VBox crearContenedorUI(TemaLeccion temaEnum, List<NodoRuta> nodos, boolean desbloqueado) {
         VBox vbox = new VBox(10);
         vbox.setStyle("-fx-padding: 15; -fx-background-color: #FFFFFF1A; -fx-background-radius: 10;");
 
@@ -536,21 +543,23 @@ public class RutaController {
 
         FlowPane nodosPane = new FlowPane(15, 15);
 
-        // PASO 1: Bucle para crear y añadir TODOS los noditos al FlowPane
         for (NodoRuta nodo : nodos) {
             Button nodoBoton = new Button("L" + nodo.getOrden());
-
             boolean estaCompletado = AprendizajeManager.getInstancia().isNodoCompletadoParaUsuario(usuarioActual, nodo);
             if (estaCompletado) {
-                nodoBoton.setStyle("-fx-background-color: #3498DB; /* ... */");
+                nodoBoton.setStyle("-fx-background-color: #3498DB;");
                 nodoBoton.setTooltip(new Tooltip("Lección COMPLETADA"));
             } else {
-                nodoBoton.setStyle("-fx-background-color: #50C878; /* ... */");
+                nodoBoton.setStyle("-fx-background-color: #50C878;");
                 nodoBoton.setTooltip(new Tooltip("Lección con " + nodo.getLeccion().getNumEjercicios() + " ejercicios"));
             }
             nodoBoton.getStyleClass().add("nodo-boton");
-
             nodoBoton.setUserData(nodo);
+            nodoBoton.setDisable(!desbloqueado);
+            if (!desbloqueado) {
+                nodoBoton.setStyle("-fx-background-color: #cccccc; -fx-text-fill: #888;");
+                nodoBoton.setTooltip(new Tooltip("Desbloquea este tema avanzando de nivel"));
+            }
             nodoBoton.setOnAction(e -> {
                 NodoRuta nodoClicado = (NodoRuta) ((Button) e.getSource()).getUserData();
                 Stage stage = (Stage) contenidoVBox.getScene().getWindow();
@@ -558,26 +567,20 @@ public class RutaController {
                 AprendizajeManager.getInstancia().marcarNodoComoCompletado(usuarioActual, nodoClicado);
                 construirContenedoresVisuales();
             });
-
-            // Añadir el botón al panel de nodos.
             nodosPane.getChildren().add(nodoBoton);
         }
 
-        // PASO 2: Crear el botón de recursos DESPUÉS de que el bucle haya terminado.
         Button verRecursosBtn = new Button("💡 Ver Recursos de " + nombreTema);
         verRecursosBtn.setStyle("-fx-background-color: #A6B1E1; -fx-text-fill: #424874; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;");
-
+        verRecursosBtn.setDisable(!desbloqueado);
         verRecursosBtn.setOnAction(e -> {
             List<RecursoAprendizaje> recursos = RecursoRepository.getInstancia().buscarRecursosPorLenguajeYTema(
                     rutaActual.getNivel(),
                     temaEnum.name()
             );
-
-            // Reutilizamos el método abrirVentanaDeRecursos que ya teníamos
             abrirVentanaDeRecursos(nombreTema, recursos);
         });
 
-        // PASO 3: Añadir todo al contenedor principal en el orden correcto.
         vbox.getChildren().addAll(tituloTema, nodosPane, verRecursosBtn);
         return vbox;
     }

@@ -61,7 +61,7 @@ public class CursosController {
 
         // Lógica para el botón C++
         btnCplusplus.setOnAction(event -> {
-            abrirDiagnostico("C++");
+            abrirDiagnostico("C");
         });
     }
 

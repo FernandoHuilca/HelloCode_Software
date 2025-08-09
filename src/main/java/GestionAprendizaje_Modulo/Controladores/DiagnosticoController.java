@@ -22,6 +22,11 @@ public class DiagnosticoController {
 
     private ToggleGroup nivelGroup;
 
+    // Variable estática para guardar el nivel seleccionado globalmente
+    public static String nivelSeleccionado = null;
+    // Variable estática para guardar el lenguaje seleccionado globalmente
+    public static String lenguajeSeleccionado = null;
+
     @FXML
     private void initialize() {
         // Crear y asociar ToggleGroup para nivel
@@ -45,8 +50,8 @@ public class DiagnosticoController {
 
             // Obtener nivel
             String nivel = seleccionado.getText();
+            nivelSeleccionado = nivel; // Guardar el nivel globalmente
             System.out.println("Nivel seleccionado: " + nivel);
-            // TODO: Almacenar o procesar 'nivel' según necesidad
 
             // Navegar a la vista de Ruta
             try {
@@ -68,5 +73,6 @@ public class DiagnosticoController {
      */
     public void setDiagnosticoText(String texto) {
         tituloLabel.setText(texto);
+        lenguajeSeleccionado = texto; // Guardar el lenguaje seleccionado
     }
 }
