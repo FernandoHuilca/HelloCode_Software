@@ -1,13 +1,11 @@
 package Modulo_Ejercicios.DataBase;
 
-import Modulo_Ejercicios.exercises.EjercicioSeleccion;
-import Modulo_Ejercicios.exercises.EjercicioBase;
-import Modulo_Ejercicios.exercises.EjercicioCompletarCodigo;
-import Modulo_Ejercicios.exercises.NivelDificultad;
-import Modulo_Ejercicios.exercises.Lenguaje;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import Modulo_Ejercicios.logic.*;
+import Nuevo_Modulo_Leccion.logic.TemaLeccion;
 
 /**
  * Clase responsable de la persistencia de ejercicios
@@ -15,6 +13,7 @@ import java.util.List;
  */
 public class EjercicioRepository {
     
+    //Desde aquí se leen los ejercicios: 
     private static final String RUTA_BASE = "src/main/resources/Modulo_Ejercicios/data/";
     private static final String ARCHIVO_SELECCION = "DB_EjerciciosSeleccion.txt";
     private static final String ARCHIVO_COMPLETAR = "DB_EjerciciosCompletarCodigo.txt";
@@ -103,22 +102,24 @@ public class EjercicioRepository {
     
     /**
      * Parsea una línea de texto y crea un EjercicioSeleccion
-     * Formato: instruccion|opcion1,opcion2,opcion3|respuesta1,respuesta2|nivel|lenguaje
+     * Formato: instruccion|opcion1,opcion2,opcion3|respuesta1,respuesta2|nivel|lenguaje|tema
      */
     private static EjercicioSeleccion parsearEjercicioSeleccion(String linea) {
         try {
             String[] partes = linea.split("\\|");
-            if (partes.length >= 5) {
+            if (partes.length >= 6) {
                 String instruccion = partes[0];
                 String[] opciones = partes[1].split(",");
                 String[] respuestas = partes[2].split(",");
                 NivelDificultad nivel = NivelDificultad.valueOf(partes[3]);
                 Lenguaje lenguaje = Lenguaje.valueOf(partes[4]);
+                TemaLeccion tema = TemaLeccion.valueOf(partes[5]);
                 
                 EjercicioSeleccion.Builder builder = new EjercicioSeleccion.Builder()
                     .conInstruccion(instruccion)
                     .conNivel(nivel)
-                    .conLenguaje(lenguaje);
+                    .conLenguaje(lenguaje)
+                    .conTema(tema);
                 
                 // Agregar opciones
                 for (String opcion : opciones) {
@@ -140,18 +141,19 @@ public class EjercicioRepository {
     
     /**
      * Parsea una línea de texto y crea un EjercicioCompletarCodigo
-     * Formato: instruccion|codigoIncompleto|parteFaltante|respuestaEsperada|nivel|lenguaje
+     * Formato: instruccion|codigoIncompleto|parteFaltante|respuestaEsperada|nivel|lenguaje|tema
      */
     private static EjercicioCompletarCodigo parsearEjercicioCompletarCodigo(String linea) {
         try {
             String[] partes = linea.split("\\|");
-            if (partes.length >= 6) {
+            if (partes.length >= 7) {
                 String instruccion = partes[0];
                 String codigoIncompleto = partes[1];
                 String parteFaltante = partes[2];
                 String respuestaEsperada = partes[3];
                 NivelDificultad nivel = NivelDificultad.valueOf(partes[4]);
                 Lenguaje lenguaje = Lenguaje.valueOf(partes[5]);
+                TemaLeccion tema = TemaLeccion.valueOf(partes[6]);
                 
                 return new EjercicioCompletarCodigo.Builder()
                     .conInstruccion(instruccion)
@@ -160,6 +162,7 @@ public class EjercicioRepository {
                     .conRespuestaEsperada(respuestaEsperada)
                     .conNivel(nivel)
                     .conLenguaje(lenguaje)
+                    .conTema(tema)
                     .construir();
             }
         } catch (Exception e) {
@@ -191,7 +194,8 @@ public class EjercicioRepository {
         sb.append("|");
         
         sb.append(ejercicio.getNivel()).append("|");
-        sb.append(ejercicio.getLenguaje());
+        sb.append(ejercicio.getLenguaje()).append("|");
+        sb.append(ejercicio.getTema());
         
         return sb.toString();
     }
@@ -205,7 +209,8 @@ public class EjercicioRepository {
                ejercicio.obtenerPartesFaltantes().get(0) + "|" +
                ejercicio.obtenerRespuestasEsperadas().get(0) + "|" +
                ejercicio.getNivel() + "|" +
-               ejercicio.getLenguaje();
+               ejercicio.getLenguaje() + "|" +
+               ejercicio.getTema();
     }
 
 
