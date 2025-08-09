@@ -308,6 +308,12 @@ public class AprendizajeManager {
             String nodoId = rutaJava.getId() + "-nodo-" + ordenGlobalNodo;
             rutaJava.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
+        List<Leccion> leccionesBasicas5 = LeccionRepository.getListaLecciones(Lenguaje.JAVA, NivelDificultad.BASICO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesBasicas5) {
+            String nodoId = rutaJava.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaJava.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+
         // --- Nivel Intermedio ---
         List<Leccion> leccionesIntermedias = LeccionRepository.getListaLecciones(Lenguaje.JAVA, NivelDificultad.INTERMEDIO, TemaLeccion.CONTROL_DE_FLUJO, 3);
         for (Leccion leccion : leccionesIntermedias) {
@@ -331,6 +337,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesIntermedias4 = LeccionRepository.getListaLecciones(Lenguaje.JAVA, NivelDificultad.INTERMEDIO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesIntermedias4) {
+            String nodoId = rutaJava.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaJava.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesIntermedias5 = LeccionRepository.getListaLecciones(Lenguaje.JAVA, NivelDificultad.INTERMEDIO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesIntermedias5) {
             String nodoId = rutaJava.getId() + "-nodo-" + ordenGlobalNodo;
             rutaJava.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
@@ -358,6 +369,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesAvanzadas4 = LeccionRepository.getListaLecciones(Lenguaje.JAVA, NivelDificultad.AVANZADO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesAvanzadas4) {
+            String nodoId = rutaJava.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaJava.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesAvanzadas5 = LeccionRepository.getListaLecciones(Lenguaje.JAVA, NivelDificultad.AVANZADO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesAvanzadas5) {
             String nodoId = rutaJava.getId() + "-nodo-" + ordenGlobalNodo;
             rutaJava.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
@@ -403,6 +419,11 @@ public class AprendizajeManager {
             String nodoId = rutaPython.getId() + "-nodo-" + ordenGlobalNodo;
             rutaPython.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
+        List<Leccion> leccionesBasicas5 = LeccionRepository.getListaLecciones(Lenguaje.PYTHON, NivelDificultad.BASICO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesBasicas5) {
+            String nodoId = rutaPython.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaPython.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
         // --- Nivel Intermedio ---
         List<Leccion> leccionesIntermedias = LeccionRepository.getListaLecciones(Lenguaje.PYTHON, NivelDificultad.INTERMEDIO, TemaLeccion.CONTROL_DE_FLUJO, 3);
         for (Leccion leccion : leccionesIntermedias) {
@@ -426,6 +447,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesIntermedias4 = LeccionRepository.getListaLecciones(Lenguaje.PYTHON, NivelDificultad.INTERMEDIO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesIntermedias4) {
+            String nodoId = rutaPython.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaPython.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesIntermedias5 = LeccionRepository.getListaLecciones(Lenguaje.PYTHON, NivelDificultad.INTERMEDIO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesIntermedias5) {
             String nodoId = rutaPython.getId() + "-nodo-" + ordenGlobalNodo;
             rutaPython.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
@@ -453,6 +479,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesAvanzadas4 = LeccionRepository.getListaLecciones(Lenguaje.PYTHON, NivelDificultad.AVANZADO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesAvanzadas4) {
+            String nodoId = rutaPython.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaPython.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesAvanzadas5 = LeccionRepository.getListaLecciones(Lenguaje.PYTHON, NivelDificultad.AVANZADO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesAvanzadas5) {
             String nodoId = rutaPython.getId() + "-nodo-" + ordenGlobalNodo;
             rutaPython.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
@@ -498,6 +529,11 @@ public class AprendizajeManager {
             String nodoId = rutaPhp.getId() + "-nodo-" + ordenGlobalNodo;
             rutaPhp.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
+        List<Leccion> leccionesBasicas5 = LeccionRepository.getListaLecciones(Lenguaje.PHP, NivelDificultad.BASICO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesBasicas5) {
+            String nodoId = rutaPhp.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaPhp.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
         // --- Nivel Intermedio ---
         List<Leccion> leccionesIntermedias = LeccionRepository.getListaLecciones(Lenguaje.PHP, NivelDificultad.INTERMEDIO, TemaLeccion.CONTROL_DE_FLUJO, 3);
         for (Leccion leccion : leccionesIntermedias) {
@@ -521,6 +557,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesIntermedias4 = LeccionRepository.getListaLecciones(Lenguaje.PHP, NivelDificultad.INTERMEDIO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesIntermedias4) {
+            String nodoId = rutaPhp.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaPhp.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesIntermedias5 = LeccionRepository.getListaLecciones(Lenguaje.PHP, NivelDificultad.INTERMEDIO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesIntermedias5) {
             String nodoId = rutaPhp.getId() + "-nodo-" + ordenGlobalNodo;
             rutaPhp.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
@@ -548,6 +589,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesAvanzadas4 = LeccionRepository.getListaLecciones(Lenguaje.PHP, NivelDificultad.AVANZADO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesAvanzadas4) {
+            String nodoId = rutaPhp.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaPhp.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesAvanzadas5 = LeccionRepository.getListaLecciones(Lenguaje.PHP, NivelDificultad.AVANZADO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesAvanzadas5) {
             String nodoId = rutaPhp.getId() + "-nodo-" + ordenGlobalNodo;
             rutaPhp.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
@@ -593,6 +639,11 @@ public class AprendizajeManager {
             String nodoId = rutaC.getId() + "-nodo-" + ordenGlobalNodo;
             rutaC.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
+        List<Leccion> leccionesBasicas5 = LeccionRepository.getListaLecciones(Lenguaje.C, NivelDificultad.BASICO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesBasicas5) {
+            String nodoId = rutaC.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaC.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
         // --- Nivel Intermedio ---
         List<Leccion> leccionesIntermedias = LeccionRepository.getListaLecciones(Lenguaje.C, NivelDificultad.INTERMEDIO, TemaLeccion.CONTROL_DE_FLUJO, 3);
         for (Leccion leccion : leccionesIntermedias) {
@@ -616,6 +667,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesIntermedias4 = LeccionRepository.getListaLecciones(Lenguaje.C, NivelDificultad.INTERMEDIO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesIntermedias4) {
+            String nodoId = rutaC.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaC.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesIntermedias5 = LeccionRepository.getListaLecciones(Lenguaje.C, NivelDificultad.INTERMEDIO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesIntermedias5) {
             String nodoId = rutaC.getId() + "-nodo-" + ordenGlobalNodo;
             rutaC.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
@@ -643,6 +699,11 @@ public class AprendizajeManager {
         }
         List<Leccion> leccionesAvanzadas4 = LeccionRepository.getListaLecciones(Lenguaje.C, NivelDificultad.AVANZADO, TemaLeccion.OTRO, 3);
         for (Leccion leccion : leccionesAvanzadas4) {
+            String nodoId = rutaC.getId() + "-nodo-" + ordenGlobalNodo;
+            rutaC.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
+        }
+        List<Leccion> leccionesAvanzadas5 = LeccionRepository.getListaLecciones(Lenguaje.C, NivelDificultad.AVANZADO, TemaLeccion.ENTRADA_Y_SALIDA, 3);
+        for (Leccion leccion : leccionesAvanzadas5) {
             String nodoId = rutaC.getId() + "-nodo-" + ordenGlobalNodo;
             rutaC.agregarNodo(new NodoRuta(ordenGlobalNodo++, nodoId, leccion));
         }
