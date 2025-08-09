@@ -1,5 +1,6 @@
 package Modulo_Usuario.Controladores;
 
+import Gamificacion_Modulo.utils.GestorGamificacion;
 import Modulo_Usuario.Clases.Roles;
 import Modulo_Usuario.Clases.Usuario;
 import Modulo_Usuario.Clases.UsuarioAdministrador;
@@ -152,7 +153,7 @@ public class RegisterController {
 
         if (guardarUsuario(nuevoUsuario)) {
             mostrarMensaje("Usuario registrado exitosamente", false);
-            Gamificacion_Modulo.clases.Main.crearProgresoEstudiante();
+            GestorGamificacion.crearProgresoEstudiante();
             limpiarCampos();
 
             // Esperar un momento y volver al login

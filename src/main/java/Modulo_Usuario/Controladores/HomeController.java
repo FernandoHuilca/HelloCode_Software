@@ -1,6 +1,7 @@
 package Modulo_Usuario.Controladores;
 
 
+import Gamificacion_Modulo.utils.GestorGamificacion;
 import MetodosGlobales.MetodosFrecuentes;
 import MetodosGlobales.SesionManager;
 import javafx.event.ActionEvent;
@@ -66,7 +67,7 @@ public class HomeController {
     private void abrirReportes(MouseEvent event) {
         try {
             System.out.println(">>> Abriendo panel de administración...");
-            Gamificacion_Modulo.clases.Main.inicializarDesdeModuloExterno();
+            GestorGamificacion.inicializarDesdeModuloExterno();
             Gamificacion_Modulo.controllers_admin.AdminMainController.mostrarVentanaAdmin();
         } catch (Exception e) {
             System.err.println("Error al abrir panel de administración: " + e.getMessage());
@@ -150,4 +151,3 @@ public class HomeController {
         alert.showAndWait();
     }
 }
-

@@ -1,8 +1,8 @@
 package Gamificacion_Modulo.controllers_admin;
 
 import Gamificacion_Modulo.clases.Logro;
-import Gamificacion_Modulo.clases.Main;
 import Gamificacion_Modulo.clases.ProgresoEstudiante;
+import Gamificacion_Modulo.utils.GestorGamificacion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -90,7 +90,7 @@ public class AdminMainController {
 
     private void actualizarEstadisticas() {
         try {
-            int totalUsuarios = Main.getUsuarios().size();
+            int totalUsuarios = GestorGamificacion.getUsuarios().size();
             int totalLogros = Logro.getLogrosDisponibles().size();
             int totalProgresos = ProgresoEstudiante.getTotalProgresos();
 
@@ -171,4 +171,4 @@ public class AdminMainController {
             e.printStackTrace();
         }
     }
-} 
+}

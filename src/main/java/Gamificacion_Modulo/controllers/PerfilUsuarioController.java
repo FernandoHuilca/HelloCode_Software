@@ -4,7 +4,7 @@ import Gamificacion_Modulo.clases.Desafio;
 import Gamificacion_Modulo.clases.DesafioMensual;
 import Gamificacion_Modulo.clases.DesafioSemanal;
 import Gamificacion_Modulo.clases.Logro;
-import Gamificacion_Modulo.clases.Main;
+import Gamificacion_Modulo.utils.GestorGamificacion;
 import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
@@ -89,7 +89,7 @@ public class PerfilUsuarioController {
         System.out.println(">>> Navegando a Desafíos desde Perfil de Usuario");
         try {
             // Cargar Desafios.fxml desde la carpeta fxml
-            Main.cambiarEscena("/Gamificacion_Modulo/fxml/Desafios.fxml");
+            GestorGamificacion.cambiarEscena("/Gamificacion_Modulo/fxml/Desafios.fxml");
         } catch (Exception e) {
             System.err.println("Error al navegar a Desafios: " + e.getMessage());
             e.printStackTrace();
@@ -110,7 +110,7 @@ public class PerfilUsuarioController {
         System.out.println(">>> Navegando a Ranking desde Perfil de Usuario");
         try {
             // Cargar Ranking.fxml
-            Main.cambiarEscena("/Gamificacion_Modulo/fxml/Ranking.fxml");
+            GestorGamificacion.cambiarEscena("/Gamificacion_Modulo/fxml/Ranking.fxml");
         } catch (Exception e) {
             System.err.println("Error al navegar a Ranking: " + e.getMessage());
             e.printStackTrace();
@@ -265,7 +265,7 @@ public class PerfilUsuarioController {
     public void actualizarDatosPerfil() {
         try {
             // Obtener el usuario logueado y su progreso
-            Usuario usuarioLogueado = Main.getUsuarioLogueado();
+            Usuario usuarioLogueado = GestorGamificacion.getUsuarioLogueado();
             ProgresoEstudiante progresoLogueado = ProgresoEstudiante.getProgresoUsuarioLogueado();
 
             if (usuarioLogueado == null) {
@@ -330,7 +330,7 @@ public class PerfilUsuarioController {
     private void cargarEstudiantesEnComboBox() {
         try {
             // Obtener solo el usuario logueado actual
-            Usuario usuarioLogueado = Main.getUsuarioLogueado();
+            Usuario usuarioLogueado = GestorGamificacion.getUsuarioLogueado();
 
             if (usuarioLogueado == null) {
                 System.out.println(">>> No hay usuario logueado, no se puede cargar ComboBox");
@@ -460,9 +460,9 @@ public class PerfilUsuarioController {
     private void irARanking() {
         try {
             // PASO 1: Inicializar el backend del módulo de gamificación
-            Main.inicializarDesdeModuloExterno();
+            GestorGamificacion.inicializarDesdeModuloExterno();
             // Cargar Ranking.fxml
-            Main.cambiarEscena("/Gamificacion_Modulo/fxml/Ranking.fxml");
+            GestorGamificacion.cambiarEscena("/Gamificacion_Modulo/fxml/Ranking.fxml");
         } catch (Exception e) {
             System.err.println("Error al navegar a Ranking: " + e.getMessage());
             e.printStackTrace();

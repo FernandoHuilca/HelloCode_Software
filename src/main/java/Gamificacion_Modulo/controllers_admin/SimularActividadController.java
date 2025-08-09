@@ -1,5 +1,7 @@
 package Gamificacion_Modulo.controllers_admin;
 
+import Gamificacion_Modulo.utils.GestorGamificacion;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,6 @@ import Gamificacion_Modulo.clases.Desafio;
 import Gamificacion_Modulo.clases.DesafioMensual;
 import Gamificacion_Modulo.clases.DesafioSemanal;
 import Gamificacion_Modulo.clases.Logro;
-import Gamificacion_Modulo.clases.Main;
 import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
@@ -45,7 +46,7 @@ public class SimularActividadController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        usuarios = Main.getUsuariosEstudiantes();
+        usuarios = GestorGamificacion.getUsuariosEstudiantes();
         radioButtonsDesafios = new ArrayList<>();
         toggleGroupDesafios = new ToggleGroup();
 
@@ -319,4 +320,4 @@ public class SimularActividadController implements Initializable {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
-} 
+}
