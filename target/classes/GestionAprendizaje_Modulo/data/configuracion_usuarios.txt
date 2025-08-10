@@ -1,9 +1,0 @@
-# Archivo de configuración de usuarios
-# Formato: username;lenguaje;nivel;primeraVez
-# primeraVez: true = necesita configuración inicial, false = ya configurado
-prueba;Java,Python;Básico,Intermedio;false
-usuario1;Python,C;Básico,Básico;false
-contenido;C,Java;Básico,Avanzado;false
-JON;Java;Básico;false
-DOE;Python,PHP,Java,C;Básico,Intermedio,Básico,Intermedio;false
-danielito1;Java;Intermedio;false

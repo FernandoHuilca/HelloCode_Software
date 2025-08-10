@@ -10,10 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Servicio para manejar la configuración de usuarios (lenguaje, nivel, primera vez)
+ * Servicio para manejar la configuración de usuarios con múltiples lenguajes
  */
 public class ConfiguracionUsuarioService {
 
@@ -29,23 +30,59 @@ public class ConfiguracionUsuarioService {
 
     public static class ConfiguracionUsuario {
         private String username;
-        private String lenguaje;
-        private String nivel;
+        private List<String> lenguajes;
+        private List<String> niveles;
         private boolean primeraVez;
 
+        public ConfiguracionUsuario(String username, List<String> lenguajes, List<String> niveles, boolean primeraVez) {
+            this.username = username;
+            this.lenguajes = new ArrayList<>(lenguajes);
+            this.niveles = new ArrayList<>(niveles);
+            this.primeraVez = primeraVez;
+        }
+
+        // Constructor para un solo lenguaje (compatibilidad)
         public ConfiguracionUsuario(String username, String lenguaje, String nivel, boolean primeraVez) {
             this.username = username;
-            this.lenguaje = lenguaje;
-            this.nivel = nivel;
+            this.lenguajes = new ArrayList<>();
+            this.niveles = new ArrayList<>();
+            if (lenguaje != null && !lenguaje.isEmpty()) {
+                this.lenguajes.add(lenguaje);
+                this.niveles.add(nivel);
+            }
             this.primeraVez = primeraVez;
         }
 
         public String getUsername() { return username; }
-        public String getLenguaje() { return lenguaje; }
-        public String getNivel() { return nivel; }
+        public List<String> getLenguajes() { return lenguajes; }
+        public List<String> getNiveles() { return niveles; }
         public boolean isPrimeraVez() { return primeraVez; }
 
+        // Métodos de compatibilidad para obtener el primer lenguaje/nivel
+        public String getLenguaje() {
+            return lenguajes.isEmpty() ? "" : lenguajes.get(0);
+        }
+        public String getNivel() {
+            return niveles.isEmpty() ? "" : niveles.get(0);
+        }
+
         public void setPrimeraVez(boolean primeraVez) { this.primeraVez = primeraVez; }
+
+        public void agregarLenguaje(String lenguaje, String nivel) {
+            if (!lenguajes.contains(lenguaje)) {
+                lenguajes.add(lenguaje);
+                niveles.add(nivel);
+            }
+        }
+
+        public boolean tieneLinquaje(String lenguaje) {
+            return lenguajes.contains(lenguaje);
+        }
+
+        public String getNivelParaLenguaje(String lenguaje) {
+            int index = lenguajes.indexOf(lenguaje);
+            return index >= 0 ? niveles.get(index) : "";
+        }
     }
 
     public boolean usuarioTieneConfiguracion(String username) {
@@ -88,7 +125,15 @@ public class ConfiguracionUsuarioService {
         }
     }
 
+    // Método para guardar un solo lenguaje (compatibilidad)
     public void guardarConfiguracion(String username, String lenguaje, String nivel) {
+        List<String> lenguajes = Arrays.asList(lenguaje);
+        List<String> niveles = Arrays.asList(nivel);
+        guardarConfiguracionMultiple(username, lenguajes, niveles);
+    }
+
+    // Método principal para guardar múltiples lenguajes
+    public void guardarConfiguracionMultiple(String username, List<String> lenguajes, List<String> niveles) {
         try {
             List<ConfiguracionUsuario> configuraciones = leerConfiguraciones();
 
@@ -100,18 +145,56 @@ public class ConfiguracionUsuarioService {
                 }
             }
 
-            ConfiguracionUsuario nueva = new ConfiguracionUsuario(username, lenguaje, nivel, false);
+            ConfiguracionUsuario nueva = new ConfiguracionUsuario(username, lenguajes, niveles, false);
             if (index >= 0) {
-                configuraciones.set(index, nueva); // actualizar sin eliminar durante el foreach
+                configuraciones.set(index, nueva);
             } else {
                 configuraciones.add(nueva);
             }
 
             escribirConfiguraciones(configuraciones);
-            System.out.println("Configuración guardada para usuario: " + username + " - " + lenguaje + " - " + nivel);
+            System.out.println("Configuración guardada para usuario: " + username + " - Lenguajes: " + lenguajes + " - Niveles: " + niveles);
 
         } catch (Exception e) {
             System.err.println("Error al guardar configuración del usuario: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Nuevo método para AGREGAR lenguajes en lugar de reemplazarlos
+    public void agregarLenguajesAlUsuario(String username, List<String> nuevosLenguajes, List<String> nuevosNiveles) {
+        try {
+            ConfiguracionUsuario configExistente = obtenerConfiguracion(username);
+
+            List<String> lenguajesFinales = new ArrayList<>();
+            List<String> nivelesFinales = new ArrayList<>();
+
+            // Si el usuario ya tiene configuración, combinar con los nuevos
+            if (configExistente != null) {
+                lenguajesFinales.addAll(configExistente.getLenguajes());
+                nivelesFinales.addAll(configExistente.getNiveles());
+            }
+
+            // Agregar solo los lenguajes que no existen ya
+            for (int i = 0; i < nuevosLenguajes.size(); i++) {
+                String nuevoLenguaje = nuevosLenguajes.get(i);
+                String nuevoNivel = i < nuevosNiveles.size() ? nuevosNiveles.get(i) : "Básico";
+
+                if (!lenguajesFinales.contains(nuevoLenguaje)) {
+                    lenguajesFinales.add(nuevoLenguaje);
+                    nivelesFinales.add(nuevoNivel);
+                } else {
+                    // Si el lenguaje ya existe, actualizar solo el nivel
+                    int indexExistente = lenguajesFinales.indexOf(nuevoLenguaje);
+                    nivelesFinales.set(indexExistente, nuevoNivel);
+                }
+            }
+
+            // Guardar la configuración combinada
+            guardarConfiguracionMultiple(username, lenguajesFinales, nivelesFinales);
+
+        } catch (Exception e) {
+            System.err.println("Error al agregar lenguajes al usuario: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -121,7 +204,7 @@ public class ConfiguracionUsuarioService {
             List<ConfiguracionUsuario> configuraciones = leerConfiguraciones();
             boolean existe = configuraciones.stream().anyMatch(config -> config.getUsername().equals(username));
             if (!existe) {
-                configuraciones.add(new ConfiguracionUsuario(username, "", "", true));
+                configuraciones.add(new ConfiguracionUsuario(username, new ArrayList<>(), new ArrayList<>(), true));
                 escribirConfiguraciones(configuraciones);
                 System.out.println("Usuario marcado como nuevo: " + username);
             }
@@ -146,7 +229,7 @@ public class ConfiguracionUsuarioService {
             return configuraciones;
         }
 
-        // Fallback: intentar leer desde el classpath la primera vez
+        // Fallback: intentar leer desde el classpath
         try (InputStream inputStream = getClass().getResourceAsStream(ARCHIVO_CONFIGURACION)) {
             if (inputStream == null) {
                 System.out.println("Archivo de configuración no encontrado, se creará al guardar.");
@@ -167,10 +250,27 @@ public class ConfiguracionUsuarioService {
             String[] partes = linea.split(";");
             if (partes.length == 4) {
                 String username = partes[0].trim();
-                String lenguaje = partes[1].trim();
-                String nivel = partes[2].trim();
+
+                // Parsear lenguajes (separados por comas)
+                List<String> lenguajes = new ArrayList<>();
+                if (!partes[1].trim().isEmpty()) {
+                    String[] lenguajesArray = partes[1].split(",");
+                    for (String lang : lenguajesArray) {
+                        lenguajes.add(lang.trim());
+                    }
+                }
+
+                // Parsear niveles (separados por comas, en el mismo orden que los lenguajes)
+                List<String> niveles = new ArrayList<>();
+                if (!partes[2].trim().isEmpty()) {
+                    String[] nivelesArray = partes[2].split(",");
+                    for (String nivel : nivelesArray) {
+                        niveles.add(nivel.trim());
+                    }
+                }
+
                 boolean primeraVez = Boolean.parseBoolean(partes[3].trim());
-                configuraciones.add(new ConfiguracionUsuario(username, lenguaje, nivel, primeraVez));
+                configuraciones.add(new ConfiguracionUsuario(username, lenguajes, niveles, primeraVez));
             }
         }
     }
@@ -184,14 +284,19 @@ public class ConfiguracionUsuarioService {
 
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             writer.write("# Archivo de configuración de usuarios\n");
-            writer.write("# Formato: username;lenguaje;nivel;primeraVez\n");
+            writer.write("# Formato: username;lenguajes;niveles;primeraVez\n");
+            writer.write("# lenguajes: separados por comas (Java,Python,C)\n");
+            writer.write("# niveles: separados por comas en el mismo orden que los lenguajes (Básico,Intermedio,Avanzado)\n");
             writer.write("# primeraVez: true = necesita configuración inicial, false = ya configurado\n");
 
             for (ConfiguracionUsuario config : configuraciones) {
+                String lenguajesStr = String.join(",", config.getLenguajes());
+                String nivelesStr = String.join(",", config.getNiveles());
+
                 writer.write(String.format("%s;%s;%s;%s\n",
                         config.getUsername(),
-                        config.getLenguaje(),
-                        config.getNivel(),
+                        lenguajesStr,
+                        nivelesStr,
                         config.isPrimeraVez()));
             }
         }

@@ -1,2 +1,0 @@
-pruebita;ruta-python-nodo-1
-Fernando;ruta-c-nodo-1,ruta-c-nodo-4,ruta-c-nodo-5,ruta-c-nodo-2,ruta-c-nodo-3,ruta-c-nodo-6

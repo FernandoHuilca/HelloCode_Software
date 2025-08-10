@@ -2,9 +2,12 @@ package GestionAprendizaje_Modulo.Controladores;
 
 import java.io.IOException;
 
+import Conexion.SesionManager;
+import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +31,9 @@ public class CursosController {
     private Button btnVolver;
 
     @FXML
+    private Button btnSeleccionMultiple;
+
+    @FXML
     private void initialize() {
         // Acción para el botón de "Volver"
         btnVolver.setOnAction(event -> {
@@ -42,6 +48,19 @@ public class CursosController {
                 stage.show(); // Mostrar la nueva escena
             } catch (IOException e) {
                 e.printStackTrace(); // Mostrar el error si algo falla
+            }
+        });
+
+        // Configurar el botón de selección múltiple
+        btnSeleccionMultiple.setOnAction(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/SeleccionMultipleLenguajes.fxml"));
+                AnchorPane seleccionPane = loader.load();
+                Stage stage = (Stage) btnSeleccionMultiple.getScene().getWindow();
+                stage.setScene(new Scene(seleccionPane));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
@@ -68,6 +87,24 @@ public class CursosController {
 
     private void abrirDiagnostico(String lenguaje) {
         try {
+            // NUEVA VALIDACIÓN: Verificar si el usuario ya tiene este lenguaje configurado
+            Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+            if (usuarioActual != null) {
+                ConfiguracionUsuarioService.ConfiguracionUsuario config =
+                    ConfiguracionUsuarioService.getInstancia().obtenerConfiguracion(usuarioActual.getUsername());
+
+                if (config != null && config.tieneLinquaje(lenguaje)) {
+                    // Mostrar alerta y no permitir continuar
+                    Alert alerta = new Alert(Alert.AlertType.WARNING);
+                    alerta.setTitle("Lenguaje ya configurado");
+                    alerta.setHeaderText("¡Ya tienes este lenguaje!");
+                    alerta.setContentText("Ya tienes " + lenguaje + " configurado en tu perfil. " +
+                                        "Puedes acceder a él desde la vista 'Mis Lenguajes' usando el botón 📚.");
+                    alerta.showAndWait();
+                    return; // No continuar con el diagnóstico
+                }
+            }
+
             // Cargar el archivo FXML de la vista Diagnóstico
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Diagnostico.fxml"));
             AnchorPane diagnosticoPane = loader.load();  // Cargar el contenido de la vista Diagnóstico
