@@ -1,6 +1,9 @@
 package GestionAprendizaje_Modulo.Controladores;
 
 import java.io.IOException;
+
+import MetodosGlobales.SesionManager;
+import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -53,14 +56,31 @@ public class DiagnosticoController {
             nivelSeleccionado = nivel; // Guardar el nivel globalmente
             System.out.println("Nivel seleccionado: " + nivel);
 
-            // Navegar a la vista de Ruta
+            // NUEVA LÓGICA: Guardar configuración del usuario
+            try {
+                Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+                if (usuarioActual != null && lenguajeSeleccionado != null) {
+                    // Guardar la configuración del usuario
+                    ConfiguracionUsuarioService.getInstancia().guardarConfiguracion(
+                        usuarioActual.getUsername(), 
+                        lenguajeSeleccionado, 
+                        nivel
+                    );
+                    System.out.println("Configuración guardada para: " + usuarioActual.getUsername());
+                }
+            } catch (Exception e) {
+                System.err.println("Error al guardar configuración: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            // Navegar al HomeUsuario (flujo para usuarios nuevos)
             try {
                 FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Ruta.fxml")
+                        getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml")
                 );
-                AnchorPane rutaPane = loader.load();
+                AnchorPane homePane = loader.load();
                 Stage stage = (Stage) btnContinuar.getScene().getWindow();
-                stage.setScene(new Scene(rutaPane));
+                stage.setScene(new Scene(homePane));
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

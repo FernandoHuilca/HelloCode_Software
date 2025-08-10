@@ -1,13 +1,14 @@
 package GestionAprendizaje_Modulo.Controladores;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class CursosController {
 
@@ -31,13 +32,13 @@ public class CursosController {
         // Acción para el botón de "Volver"
         btnVolver.setOnAction(event -> {
             try {
-                // Cargar el archivo FXML de la vista anterior
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Ruta.fxml"));
-                AnchorPane rutaPane = loader.load(); // Cargar la vista anterior
+                // Cargar el archivo FXML de la vista HomeUsuario (siempre volver al home)
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
+                AnchorPane homePane = loader.load(); // Cargar la vista de home
 
                 // Obtener el stage actual y cambiar la escena
                 Stage stage = (Stage) btnVolver.getScene().getWindow();
-                stage.setScene(new Scene(rutaPane)); // Cambiar la escena
+                stage.setScene(new Scene(homePane)); // Cambiar la escena
                 stage.show(); // Mostrar la nueva escena
             } catch (IOException e) {
                 e.printStackTrace(); // Mostrar el error si algo falla

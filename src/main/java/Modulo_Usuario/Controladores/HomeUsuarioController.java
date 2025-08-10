@@ -1,7 +1,10 @@
 package Modulo_Usuario.Controladores;
 
 import Gamificacion_Modulo.clases.Main;
+import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
+import GestionAprendizaje_Modulo.Controladores.DiagnosticoController;
 import MetodosGlobales.MetodosFrecuentes;
+import MetodosGlobales.SesionManager;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,7 +62,41 @@ public class HomeUsuarioController {
 
     @FXML
     private void irAHome(ActionEvent event) {
-        MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(), "/GestionAprendizaje_Modulo/Vistas/Cursos.fxml", "Ruta de Aprendizaje");
+        try {
+            // Obtener usuario actual
+            Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+            if (usuarioActual == null) {
+                mostrarError("No hay usuario autenticado");
+                return;
+            }
+
+            // Verificar si el usuario tiene configuración guardada
+            ConfiguracionUsuarioService configService = ConfiguracionUsuarioService.getInstancia();
+            ConfiguracionUsuarioService.ConfiguracionUsuario config = configService.obtenerConfiguracion(usuarioActual.getUsername());
+
+            if (config != null && !config.getLenguaje().isEmpty() && !config.getNivel().isEmpty()) {
+                // Usuario ya configurado: ir directo a su ruta
+                // Establecer las variables globales para que RutaController las use
+                DiagnosticoController.lenguajeSeleccionado = config.getLenguaje();
+                DiagnosticoController.nivelSeleccionado = config.getNivel();
+                
+                System.out.println("Cargando ruta configurada para " + usuarioActual.getUsername() + 
+                                 ": " + config.getLenguaje() + " - " + config.getNivel());
+                
+                MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(), 
+                                               "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", 
+                                               "Ruta de Aprendizaje - " + config.getLenguaje());
+            } else {
+                // Usuario sin configuración: ir a selección de cursos
+                MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(), 
+                                               "/GestionAprendizaje_Modulo/Vistas/Cursos.fxml", 
+                                               "Seleccionar Curso");
+            }
+        } catch (Exception e) {
+            System.err.println("Error al navegar a Home: " + e.getMessage());
+            e.printStackTrace();
+            mostrarError("Error al cargar la ruta de aprendizaje");
+        }
     }
 
     @FXML

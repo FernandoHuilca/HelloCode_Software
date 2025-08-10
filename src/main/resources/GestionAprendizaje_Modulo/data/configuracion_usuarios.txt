@@ -1,0 +1,8 @@
+# Archivo de configuración de usuarios
+# Formato: username;lenguaje;nivel;primeraVez
+# primeraVez: true = necesita configuración inicial, false = ya configurado
+usuario1;Java;Básico;false
+comunidad1;Python;Intermedio;false
+admin1;C++;Avanzado;false
+zack;Java;Básico;false
+prueba;Java;Avanzado;false
