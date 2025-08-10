@@ -465,6 +465,9 @@ public class RutaController {
     private Usuario usuarioActual;
     private Ruta rutaActual;
 
+    // Variable para guardar el nivel desbloqueado actual del usuario
+    private int nivelDesbloqueado = 1; // 1: Básico, 2: Intermedio, 3: Avanzado
+
     @FXML
     private void initialize() {
         System.out.println("[RutaController] Inicializando...");
@@ -497,21 +500,19 @@ public class RutaController {
 
         // 4. Dibujar la UI con la información obtenida.
         construirContenedoresVisuales();
-
     }
-
-
 
     private void construirContenedoresVisuales() {
         contenidoVBox.getChildren().clear();
         contenidoVBox.setSpacing(20);
         if (rutaActual == null) return;
 
-        // Leer el nivel seleccionado del Diagnóstico
-        String nivel = DiagnosticoController.nivelSeleccionado;
-        int maxTemas = 1; // Por defecto solo 1 tema (Básico)
-        if ("Intermedio".equalsIgnoreCase(nivel)) maxTemas = 2;
-        else if ("Avanzado".equalsIgnoreCase(nivel)) maxTemas = Integer.MAX_VALUE;
+        // Determinar el nivel desbloqueado actual
+        nivelDesbloqueado = calcularNivelDesbloqueado();
+
+        int maxTemas = 1;
+        if (nivelDesbloqueado == 2) maxTemas = 2;
+        else if (nivelDesbloqueado == 3) maxTemas = Integer.MAX_VALUE;
 
         Map<TemaLeccion, List<NodoRuta>> nodosPorTema = rutaActual.getNodos().stream()
                 .filter(nodo -> nodo.getLeccion() != null && !nodo.getLeccion().getListEjercicios().isEmpty())
@@ -606,6 +607,45 @@ public class RutaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Lógica para calcular el nivel desbloqueado según el progreso del usuario
+    private int calcularNivelDesbloqueado() {
+        // 1: Básico, 2: Intermedio, 3: Avanzado
+        // Si todos los temas del nivel actual están completos, desbloquea el siguiente
+        int nivel = 1;
+        Map<TemaLeccion, List<NodoRuta>> nodosPorTema = rutaActual.getNodos().stream()
+                .filter(nodo -> nodo.getLeccion() != null && !nodo.getLeccion().getListEjercicios().isEmpty())
+                .collect(Collectors.groupingBy(
+                        nodo -> nodo.getLeccion().getListEjercicios().get(0).getTema(),
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ));
+        // Básico: solo el primer tema
+        if (estanTodosCompletos(nodosPorTema, 0, 1)) {
+            nivel = 2; // Intermedio
+            // Intermedio: los dos primeros temas
+            if (estanTodosCompletos(nodosPorTema, 0, 2)) {
+                nivel = 3; // Avanzado
+            }
+        }
+        return nivel;
+    }
+
+    // Verifica si todos los nodos de los temas [start, end) están completos
+    private boolean estanTodosCompletos(Map<TemaLeccion, List<NodoRuta>> nodosPorTema, int start, int end) {
+        int idx = 0;
+        for (List<NodoRuta> nodos : nodosPorTema.values()) {
+            if (idx >= start && idx < end) {
+                for (NodoRuta nodo : nodos) {
+                    if (!AprendizajeManager.getInstancia().isNodoCompletadoParaUsuario(usuarioActual, nodo)) {
+                        return false;
+                    }
+                }
+            }
+            idx++;
+        }
+        return true;
     }
 
     private String capitalizar(String texto) {
