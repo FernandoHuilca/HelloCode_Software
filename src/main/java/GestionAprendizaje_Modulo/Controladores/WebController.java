@@ -30,7 +30,6 @@ public class WebController {
     private void initialize() {
         WebEngine engine = webView.getEngine();
 
-        // Actualizar el título con el de la página
         engine.titleProperty().addListener((obs, oldV, newV) -> {
             if (newV != null && !newV.isBlank()) {
                 titleLabel.setText(newV);
@@ -39,13 +38,11 @@ public class WebController {
             }
         });
 
-        // Progreso de carga
         progressBar.progressProperty().bind(engine.getLoadWorker().progressProperty());
         engine.getLoadWorker().runningProperty().addListener((obs, wasRunning, isRunning) -> {
             progressBar.setVisible(isRunning);
         });
 
-        // Habilitar/deshabilitar navegación
         engine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> updateNavButtons());
         webView.getEngine().getHistory().getEntries().addListener(
                 (javafx.collections.ListChangeListener<WebHistory.Entry>) change -> updateNavButtons()
@@ -67,7 +64,6 @@ public class WebController {
         String normalized = normalizeUrl(url);
         currentUrl = normalized;
 
-        // Manejo básico de PDFs: usar visor de Google para embeberlos
         if (isPdf(normalized)) {
             String encoded = encode(normalized);
             String gview = "https://docs.google.com/gview?embedded=true&url=" + encoded;
@@ -134,6 +130,14 @@ public class WebController {
                 Desktop.getDesktop().browse(new java.net.URI(url));
             }
         } catch (Exception ignored) {
+        }
+    }
+
+    @FXML
+    private void onCloseWindow() {
+        javafx.stage.Stage stage = (javafx.stage.Stage) webView.getScene().getWindow();
+        if (stage != null) {
+            stage.close();
         }
     }
 }
