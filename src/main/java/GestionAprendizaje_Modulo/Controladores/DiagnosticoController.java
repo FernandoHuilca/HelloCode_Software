@@ -52,15 +52,16 @@ public class DiagnosticoController {
             try {
                 Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
                 if (usuarioActual != null && lenguajeSeleccionado != null) {
-                    ConfiguracionUsuarioService.getInstancia().guardarConfiguracion(
+                    // Usar el nuevo método para agregar lenguaje en lugar de reemplazar
+                    ConfiguracionUsuarioService.getInstancia().agregarLenguajeAUsuario(
                             usuarioActual.getUsername(),
                             lenguajeSeleccionado,
                             nivel
                     );
-                    System.out.println("Configuración guardada para: " + usuarioActual.getUsername());
+                    System.out.println("Lenguaje agregado para: " + usuarioActual.getUsername() + " - " + lenguajeSeleccionado + " - " + nivel);
                 }
             } catch (Exception e) {
-                System.err.println("Error al guardar configuración: " + e.getMessage());
+                System.err.println("Error al agregar lenguaje: " + e.getMessage());
                 e.printStackTrace();
             }
 

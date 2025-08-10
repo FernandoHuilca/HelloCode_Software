@@ -1,6 +1,10 @@
 # Archivo de configuración de usuarios
-# Formato: username;lenguaje;nivel;primeraVez
+# Formato: username;lenguajes;niveles;primeraVez
+# lenguajes: separados por comas (Java,Python,C)
+# niveles: separados por comas en el mismo orden que los lenguajes (Básico,Intermedio,Avanzado)
 # primeraVez: true = necesita configuración inicial, false = ya configurado
-prueba;Java;Básico;false
-usuario1;Python;Básico;false
-contenido;C;Básico;false
+prueba;Java,Python;Básico,Intermedio;false
+usuario1;Python,C;Básico,Básico;false
+contenido;C,Java;Básico,Avanzado;false
+JON;Java;Básico;false
+DOE;Python,PHP,Java,C;Básico,Intermedio,Básico,Intermedio;false
