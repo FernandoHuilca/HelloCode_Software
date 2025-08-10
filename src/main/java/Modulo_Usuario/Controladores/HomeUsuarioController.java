@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class HomeUsuarioController {
-    
+
     @FXML private VBox contentContainer;
     @FXML private Label usuarioNombreLabel;
     @FXML private Label xpLabel;
@@ -85,23 +85,11 @@ public class HomeUsuarioController {
         try {
             // PASO 1: Inicializar el backend del módulo de gamificación
             Main.inicializarDesdeModuloExterno();
-
-            // PASO 2: Cargar la interfaz gráfica
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
-
-            Stage stage = new Stage();
-            stage.setTitle("Hello Code Software - Gamificación");
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-
-            // Cerrar la pantalla actual
-            Stage thisStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            thisStage.close();
+            // Cargar PerfilUsuario.fxml
+            Main.cambiarEscena("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml");
         } catch (Exception e) {
+            System.err.println("Error al navegar a Perfil: " + e.getMessage());
             e.printStackTrace();
-            mostrarError("Error al abrir el módulo de gamificación: " + e.getMessage());
         }
     }
 
@@ -138,19 +126,19 @@ public class HomeUsuarioController {
         Button btn = (Button) event.getSource();
         btn.setStyle(btn.getStyle().replace("#424874", "#6B7A99") + "; -fx-scale-x: 1.05; -fx-scale-y: 1.05;");
     }
-    
+
     @FXML
     private void onMouseExited(javafx.scene.input.MouseEvent event) {
         Button btn = (Button) event.getSource();
         btn.setStyle(btn.getStyle().replace("#6B7A99", "#424874") + "; -fx-scale-x: 1.0; -fx-scale-y: 1.0;");
     }
-    
+
     @FXML
     private void onMouseEnteredSalir(javafx.scene.input.MouseEvent event) {
         Button btn = (Button) event.getSource();
         btn.setStyle(btn.getStyle().replace("#e74c3c", "#c0392b") + "; -fx-scale-x: 1.05; -fx-scale-y: 1.05;");
     }
-    
+
     @FXML
     private void onMouseExitedSalir(javafx.scene.input.MouseEvent event) {
         Button btn = (Button) event.getSource();
@@ -164,13 +152,13 @@ public class HomeUsuarioController {
     private void marcarBotonActivo(Button botonActivo) {
         // Restablecer todos los botones del navbar (solo 4 módulos)
         Button[] botones = {btnHome, btnPerfil2, btnRanking, btnComunidad};
-        
+
         for (Button boton : botones) {
             if (boton != null) {
                 boton.setStyle("-fx-background-color: white; -fx-text-fill: #424874; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 2); -fx-cursor: hand; -fx-padding: 8;");
             }
         }
-        
+
         // Marcar el botón activo
         if (botonActivo != null) {
             botonActivo.setStyle("-fx-background-color: #424874; -fx-text-fill: white; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18; -fx-effect: dropshadow(gaussian, rgba(66,72,116,0.4), 8, 0.4, 0, 4); -fx-cursor: hand; -fx-padding: 8;");
