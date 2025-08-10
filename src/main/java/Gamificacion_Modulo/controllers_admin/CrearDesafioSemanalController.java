@@ -165,20 +165,28 @@ public class CrearDesafioSemanalController {
             // Agregar a la lista central de desafíos
             Desafio.agregarDesafio(desafio);
 
+            // Asignar automáticamente el desafío a todos los usuarios logueados (estudiantes)
+            List<Modulo_Usuario.Clases.Usuario> usuarios = Gamificacion_Modulo.utils.GestorGamificacion.getUsuariosEstudiantes();
+            for (Modulo_Usuario.Clases.Usuario usuario : usuarios) {
+                Gamificacion_Modulo.clases.ProgresoEstudiante progreso = Gamificacion_Modulo.clases.ProgresoEstudiante.getProgresos().stream()
+                        .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
+                        .findFirst().orElse(null);
+                if (progreso != null) {
+                    progreso.agregarDesafio(desafio);
+                }
+            }
+            System.out.println(">>> Desafío semanal asignado automáticamente a todos los usuarios logueados");
+
             // Mensaje de éxito
             String mensaje = String.format(
-                    "¡Desafío semanal creado exitosamente!\n\n" +
-                            "Meta: %d actividades semanales\n" +
-                            "Logros asociados: %d\n" +
-                            "Estado: Disponible para asignar\n\n" +
-                            "Usa 'Asignar Desafío a Usuario' para asignarlo.",
-                    meta,
-                    logrosSeleccionados.size()
+                "¡Desafío semanal creado exitosamente!\n\n" +
+                        "Meta: %d actividades semanales\n" +
+                        "Logros asociados: %d\n",
+                meta,
+                logrosSeleccionados.size()
             );
 
             mostrarAlerta("Éxito", mensaje);
-
-
 
             cerrarVentana();
 
@@ -210,4 +218,4 @@ public class CrearDesafioSemanalController {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
-} 
+}

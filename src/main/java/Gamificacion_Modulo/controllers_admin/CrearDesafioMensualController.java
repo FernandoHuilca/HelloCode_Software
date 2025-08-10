@@ -165,13 +165,23 @@ public class CrearDesafioMensualController {
             // Agregar a la lista central de desafíos
             Desafio.agregarDesafio(desafio);
 
+            // Asignar automáticamente el desafío a todos los usuarios logueados (estudiantes)
+            List<Modulo_Usuario.Clases.Usuario> usuarios = Gamificacion_Modulo.utils.GestorGamificacion.getUsuariosEstudiantes();
+            for (Modulo_Usuario.Clases.Usuario usuario : usuarios) {
+                Gamificacion_Modulo.clases.ProgresoEstudiante progreso = Gamificacion_Modulo.clases.ProgresoEstudiante.getProgresos().stream()
+                        .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
+                        .findFirst().orElse(null);
+                if (progreso != null) {
+                    progreso.agregarDesafio(desafio);
+                }
+            }
+            System.out.println(">>> Desafío asignado automáticamente a todos los usuarios logueados");
+
             // Mensaje de éxito
             String mensaje = String.format(
                     "¡Desafío mensual creado exitosamente!\n\n" +
                             "Objetivo: %d actividades mensuales\n" +
-                            "Logros asociados: %d\n" +
-                            "Estado: Disponible para asignar\n\n" +
-                            "Usa 'Asignar Desafío a Usuario' para asignarlo.",
+                            "Logros asociados: %d\n",
                     objetivo,
                     logrosSeleccionados.size()
             );
@@ -216,4 +226,4 @@ public class CrearDesafioMensualController {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
-} 
+}
