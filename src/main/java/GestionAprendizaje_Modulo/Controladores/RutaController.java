@@ -419,6 +419,9 @@
 ////    }
 //}
 
+
+// IGNORA EL CÓDIGO DE ARRIBA 
+
 package GestionAprendizaje_Modulo.Controladores;
 
 import java.io.IOException;
@@ -488,6 +491,19 @@ public class    RutaController {
 
         // 3. "JALAR" LA RUTA SEGÚN EL LENGUAJE SELECCIONADO
         String lenguaje = DiagnosticoController.lenguajeSeleccionado;
+        String nivel = DiagnosticoController.nivelSeleccionado;
+        
+        // NUEVA LÓGICA: Si no hay selección previa, usar la configuración del usuario
+        if (lenguaje == null || lenguaje.isEmpty()) {
+            ConfiguracionUsuarioService.ConfiguracionUsuario config = 
+                ConfiguracionUsuarioService.getInstancia().obtenerConfiguracion(usuarioActual.getUsername());
+            if (config != null) {
+                lenguaje = config.getLenguaje();
+                nivel = config.getNivel();
+                System.out.println("[RutaController] Cargando configuración guardada: " + lenguaje + " - " + nivel);
+            }
+        }
+        
         this.rutaActual = AprendizajeManager.getInstancia().getRutaPorNombre(lenguaje);
 
         if (this.rutaActual == null) {
@@ -495,8 +511,14 @@ public class    RutaController {
             tituloLenguajeLabel.setText("Contenido no disponible");
             return;
         }
-        tituloLenguajeLabel.setText(rutaActual.getNombre());
-
+        
+        // Actualizar el título con el lenguaje y nivel
+        if (lenguaje != null && !lenguaje.isEmpty()) {
+            tituloLenguajeLabel.setText("Ruta de " + lenguaje + " - " + (nivel != null ? nivel : "Nivel"));
+        } else {
+            tituloLenguajeLabel.setText(rutaActual.getNombre());
+        }
+        
         // 4. Dibujar la UI con la información obtenida.
         construirContenedoresVisuales();
     }
@@ -506,8 +528,17 @@ private void construirContenedoresVisuales() {
         contenidoVBox.setSpacing(20);
         if (rutaActual == null) return;
 
-        // Leer nivel seleccionado del diagnóstico
+        // Leer nivel seleccionado del diagnóstico o de la configuración guardada
         String nivel = DiagnosticoController.nivelSeleccionado;
+        
+        // NUEVA LÓGICA: Si no hay nivel en el diagnóstico, usar la configuración guardada
+        if (nivel == null || nivel.isEmpty()) {
+            ConfiguracionUsuarioService.ConfiguracionUsuario config = 
+                ConfiguracionUsuarioService.getInstancia().obtenerConfiguracion(usuarioActual.getUsername());
+            if (config != null) {
+                nivel = config.getNivel();
+            }
+        }
 
         // Determinar el nivel desbloqueado actual
         nivelDesbloqueado = calcularNivelDesbloqueado();
