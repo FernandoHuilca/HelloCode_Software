@@ -12,6 +12,7 @@ module Modulo_Ejercicio {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires java.logging;
 
     // Abre paquetes para FXML
     //    opens GestionAprendizaje_Modulo.Aplicacion to javafx.graphics, javafx.fxml;
