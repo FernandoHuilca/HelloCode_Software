@@ -1,10 +1,10 @@
 package Modulo_Usuario.Controladores;
 
+import Conexion.MetodosFrecuentes;
+import Conexion.SesionManager;
 import Gamificacion_Modulo.clases.Main;
 import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
 import GestionAprendizaje_Modulo.Controladores.DiagnosticoController;
-import Conexion.MetodosFrecuentes;
-import Conexion.SesionManager;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -79,18 +79,18 @@ public class HomeUsuarioController {
                 // Establecer las variables globales para que RutaController las use
                 DiagnosticoController.lenguajeSeleccionado = config.getLenguaje();
                 DiagnosticoController.nivelSeleccionado = config.getNivel();
-
-                System.out.println("Cargando ruta configurada para " + usuarioActual.getUsername() +
-                        ": " + config.getLenguaje() + " - " + config.getNivel());
-
-                MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(),
-                        "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml",
-                        "Ruta de Aprendizaje - " + config.getLenguaje());
+                
+                System.out.println("Cargando ruta configurada para " + usuarioActual.getUsername() + 
+                                 ": " + config.getLenguaje() + " - " + config.getNivel());
+                
+                MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(), 
+                                               "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", 
+                                               "Ruta de Aprendizaje - " + config.getLenguaje());
             } else {
                 // Usuario sin configuración: ir a selección de cursos
-                MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(),
-                        "/GestionAprendizaje_Modulo/Vistas/Cursos.fxml",
-                        "Seleccionar Curso");
+                MetodosFrecuentes.cambiarVentana((Stage) btnHome.getScene().getWindow(), 
+                                               "/GestionAprendizaje_Modulo/Vistas/Cursos.fxml", 
+                                               "Seleccionar Curso");
             }
         } catch (Exception e) {
             System.err.println("Error al navegar a Home: " + e.getMessage());

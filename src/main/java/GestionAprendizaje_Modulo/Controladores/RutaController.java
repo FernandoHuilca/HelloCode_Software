@@ -431,14 +431,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import Conexion.MetodosFrecuentes;
+import Conexion.SesionManager;
 import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
 import GestionAprendizaje_Modulo.Logica.NodoRuta;
 import GestionAprendizaje_Modulo.Logica.Ruta;
 import GestionAprendizaje_Modulo.Logica.UsuarioConfig;
 import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
 import GestionAprendizaje_Modulo.Repositorio.RecursoRepository;
-import Conexion.MetodosFrecuentes;
-import Conexion.SesionManager;
 import Modulo_Usuario.Clases.Usuario;
 import Nuevo_Modulo_Leccion.controllers.LeccionUIController;
 import Nuevo_Modulo_Leccion.logic.TemaLeccion;
@@ -470,9 +470,6 @@ public class    RutaController {
 
     @FXML
     private Button btnLibrary;
-
-    @FXML
-    private Button btnAdd;
 
     // Variable para guardar el nivel desbloqueado actual del usuario
     private int nivelDesbloqueado = 1; // 1: Básico, 2: Intermedio, 3: Avanzado
@@ -532,25 +529,9 @@ public class    RutaController {
         //5. Botón para mostrar los cursos seguidos
         btnLibrary.setOnAction(event -> mostrarCursosSeguidos());
 
-        //6. Configurar el botón Add para redireccionar a Cursos.fxml
-        btnAdd.setOnAction(event -> {
-            try {
-                // Cargar el archivo FXML de la vista Cursos
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Cursos.fxml"));
-                AnchorPane cursosPane = loader.load(); // Cargar el contenido del archivo FXML
-
-                // Obtener el stage actual y cambiar la escena
-                Stage stage = (Stage) rootPane.getScene().getWindow();
-                stage.setScene(new Scene(cursosPane)); // Cambiar la escena por la nueva vista
-                stage.show(); // Mostrar la nueva escena
-            } catch (IOException e) {
-                e.printStackTrace(); // Mostrar error si algo falla al cargar el FXML
-            }
-        });
-
     }
 
-private void construirContenedoresVisuales() {
+    private void construirContenedoresVisuales() {
         contenidoVBox.getChildren().clear();
         contenidoVBox.setSpacing(20);
         if (rutaActual == null) return;
@@ -688,47 +669,20 @@ private void construirContenedoresVisuales() {
     // Agrega este método en tu clase RutaController
 
     private void mostrarCursosSeguidos() {
+        // Suponiendo que tienes una clase UsuarioConfig y un método para leer la configuración
         try {
-            ConfiguracionUsuarioService.ConfiguracionUsuario config =
-                ConfiguracionUsuarioService.getInstancia().obtenerConfiguracion(usuarioActual.getUsername());
-
-            if (config != null && !config.getLenguajes().isEmpty()) {
-                StringBuilder cursosTexto = new StringBuilder();
-                List<String> lenguajes = config.getLenguajes();
-                List<String> niveles = config.getNiveles();
-
-                for (int i = 0; i < lenguajes.size(); i++) {
-                    String lenguaje = lenguajes.get(i);
-                    String nivel = i < niveles.size() ? niveles.get(i) : "Básico";
-
-                    if (i > 0) {
-                        cursosTexto.append("\n");
-                    }
-                    cursosTexto.append("• ").append(lenguaje).append(" - ").append(nivel);
-                }
-
-                // Muestra todos los cursos en una alerta
+            UsuarioConfig usuario = UsuarioConfig.leerConfig("src/main/resources/GestionAprendizaje_Modulo/data/configuracion_usuarios.txt", usuarioActual.getUsername());
+            if (usuario != null) {
+                String cursos = usuario.getLenguaje() + " - " + usuario.getNivel();
+                // Muestra los cursos en una alerta simple
                 javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
                 alert.setTitle("Cursos Seguidos");
-                alert.setHeaderText("Lenguajes que estudias:");
-                alert.setContentText(cursosTexto.toString());
-                alert.showAndWait();
-            } else {
-                // Usuario sin cursos configurados
-                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-                alert.setTitle("Cursos Seguidos");
-                alert.setHeaderText("Sin cursos");
-                alert.setContentText("Aún no tienes lenguajes de programación configurados.\n\n¡Selecciona uno desde el botón ➕!");
+                alert.setHeaderText("Cursos que sigues:");
+                alert.setContentText(cursos);
                 alert.showAndWait();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-
-            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error al cargar cursos");
-            alert.setContentText("No se pudieron cargar los cursos seguidos.");
-            alert.showAndWait();
         }
     }
 

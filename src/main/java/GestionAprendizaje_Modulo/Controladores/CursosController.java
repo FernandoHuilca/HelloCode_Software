@@ -2,8 +2,6 @@ package GestionAprendizaje_Modulo.Controladores;
 
 import java.io.IOException;
 
-import Conexion.SesionManager;
-import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -70,36 +68,20 @@ public class CursosController {
 
     private void abrirDiagnostico(String lenguaje) {
         try {
-            // Verificar si el usuario ya tiene este lenguaje
-            Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
-            if (usuarioActual != null) {
-                ConfiguracionUsuarioService service = ConfiguracionUsuarioService.getInstancia();
-
-                if (service.usuarioTieneLenguaje(usuarioActual.getUsername(), lenguaje)) {
-                    // El usuario ya tiene este lenguaje, ir directamente a la ruta
-                    DiagnosticoController.lenguajeSeleccionado = lenguaje;
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Ruta.fxml"));
-                    AnchorPane rutaPane = loader.load();
-                    Stage stage = (Stage) btnJava.getScene().getWindow();
-                    stage.setScene(new Scene(rutaPane));
-                    stage.show();
-                    return;
-                }
-            }
-
-            // El usuario no tiene este lenguaje, ir al diagnóstico
+            // Cargar el archivo FXML de la vista Diagnóstico
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Diagnostico.fxml"));
-            AnchorPane diagnosticoPane = loader.load();
+            AnchorPane diagnosticoPane = loader.load();  // Cargar el contenido de la vista Diagnóstico
 
+            // Obtener el controlador de la vista Diagnóstico
             DiagnosticoController diagnosticoController = loader.getController();
-            diagnosticoController.setDiagnosticoText(lenguaje);
+            diagnosticoController.setDiagnosticoText(lenguaje); // Pasar el nombre del lenguaje al controlador
 
-            Stage stage = (Stage) btnJava.getScene().getWindow();
-            stage.setScene(new Scene(diagnosticoPane));
-            stage.show();
+            // Obtener el stage actual y cambiar la escena
+            Stage stage = (Stage) btnJava.getScene().getWindow(); // Usamos cualquier botón para obtener el Stage
+            stage.setScene(new Scene(diagnosticoPane));  // Cambiar la escena
+            stage.show();  // Mostrar la nueva escena
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace();  // Mostrar error si falla al cargar el FXML
         }
     }
 }
