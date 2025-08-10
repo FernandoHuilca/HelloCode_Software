@@ -5,12 +5,15 @@ import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
 import Modulo_Ejercicios.logic.EjercicioBase;
 import Modulo_Ejercicios.logic.EjercicioCompletarCodigo;
+import Modulo_Ejercicios.logic.EjercicioEmparejar;
 import Modulo_Ejercicios.logic.EjercicioSeleccion;
 import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.function.Consumer;
 
 public class LeccionUIController {
     
@@ -63,6 +66,8 @@ public class LeccionUIController {
                 mostrarEjercicioSeleccion((EjercicioSeleccion) ejercicioActual);
             } else if (ejercicioActual instanceof EjercicioCompletarCodigo) {
                 mostrarEjercicioCompletar((EjercicioCompletarCodigo) ejercicioActual);
+            } else if (ejercicioActual instanceof EjercicioEmparejar) {
+                mostrarEjercicioEmparejar((EjercicioEmparejar) ejercicioActual);
             } else {
                 // Ejercicio no reconocido, saltar al siguiente
                 indiceEjercicioActual++;
@@ -73,6 +78,14 @@ public class LeccionUIController {
             e.printStackTrace();
             MetodosFrecuentes.mostrarAlerta("Error", "Error al cargar el ejercicio: " + e.getMessage());
         }
+    }
+
+    private static void mostrarEjercicioEmparejar(EjercicioEmparejar ejercicioActual) {
+        mostrarVentanaEjercicio(
+                "/Modulo_Ejercicios/views/Emparejar.fxml",
+                Modulo_Ejercicios.Controladores.EmparejarController.class,
+                c -> c.setEjercicio(ejercicioActual)
+        );
     }
 
     public static void avanzarAlSiguienteEjercicio() {
@@ -138,6 +151,23 @@ public class LeccionUIController {
         } catch (Exception e) {
             e.printStackTrace();
             MetodosFrecuentes.mostrarAlerta("Error", "Error al cargar ejercicio de completar código: " + e.getMessage());
+        }
+    }
+    private static <T> void mostrarVentanaEjercicio(String rutaFXML, Class<T> tipoControlador, Consumer<T> inicializador) {
+        try {
+            FXMLLoader loader = new FXMLLoader(LeccionUIController.class.getResource(rutaFXML));
+            Parent root = loader.load();
+            Object ctrl = loader.getController();
+            if (tipoControlador.isInstance(ctrl) && inicializador != null) {
+                inicializador.accept(tipoControlador.cast(ctrl));
+            }
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            MetodosFrecuentes.mostrarAlerta("Error", "Error al cargar ventana: " + e.getMessage());
         }
     }
 
