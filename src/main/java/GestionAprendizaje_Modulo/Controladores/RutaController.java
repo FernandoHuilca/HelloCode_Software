@@ -434,6 +434,7 @@ import java.util.stream.Collectors;
 import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
 import GestionAprendizaje_Modulo.Logica.NodoRuta;
 import GestionAprendizaje_Modulo.Logica.Ruta;
+import GestionAprendizaje_Modulo.Logica.UsuarioConfig;
 import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
 import GestionAprendizaje_Modulo.Repositorio.RecursoRepository;
 import MetodosGlobales.MetodosFrecuentes;
@@ -466,6 +467,9 @@ public class    RutaController {
 
     private Usuario usuarioActual;
     private Ruta rutaActual;
+
+    @FXML
+    private Button btnLibrary;
 
     // Variable para guardar el nivel desbloqueado actual del usuario
     private int nivelDesbloqueado = 1; // 1: Básico, 2: Intermedio, 3: Avanzado
@@ -521,6 +525,10 @@ public class    RutaController {
         
         // 4. Dibujar la UI con la información obtenida.
         construirContenedoresVisuales();
+
+        //5. Botón para mostrar los cursos seguidos
+        btnLibrary.setOnAction(event -> mostrarCursosSeguidos());
+
     }
 
     private void construirContenedoresVisuales() {
@@ -657,6 +665,27 @@ public class    RutaController {
             e.printStackTrace();
         }
     }
+
+    // Agrega este método en tu clase RutaController
+
+    private void mostrarCursosSeguidos() {
+        // Suponiendo que tienes una clase UsuarioConfig y un método para leer la configuración
+        try {
+            UsuarioConfig usuario = UsuarioConfig.leerConfig("src/main/resources/GestionAprendizaje_Modulo/data/configuracion_usuarios.txt", usuarioActual.getUsername());
+            if (usuario != null) {
+                String cursos = usuario.getLenguaje() + " - " + usuario.getNivel();
+                // Muestra los cursos en una alerta simple
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                alert.setTitle("Cursos Seguidos");
+                alert.setHeaderText("Cursos que sigues:");
+                alert.setContentText(cursos);
+                alert.showAndWait();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Lógica para calcular el nivel desbloqueado según el progreso del usuario
     private int calcularNivelDesbloqueado() {

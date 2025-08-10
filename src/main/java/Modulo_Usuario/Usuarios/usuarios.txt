@@ -13,3 +13,4 @@ esteban;esteban;esteban;esteban@god.ec;0;USUARIO
 tarek;tarek;tarek;tarek@god.com;0;ADMINISTRADOR
 zack;123456;Isaac;isaacmh@gmail.com;0;USUARIO
 isaac;123456;isaac;isaacm1@gmail.com;0;USUARIO
+contenido;123456;contenido;contenido@gmail.com;0;USUARIO
