@@ -1,9 +1,6 @@
 package GestionAprendizaje_Modulo.Logica;
 
-import GestionAprendizaje_Modulo.Logica.Curso;
-import GestionAprendizaje_Modulo.Logica.NodoRuta;
-import GestionAprendizaje_Modulo.Logica.Ruta;
-import MetodosGlobales.LeccionesCompletadas;
+import Conexion.LeccionesCompletadas;
 import Modulo_Usuario.Clases.Usuario;
 import Nuevo_Modulo_Leccion.dataBase.LeccionRepository;
 import Nuevo_Modulo_Leccion.logic.Leccion;

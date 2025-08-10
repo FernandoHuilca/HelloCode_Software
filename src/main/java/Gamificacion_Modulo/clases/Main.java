@@ -3,7 +3,7 @@ package Gamificacion_Modulo.clases;
 import java.util.ArrayList;
 import java.util.List;
 
-import MetodosGlobales.SesionManager;
+import Conexion.SesionManager;
 import Modulo_Usuario.Clases.Roles;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.application.Application;
