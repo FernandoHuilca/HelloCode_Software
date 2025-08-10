@@ -448,7 +448,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -502,17 +501,33 @@ public class    RutaController {
         construirContenedoresVisuales();
     }
 
-    private void construirContenedoresVisuales() {
+private void construirContenedoresVisuales() {
         contenidoVBox.getChildren().clear();
         contenidoVBox.setSpacing(20);
         if (rutaActual == null) return;
 
+        // Leer nivel seleccionado del diagnóstico
+        String nivel = DiagnosticoController.nivelSeleccionado;
+
         // Determinar el nivel desbloqueado actual
         nivelDesbloqueado = calcularNivelDesbloqueado();
 
+        // Por defecto, solo 1 tema
         int maxTemas = 1;
-        if (nivelDesbloqueado == 2) maxTemas = 2;
-        else if (nivelDesbloqueado == 3) maxTemas = Integer.MAX_VALUE;
+
+        // Lógica por diagnóstico
+        if ("Intermedio".equalsIgnoreCase(nivel)) {
+            maxTemas = 2;
+        } else if ("Avanzado".equalsIgnoreCase(nivel)) {
+            maxTemas = Integer.MAX_VALUE;
+        }
+
+        // Lógica por nivel desbloqueado
+        if (nivelDesbloqueado == 2 && maxTemas < 2) {
+            maxTemas = 2;
+        } else if (nivelDesbloqueado == 3 && maxTemas < Integer.MAX_VALUE) {
+            maxTemas = Integer.MAX_VALUE;
+        }
 
         Map<TemaLeccion, List<NodoRuta>> nodosPorTema = rutaActual.getNodos().stream()
                 .filter(nodo -> nodo.getLeccion() != null && !nodo.getLeccion().getListEjercicios().isEmpty())
@@ -533,6 +548,7 @@ public class    RutaController {
             temaIndex++;
         }
     }
+
 
     private VBox crearContenedorUI(TemaLeccion temaEnum, List<NodoRuta> nodos, boolean desbloqueado) {
         VBox vbox = new VBox(10);
