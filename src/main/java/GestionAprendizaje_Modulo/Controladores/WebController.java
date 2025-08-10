@@ -26,17 +26,17 @@ public class WebController {
             "Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) " +
                     "Chrome/120.0.0.0 Mobile Safari/537.36";
 
-    // Bloquea media con src data:/blob: (inicial + dinámico)
+    // Bloquea media con src data:/blob: (inicial + dinámico) de forma simple
     private static final String JS_BLOCK_MEDIA =
             "(function(){try{"
+                    + "if(window.__JFX_MEDIA_GUARD)return; window.__JFX_MEDIA_GUARD=1;"
                     + "const bad=u=>typeof u==='string'&&(u.startsWith('data:')||u.startsWith('blob:'));"
-                    + "const scrub=m=>{try{var s=''+(m.currentSrc||m.src||''); if(bad(s)){m.pause&&m.pause(); m.removeAttribute('src'); m.load&&m.load();}}catch(e){}};"
-                    + "document.querySelectorAll('video,audio').forEach(scrub);"
-                    + "document.querySelectorAll('video source,audio source').forEach(s=>{try{var u=''+(s.src||''); if(bad(u)){s.removeAttribute('src'); var p=s.parentElement; p&&p.load&&p.load();}}catch(e){}});"
-                    + "new MutationObserver(muts=>muts.forEach(mu=>(mu.addedNodes||[]).forEach(n=>{try{"
-                    + "if(n&&n.tagName){ if(n.tagName==='VIDEO'||n.tagName==='AUDIO') scrub(n); if(n.tagName==='SOURCE'){var u=''+(n.src||''); if(bad(u)){n.removeAttribute('src'); var p=n.parentElement; p&&p.load&&p.load();}} }"
-                    + "if(n&&n.querySelectorAll){ n.querySelectorAll('video,audio').forEach(scrub); n.querySelectorAll('video source,audio source').forEach(s=>{var u=''+(s.src||''); if(bad(u)){s.removeAttribute('src'); var p=s.parentElement; p&&p.load&&p.load();}});}"
-                    + "}catch(e){} }))).observe(document.documentElement,{childList:true,subtree:true});"
+                    + "const clean=m=>{try{if(!m)return; m.pause&&m.pause(); m.removeAttribute&&m.removeAttribute('src'); try{m.srcObject=null;}catch(e){} m.load&&m.load(); m.autoplay=false; m.preload='none';}catch(e){}};"
+                    + "const scrub=m=>{try{var s=''+(m.currentSrc||m.src||''); if(bad(s)) clean(m);}catch(e){}};"
+                    + "var scan=function(root){try{(root.querySelectorAll?root:document).querySelectorAll('video,audio').forEach(scrub);}catch(e){}};"
+                    + "document.addEventListener('DOMContentLoaded',function(){scan(document);},{once:true});"
+                    + "scan(document);"
+                    + "new MutationObserver(function(ms){ms.forEach(function(m){(m.addedNodes||[]).forEach(function(n){try{if(n&&n.tagName&&(n.tagName==='VIDEO'||n.tagName==='AUDIO'))scrub(n); if(n&&n.querySelectorAll)scan(n);}catch(e){}});});}).observe(document.documentElement,{childList:true,subtree:true});"
                     + "}catch(e){}})();";
 
     static {
@@ -68,14 +68,13 @@ public class WebController {
             if (ex != null && esYouTube(currentUrl)) abrirExterno(currentUrl);
         });
 
-        // Al terminar cada carga: bloquear media data/blob
-        engine.getLoadWorker().stateProperty().addListener((o, old, st) -> {
+        // Inyección temprana del guardián de medios al crearse el documento
+        engine.documentProperty().addListener((obs, od, nd) -> { if (nd != null) runJS(JS_BLOCK_MEDIA); });
+        engine.getLoadWorker().stateProperty().addListener((o2, oldSt, st) -> { if (st == Worker.State.SUCCEEDED) runJS(JS_BLOCK_MEDIA); });
+        engine.documentProperty().addListener((obs, oldDoc, newDoc) -> { if (newDoc != null) runJS(JS_BLOCK_MEDIA); });
+        engine.getLoadWorker().stateProperty().addListener((o2, oldSt, st) -> {
             if (st == Worker.State.SUCCEEDED) runJS(JS_BLOCK_MEDIA);
         });
-
-        // Navegación (estado botones)
-        engine.getLoadWorker().stateProperty().addListener((o, a, b) -> actualizarBotones());
-        engine.getHistory().getEntries().addListener((ListChangeListener<WebHistory.Entry>) c -> actualizarBotones());
 
         // Cierre ventana: parar medios y limpiar
         webView.sceneProperty().addListener((o, os, ns) -> {
@@ -153,10 +152,7 @@ public class WebController {
     private void cargarEnBlanco() { try { webView.getEngine().load("about:blank"); } catch (Exception ignored) {} }
 
     private void detenerMedios() {
-        runJS("(function(){try{"
-                + "document.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});"
-                + "document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.removeAttribute('src');a.load();}catch(e){}});"
-                + "}catch(e){}})();");
+        runJS("(function(){try{document.querySelectorAll('video,audio').forEach(function(m){try{m.pause&&m.pause();m.removeAttribute&&m.removeAttribute('src');try{m.srcObject=null;}catch(e){}m.load&&m.load();}catch(e){}});}catch(e){}})();");
         cancelarCarga();
     }
 
@@ -215,13 +211,10 @@ public class WebController {
     }
 
     private static String escapeHtml(String s) {
-        if (isBlank(s)) return "";
-        return s.replace("&","&amp;").replace("\"","&quot;")
-                .replace("<","&lt;").replace(">","&gt;");
+        return isBlank(s) ? "" : s.replace("&","&amp;").replace("\"","&quot;").replace("<","&lt;").replace(">","&gt;");
     }
 
     private static String urlEncode(String s) {
         try { return URLEncoder.encode(s, StandardCharsets.UTF_8.toString()); }
         catch (Exception e) { return s; }
-    }
-}
+    }}
