@@ -2,6 +2,7 @@ package Gamificacion_Modulo.controllers_admin;
 
 import Gamificacion_Modulo.clases.Logro;
 import Gamificacion_Modulo.clases.ProgresoEstudiante;
+import Gamificacion_Modulo.clases.Ranking;
 import Gamificacion_Modulo.utils.GestorGamificacion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -92,11 +93,11 @@ public class AdminMainController {
         try {
             int totalUsuarios = GestorGamificacion.getUsuarios().size();
             int totalLogros = Logro.getLogrosDisponibles().size();
-            int totalProgresos = ProgresoEstudiante.getTotalProgresos();
+            int totalProgresos = Ranking.getTotalProgresos();
 
             // Contar desafíos activos
             int desafiosActivos = 0;
-            for (ProgresoEstudiante progreso : ProgresoEstudiante.getProgresos()) {
+            for (ProgresoEstudiante progreso : Ranking.getProgresos()) {
                 desafiosActivos += progreso.getDesafiosActivos().size();
             }
 

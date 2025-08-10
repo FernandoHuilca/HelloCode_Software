@@ -3,6 +3,7 @@ package Gamificacion_Modulo.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gamificacion_Modulo.clases.Ranking;
 import MetodosGlobales.SesionManager;
 import Modulo_Usuario.Clases.Roles;
 import Modulo_Usuario.Clases.Usuario;
@@ -148,13 +149,13 @@ public class GestorGamificacion {
                             usuario.setEmail(usuario.getUsername() + "@email.com");
                         }
 
-                        boolean existeProgreso = ProgresoEstudiante.getProgresos().stream()
+                        boolean existeProgreso = Ranking.getProgresos().stream()
                                 .anyMatch(p -> p.getUsuario().getUsername().equals(usuario.getUsername()));
                         if (!existeProgreso) {
                             ProgresoEstudiante nuevoProgreso = new ProgresoEstudiante(usuario);
                             // Asignar automáticamente los puntos totales basándose en la experiencia del usuario
                             nuevoProgreso.setPuntosTotal(usuario.getXp());
-                            ProgresoEstudiante.getProgresos().add(nuevoProgreso);
+                            Ranking.getProgresos().add(nuevoProgreso);
                             System.out.println(">>> Progreso creado para nuevo usuario: " + usuario.getNombre() + " con " + usuario.getXp() + " puntos de experiencia");
                         }
                         System.out.println(">>> Usuario cargado: " + usuario.getUsername() + " - " + usuario.getNombre());

@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import Gamificacion_Modulo.clases.Desafio;
-import Gamificacion_Modulo.clases.DesafioMensual;
-import Gamificacion_Modulo.clases.DesafioSemanal;
-import Gamificacion_Modulo.clases.ProgresoEstudiante;
+import Gamificacion_Modulo.clases.*;
 import Modulo_Usuario.Clases.Usuario;
 import Gamificacion_Modulo.utils.GestorGamificacion;
 import javafx.fxml.FXML;
@@ -91,7 +88,7 @@ public class AsignarDesafioController implements Initializable {
                 nombreDesafio = "Desafío Semanal - " + ds.getMetaSemanal() + " lecciones";
             } else if (desafio instanceof DesafioMensual) {
                 DesafioMensual dm = (DesafioMensual) desafio;
-                Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
+                Integer objetivo = (dm.getMetaMensual() != null) ? dm.getMetaMensual() : 1;
                 nombreDesafio = "Desafío Mensual - " + objetivo + " actividades";
             }
 
@@ -185,7 +182,7 @@ public class AsignarDesafioController implements Initializable {
                             nombreDesafio = "Desafío Semanal - " + ds.getMetaSemanal() + " lecciones";
                         } else if (desafio instanceof DesafioMensual) {
                             DesafioMensual dm = (DesafioMensual) desafio;
-                            Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
+                            Integer objetivo = (dm.getMetaMensual() != null) ? dm.getMetaMensual() : 1;
                             nombreDesafio = "Desafío Mensual - " + objetivo + " actividades";
                         }
 
@@ -274,7 +271,7 @@ public class AsignarDesafioController implements Initializable {
     }
 
     private ProgresoEstudiante encontrarProgresoPorUsuario(Usuario usuario) {
-        return ProgresoEstudiante.getProgresos().stream()
+        return Ranking.getProgresos().stream()
                 .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
                 .findFirst()
                 .orElse(null);

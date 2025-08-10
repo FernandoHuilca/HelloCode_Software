@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import Gamificacion_Modulo.clases.Ranking;
 import Gamificacion_Modulo.utils.GestorGamificacion;
 import Gamificacion_Modulo.clases.ProgresoEstudiante;
 import Modulo_Usuario.Clases.Usuario;
+import eu.hansolo.tilesfx.tools.Rank;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -69,7 +71,7 @@ public class RankingController implements Initializable {
         try {
             // Obtener solo usuarios con rol USUARIO (estudiantes)
             List<Usuario> usuariosEstudiantes = GestorGamificacion.getUsuariosEstudiantes();
-            List<ProgresoEstudiante> progresos = ProgresoEstudiante.getProgresos();
+            List<ProgresoEstudiante> progresos = Ranking.getProgresos();
 
             if (usuariosEstudiantes.isEmpty()) {
                 mostrarMensajeVacio();

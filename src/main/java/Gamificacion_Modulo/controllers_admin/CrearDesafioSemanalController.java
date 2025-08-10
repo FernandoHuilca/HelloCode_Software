@@ -168,7 +168,7 @@ public class CrearDesafioSemanalController {
             // Asignar automáticamente el desafío a todos los usuarios logueados (estudiantes)
             List<Modulo_Usuario.Clases.Usuario> usuarios = Gamificacion_Modulo.utils.GestorGamificacion.getUsuariosEstudiantes();
             for (Modulo_Usuario.Clases.Usuario usuario : usuarios) {
-                Gamificacion_Modulo.clases.ProgresoEstudiante progreso = Gamificacion_Modulo.clases.ProgresoEstudiante.getProgresos().stream()
+                Gamificacion_Modulo.clases.ProgresoEstudiante progreso = Gamificacion_Modulo.clases.Ranking.getProgresos().stream()
                         .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
                         .findFirst().orElse(null);
                 if (progreso != null) {

@@ -175,8 +175,8 @@ public class PerfilUsuarioController {
                             nombreDesafio = "Desafío Semanal #" + contadorDesafios + " (Meta: " + ds.getMetaSemanal() + " lecciones)";
                         } else if (desafio instanceof DesafioMensual) {
                             DesafioMensual dm = (DesafioMensual) desafio;
-                            Integer objetivo = (dm.getObjetivoMensual() != null) ? dm.getObjetivoMensual() : 1;
-                            Integer completadas = (dm.getActividadesCompletadas() != null) ? dm.getActividadesCompletadas() : 0;
+                            Integer objetivo = (dm.getMetaMensual() != null) ? dm.getMetaMensual() : 1;
+                            Integer completadas = (dm.getLeccionesCompletadas() != null) ? dm.getLeccionesCompletadas() : 0;
                             progreso_str = " - " + completadas + "/" + objetivo +
                                     " (" + String.format("%.1f", dm.getProgreso()) + "%)";
                             nombreDesafio = "Desafío Mensual #" + contadorDesafios + " (Meta: " + objetivo + " actividades)";
