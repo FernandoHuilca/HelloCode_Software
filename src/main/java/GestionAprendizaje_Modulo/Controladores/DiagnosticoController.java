@@ -25,22 +25,17 @@ public class DiagnosticoController {
 
     private ToggleGroup nivelGroup;
 
-    // Variable estática para guardar el nivel seleccionado globalmente
     public static String nivelSeleccionado = null;
-    // Variable estática para guardar el lenguaje seleccionado globalmente
     public static String lenguajeSeleccionado = null;
 
     @FXML
     private void initialize() {
-        // Crear y asociar ToggleGroup para nivel
         nivelGroup = new ToggleGroup();
         rbNivelBasico.setToggleGroup(nivelGroup);
         rbNivelIntermedio.setToggleGroup(nivelGroup);
         rbNivelAvanzado.setToggleGroup(nivelGroup);
 
-        // Acción del botón Continuar
         btnContinuar.setOnAction(event -> {
-            // Validar selección
             RadioButton seleccionado = (RadioButton) nivelGroup.getSelectedToggle();
             if (seleccionado == null) {
                 Alert alerta = new Alert(Alert.AlertType.WARNING);
@@ -51,20 +46,16 @@ public class DiagnosticoController {
                 return;
             }
 
-            // Obtener nivel
             String nivel = seleccionado.getText();
-            nivelSeleccionado = nivel; // Guardar el nivel globalmente
-            System.out.println("Nivel seleccionado: " + nivel);
+            nivelSeleccionado = nivel;
 
-            // NUEVA LÓGICA: Guardar configuración del usuario
             try {
                 Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
                 if (usuarioActual != null && lenguajeSeleccionado != null) {
-                    // Guardar la configuración del usuario
                     ConfiguracionUsuarioService.getInstancia().guardarConfiguracion(
-                        usuarioActual.getUsername(), 
-                        lenguajeSeleccionado, 
-                        nivel
+                            usuarioActual.getUsername(),
+                            lenguajeSeleccionado,
+                            nivel
                     );
                     System.out.println("Configuración guardada para: " + usuarioActual.getUsername());
                 }
@@ -73,14 +64,14 @@ public class DiagnosticoController {
                 e.printStackTrace();
             }
 
-            // Navegar al HomeUsuario (flujo para usuarios nuevos)
+            // Ir DIRECTAMENTE a la Ruta
             try {
                 FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml")
+                        getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Ruta.fxml")
                 );
-                AnchorPane homePane = loader.load();
+                AnchorPane rutaPane = loader.load();
                 Stage stage = (Stage) btnContinuar.getScene().getWindow();
-                stage.setScene(new Scene(homePane));
+                stage.setScene(new Scene(rutaPane));
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -88,11 +79,8 @@ public class DiagnosticoController {
         });
     }
 
-    /**
-     * Permite cambiar el texto del título desde otro controlador.
-     */
     public void setDiagnosticoText(String texto) {
         tituloLabel.setText(texto);
-        lenguajeSeleccionado = texto; // Guardar el lenguaje seleccionado
+        lenguajeSeleccionado = texto;
     }
 }
