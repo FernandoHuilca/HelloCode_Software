@@ -456,7 +456,7 @@ import javafx.stage.Stage;
  * Controlador de la Vista de Ruta - Versión Final Corregida
  * =================================================================================
  */
-public class RutaController {
+public class    RutaController {
 
     @FXML private VBox contenidoVBox;
     @FXML private Label tituloLenguajeLabel;
@@ -587,7 +587,7 @@ public class RutaController {
     }
 
     /**
-     * Muestra una nueva ventana modal con la lista de recursos.
+     * Cambia la escena actual para mostrar la lista de recursos.
      */
     private void abrirVentanaDeRecursos(String tema, List<RecursoAprendizaje> recursos) {
         try {
@@ -597,12 +597,14 @@ public class RutaController {
             RecursosTemaController controller = loader.getController();
             controller.setRecursos(tema, recursos);
 
-            Stage stage = new Stage();
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            if (stage.getScene() == null) {
+                stage.setScene(new Scene(root, 360, 640));
+            } else {
+                stage.getScene().setRoot(root);
+            }
             stage.setTitle("Recursos para " + tema);
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(rootPane.getScene().getWindow());
-            stage.showAndWait();
+            stage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
