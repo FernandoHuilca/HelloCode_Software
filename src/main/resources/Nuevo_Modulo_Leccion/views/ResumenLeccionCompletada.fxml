@@ -34,7 +34,7 @@
          </cursor></Button>
       <ImageView fitHeight="177.0" fitWidth="287.0" layoutX="47.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Imagenes/bai-unscreen.gif" />
+            <Image url="@../Imagenes/gatoBailandoSalsa.gif" />
          </image>
       </ImageView>
       <HBox alignment="CENTER_LEFT" layoutX="23.0" layoutY="317.0" maxWidth="Infinity" prefHeight="80" prefWidth="110.0" spacing="16" style="-fx-background-color: #DCD6F7; -fx-background-radius: 16; -fx-effect: dropshadow(gaussian, #424874, 6, 0.2, 0, 2);">
