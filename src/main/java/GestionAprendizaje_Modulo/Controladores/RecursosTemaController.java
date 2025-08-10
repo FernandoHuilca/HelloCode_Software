@@ -5,12 +5,14 @@ import GestionAprendizaje_Modulo.Modelo.DocumentoPDF;
 import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
 import GestionAprendizaje_Modulo.Modelo.Video;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-import java.awt.Desktop;
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -66,7 +68,7 @@ public class RecursosTemaController {
         Label detalle = new Label(recurso.obtenerDetalle());
         detalle.setStyle("-fx-text-fill: #DCD6F7;");
 
-        // Hacemos que la URL sea un enlace clicable que abre el navegador
+        // El enlace ahora abrirá el recurso en una nueva ventana (Web.fxml) dentro de la app
         Hyperlink link = new Hyperlink("Abrir Recurso →");
         link.setOnAction(e -> abrirEnlace(recurso.getUrl()));
 
@@ -87,18 +89,42 @@ public class RecursosTemaController {
     }
 
     /**
-     * Abre una URL en el navegador por defecto del sistema.
+     * Abre una URL en una nueva ventana interna usando Web.fxml.
      */
     private void abrirEnlace(String url) {
         try {
-            // Añadir "https://" si la URL no tiene un protocolo
-            if (!url.matches("^(https?|ftp)://.*$")) {
-                url = "https://" + url;
+            // Cargar la vista Web.fxml y su controlador
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Web.fxml"));
+            Parent root = loader.load();
+            WebController controller = loader.getController();
+
+            // Normalizar la URL (agregar https:// si no hay protocolo)
+            if (url != null && !url.matches("^(?i)(https?|ftp)://.*$")) {
+                url = "https://" + url.trim();
             }
-            Desktop.getDesktop().browse(new URI(url));
+
+            // Pasar la URL al controlador para que la cargue en el WebView
+            controller.loadUrl(url);
+            controller.setWindowTitleFallback("Recurso");
+
+            // Mostrar en una nueva ventana (formato móvil 360x640)
+            Stage stage = new Stage();
+            stage.setTitle("Recurso");
+            stage.setScene(new Scene(root, 360, 640));
+            stage.show();
         } catch (Exception e) {
-            System.err.println("Error al intentar abrir el enlace: " + url);
+            System.err.println("Error al abrir el recurso en la vista web: " + url);
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void volverARuta() {
+        try {
+            javafx.stage.Stage stage = (javafx.stage.Stage) recursosContainerVBox.getScene().getWindow();
+            MetodosGlobales.MetodosFrecuentes.cambiarVentana(stage, "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", "Ruta");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
