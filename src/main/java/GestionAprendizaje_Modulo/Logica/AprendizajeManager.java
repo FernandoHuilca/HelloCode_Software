@@ -208,7 +208,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import MetodosGlobales.LeccionesCompletadas;
+import Conexion.LeccionesCompletadas;
 import Modulo_Ejercicios.logic.Lenguaje;
 import Modulo_Ejercicios.logic.NivelDificultad;
 import Modulo_Usuario.Clases.Usuario;

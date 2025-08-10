@@ -122,7 +122,7 @@ public class RecursosTemaController {
     private void volverARuta() {
         try {
             javafx.stage.Stage stage = (javafx.stage.Stage) recursosContainerVBox.getScene().getWindow();
-            MetodosGlobales.MetodosFrecuentes.cambiarVentana(stage, "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", "Ruta");
+            Conexion.MetodosFrecuentes.cambiarVentana(stage, "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", "Ruta");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

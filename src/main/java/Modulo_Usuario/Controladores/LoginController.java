@@ -9,8 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
-import MetodosGlobales.SesionManager;
+import Conexion.SesionManager;
 import Modulo_Usuario.Clases.Roles;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
@@ -88,41 +87,20 @@ public class LoginController {
         if (usuarioEncontrado != null) {
             try {
                 SesionManager.getInstancia().iniciarSesion(usuarioEncontrado);
-                
-                // Si es usuario normal, verificar si es primera vez o ya configurado
+                // Si es usuario normal, va a homeUsuario.fxml
                 if (usuarioEncontrado.getRol() == Roles.USUARIO) {
-                    ConfiguracionUsuarioService configService = ConfiguracionUsuarioService.getInstancia();
-                    
-                    // Verificar si es primera vez del usuario
-                    if (configService.esPrimeraVez(usuarioEncontrado.getUsername())) {
-                        // Usuario nuevo o sin configuración: ir a CursosController
-                        System.out.println("Usuario primera vez, redirigiendo a selección de cursos: " + usuarioEncontrado.getUsername());
-                        
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Cursos.fxml"));
-                        Parent root = fxmlLoader.load();
-                        Scene scene = new Scene(root, 360, 640);
-                        Stage stage = new Stage();
-                        stage.setTitle("Hello Code Software - Selección de Curso");
-                        stage.setScene(scene);
-                        stage.setResizable(false);
-                        stage.show();
-                    } else {
-                        // Usuario ya configurado: ir a HomeUsuario
-                        System.out.println("Usuario ya configurado, redirigiendo a home: " + usuarioEncontrado.getUsername());
-                        
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
-                        Parent root = fxmlLoader.load();
-                        HomeUsuarioController homeController = fxmlLoader.getController();
-                        homeController.setUsuario(usuarioEncontrado);
-                        Scene scene = new Scene(root, 360, 640);
-                        Stage stage = new Stage();
-                        stage.setTitle("Hello Code Software - Panel Usuario");
-                        stage.setScene(scene);
-                        stage.setResizable(false);
-                        stage.show();
-                    }
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
+                    Parent root = fxmlLoader.load();
+                    HomeUsuarioController homeController = fxmlLoader.getController();
+                    homeController.setUsuario(usuarioEncontrado);
+                    Scene scene = new Scene(root, 360, 640);
+                    Stage stage = new Stage();
+                    stage.setTitle("Hello Code Software - Panel Usuario");
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
                 } else {
-                    // Cualquier otro rol va a home.fxml (administradores)
+                    // Cualquier otro rol va a home.fxml
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/home.fxml"));
                     Parent root = fxmlLoader.load();
                     Scene scene = new Scene(root, 360, 640);
@@ -132,7 +110,6 @@ public class LoginController {
                     stage.setResizable(false);
                     stage.show();
                 }
-                
                 Stage thisStage = (Stage) usuarioField.getScene().getWindow();
                 thisStage.close();
             } catch (Exception e) {
