@@ -2,7 +2,7 @@ package GestionAprendizaje_Modulo.Controladores;
 
 import java.io.IOException;
 
-import MetodosGlobales.SesionManager;
+import Conexion.SesionManager;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
