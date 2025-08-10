@@ -22,15 +22,15 @@
                  -fx-border-color: rgba(255,255,255,0.08);
                  -fx-border-width: 0 0 1 0;">
         <children>
-            <Button text="❮" onAction="#onCloseWindow"
+            <Button text="❮" onAction="#cerrarVentana"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px; -fx-cursor: hand;" />
-            <Button fx:id="backButton" text="⟵" onAction="#onBack"
+            <Button fx:id="backButton" text="⟵" onAction="#irAtras"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px;" />
-            <Button fx:id="forwardButton" text="⟶" onAction="#onForward"
+            <Button fx:id="forwardButton" text="⟶" onAction="#irAdelante"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px;" />
-            <Button fx:id="reloadButton" text="⟳" onAction="#onReload"
+            <Button fx:id="reloadButton" text="⟳" onAction="#recargar"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px;" />
-            <Button fx:id="externalButton" text="↗" onAction="#onOpenExternal"
+            <Button fx:id="externalButton" text="↗" onAction="#abrirEnNavegadorExterno"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px;" />
             <Separator prefWidth="6.0" />
             <Label fx:id="titleLabel" text="Cargando..."

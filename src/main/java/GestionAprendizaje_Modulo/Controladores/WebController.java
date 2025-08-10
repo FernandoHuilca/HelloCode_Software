@@ -20,8 +20,6 @@ public class WebController {
     @FXML private Label titleLabel;
     @FXML private Button backButton;
     @FXML private Button forwardButton;
-    @FXML private Button reloadButton;
-    @FXML private Button externalButton;
     @FXML private ProgressBar progressBar;
 
     private String currentUrl = "";
@@ -43,15 +41,29 @@ public class WebController {
             progressBar.setVisible(isRunning);
         });
 
-        engine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> updateNavButtons());
+        engine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> actualizarBotonesNavegacion());
         webView.getEngine().getHistory().getEntries().addListener(
-                (javafx.collections.ListChangeListener<WebHistory.Entry>) change -> updateNavButtons()
+                (javafx.collections.ListChangeListener<WebHistory.Entry>) change -> actualizarBotonesNavegacion()
         );
 
-        updateNavButtons();
+        // Al ocultar/cerrar la ventana, detener medios y limpiar
+        webView.sceneProperty().addListener((o, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((o2, oldWin, newWin) -> {
+                    if (newWin != null) {
+                        newWin.setOnHidden(ev -> {
+                            detenerMedios();
+                            cargarEnBlanco();
+                        });
+                    }
+                });
+            }
+        });
+
+        actualizarBotonesNavegacion();
     }
 
-    private void updateNavButtons() {
+    private void actualizarBotonesNavegacion() {
         Platform.runLater(() -> {
             WebHistory history = webView.getEngine().getHistory();
             int index = history.getCurrentIndex();
@@ -60,17 +72,27 @@ public class WebController {
         });
     }
 
+    // Alias en español para compatibilidad con otras partes del código
+    public void cargarUrl(String url) {
+        loadUrl(url);
+    }
+
     public void loadUrl(String url) {
-        String normalized = normalizeUrl(url);
+        String normalized = normalizarUrl(url);
         currentUrl = normalized;
 
-        if (isPdf(normalized)) {
-            String encoded = encode(normalized);
+        if (esPdf(normalized)) {
+            String encoded = codificar(normalized);
             String gview = "https://docs.google.com/gview?embedded=true&url=" + encoded;
             webView.getEngine().load(gview);
         } else {
             webView.getEngine().load(normalized);
         }
+    }
+
+    // Alias en español para compatibilidad con otras partes del código
+    public void establecerTituloVentanaPorDefecto(String title) {
+        setWindowTitleFallback(title);
     }
 
     public void setWindowTitleFallback(String title) {
@@ -79,7 +101,7 @@ public class WebController {
         }
     }
 
-    private String normalizeUrl(String url) {
+    private String normalizarUrl(String url) {
         if (url == null) return "";
         String trimmed = url.trim();
         if (!Pattern.compile("^(?i)(https?|ftp)://").matcher(trimmed).find()) {
@@ -88,11 +110,11 @@ public class WebController {
         return trimmed;
     }
 
-    private boolean isPdf(String url) {
+    private boolean esPdf(String url) {
         return url.toLowerCase().contains(".pdf");
     }
 
-    private String encode(String s) {
+    private String codificar(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -100,16 +122,44 @@ public class WebController {
         }
     }
 
+    // Detiene audio/video en la página actual (y si es posible en iframes), y cancela cargas en curso
+    private void detenerMedios() {
+        try {
+            webView.getEngine().executeScript(
+                    "(function(){try{"
+                            + "document.querySelectorAll('video').forEach(function(v){try{v.pause();v.src='';v.load();}catch(e){}});"
+                            + "document.querySelectorAll('audio').forEach(function(a){try{a.pause();a.src='';a.load();}catch(e){}});"
+                            + "document.querySelectorAll('iframe').forEach(function(f){try{var d=f.contentDocument||f.contentWindow.document;"
+                            + "if(d){d.querySelectorAll('video,audio').forEach(function(m){try{m.pause();m.src='';m.load();}catch(e){}});}}catch(e){}});"
+                            + "}catch(e){}})();"
+            );
+        } catch (Exception ignored) { }
+        try {
+            webView.getEngine().getLoadWorker().cancel();
+        } catch (Exception ignored) { }
+    }
+
+    // Carga una página en blanco de forma segura para liberar medios
+    private void cargarEnBlanco() {
+        try {
+            webView.getEngine().load("about:blank");
+        } catch (Exception ignored) { }
+    }
+
     @FXML
-    private void onBack() {
+    private void irAtras() {
+        detenerMedios();
         WebHistory history = webView.getEngine().getHistory();
         if (history.getCurrentIndex() > 0) {
             history.go(-1);
+        } else {
+            cargarEnBlanco();
         }
     }
 
     @FXML
-    private void onForward() {
+    private void irAdelante() {
+        detenerMedios();
         WebHistory history = webView.getEngine().getHistory();
         if (history.getCurrentIndex() < history.getEntries().size() - 1) {
             history.go(1);
@@ -117,12 +167,13 @@ public class WebController {
     }
 
     @FXML
-    private void onReload() {
+    private void recargar() {
+        detenerMedios();
         webView.getEngine().reload();
     }
 
     @FXML
-    private void onOpenExternal() {
+    private void abrirEnNavegadorExterno() {
         try {
             String url = webView.getEngine().getLocation();
             if (url == null || url.isBlank()) url = currentUrl;
@@ -134,7 +185,9 @@ public class WebController {
     }
 
     @FXML
-    private void onCloseWindow() {
+    private void cerrarVentana() {
+        detenerMedios();
+        cargarEnBlanco();
         javafx.stage.Stage stage = (javafx.stage.Stage) webView.getScene().getWindow();
         if (stage != null) {
             stage.close();
