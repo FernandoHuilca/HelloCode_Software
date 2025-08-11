@@ -7,7 +7,6 @@ package Modulo_Usuario {
             - usuario : String
             - exp : Integer
             + Usuario(nombre: String, email: String, usuario: String, exp: Integer)
-            + getExp() : Integer
         }
 
 }
@@ -18,19 +17,15 @@ package "Gamificacion_Modulo" {
         - nombre : String
         - descripcion : String
         - puntajeUmbral : Integer
-        - fechaObtencion : Date
         - logrosDisponibles: List<Logro>
         - logrosDesbloqueados: List<Logro>
         + Logro(nombre: String, descripcion: String, criterios: String, umbral: Integer)
-        + verificarComplecion(progreso: ProgresoEstudiante) : Boolean
-        'Hablar de agregarLogro
-        +agregarLogro(logro: Logro))
+        + agregarLogro(logro: Logro)):void
+        + asignarLogro(usuario: Usuario): void
     }
 
     abstract class Desafio {
         - puntosRecompensa : Integer
-        - fechaInicio : LocalDateTime
-        - fechaFin : LocalDateTime
         - estaActivo : Boolean
         - logrosDisponibles : List<Logro>
         - leccionesCompletadas : Integer
@@ -43,36 +38,35 @@ package "Gamificacion_Modulo" {
         + desbloquearLogro(logro: Logro, estudiante: ProgresoEstudiante) : Boolean
         + completarDesafio(estudiante: ProgresoEstudiante) : void
         + estaCompletado() : Boolean
-        + simularDesafio()
+        +agregarDesafio(desafio: Desafio) : void
     }
 
     class DesafioSemanal {
 
         + DesafioSemanal(metaSemanal: Integer, logros: List<Logro>)
         + estaCompletado() : Boolean
-        + actualizarAvanze(cantidad: Integer) : void
+        + actualizarAvance(cantidad: Integer) : void
     }
 
     class DesafioMensual {
 
         + DesafioMensual(objetivoMensual: Integer, logros: List<Logro>)
         + estaCompletado() : Boolean
-        + actualizarActividades(cantidad: Integer) : void
+        + actualizarAvance(cantidad: Integer) : void
     }
 
-    class ProgresoEstudiante {
+    class ProgresoUsuario {
         - usuario : Usuario
         - logrosDesbloqueados : List<Logro>
         - puntosTotal : Integer
+        - listaDesafios : List<Desafio>
         - desafiosCompletados : Integer
         - desafiosActivos : Lista<Desafio>
 
-        + ProgresoEstudiante(usuario: Usuario)
-        + agregarLogro(logro: Logro) : void
+        + ProgresoUsuario (usuario: Usuario)
         + actualizarProgreso(desafio: Desafio) : void
         + actualizarLogro(logro: Logro) : void
-        + actualizarDesafio(desafio: Desafio) : void
-        + actualizarPuntos(puntos: Integer) : void
+        + getExp() : Integer
     }
 
     class Ranking {
@@ -83,6 +77,7 @@ package "Gamificacion_Modulo" {
         + actualizarRanking(estudiante: ProgresoEstudiante) : void
         + obtenerRankingGeneral() : List<ProgresoEstudiante>
         + calcularPosicion(estudiante: ProgresoEstudiante) : Integer
+        + calcularPosicion(ProgresoUsuario: ProgresoUsuario) : Integer
     }
     Ranking ->Ranking: getInstance()
     ' Relaciones de Herencia
@@ -90,13 +85,13 @@ package "Gamificacion_Modulo" {
     Desafio <|-- DesafioMensual
 
     ' Relaciones de Composición
-    ProgresoEstudiante *-- Usuario : "contiene"
+    ProgresoUsuario *-- Usuario : "contiene"
 
 
     ' Relaciones de Dependencia
-    Logro <.. ProgresoEstudiante : "cumpleCriterios()"
-    Desafio <. ProgresoEstudiante : "completarDesafio()"
-    Ranking <-- ProgresoEstudiante : "actualizarRanking()"
+    Logro <.. ProgresoUsuario
+    Desafio <. ProgresoUsuario : "completarDesafio()"
+    Ranking --> ProgresoUsuario : "actualizarRanking()"
 
 }
 
