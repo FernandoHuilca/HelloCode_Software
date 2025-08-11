@@ -12,7 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+
 import GestionAprendizaje_Modulo.Logica.ConfiguracionUsuarioService;
+
+import Gamificacion_Modulo.utils.GestorGamificacion;
+import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
+
 import Modulo_Usuario.Clases.Roles;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
@@ -160,7 +165,7 @@ public class RegisterController {
             }
             
             mostrarMensaje("Usuario registrado exitosamente", false);
-            Gamificacion_Modulo.clases.Main.crearProgresoEstudiante();
+            GestorGamificacion.crearProgresoEstudiante();
             limpiarCampos();
 
             // Esperar un momento y volver al login
