@@ -12,3 +12,4 @@ mikaela;Python;Básico;false
 koko;Python;Básico;false
 kevin;Python,Java;Básico,Básico;false
 Lesly;Python,Java;Básico,Básico;false
+prueba;Java;Básico;false

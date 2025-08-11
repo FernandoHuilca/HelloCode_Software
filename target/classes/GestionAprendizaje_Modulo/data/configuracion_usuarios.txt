@@ -6,7 +6,7 @@
 esteban;Java;Básico;false
 tarek;Java;Básico;false
 GOKU;Java;Básico;false
-lokillo;Java;Básico;false
+lokillo;Python;Básico;false
 fransisco;Python,Java;Básico,Básico;false
 mikaela;Python;Básico;false
 koko;Python;Básico;false
