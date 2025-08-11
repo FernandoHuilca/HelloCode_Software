@@ -127,7 +127,7 @@ public class SeleccionMultipleLenguajesController {
         btnVolver.setOnAction(event -> {
             try {
                 // Cargar el archivo FXML de la vista HomeUsuario (siempre volver al home)
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/homeUsuario.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/Ruta.fxml"));
                 AnchorPane homePane = loader.load(); // Cargar la vista de home
 
                 // Obtener el stage actual y cambiar la escena
