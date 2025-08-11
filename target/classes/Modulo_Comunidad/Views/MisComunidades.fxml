@@ -9,7 +9,7 @@
 
 <?import javafx.scene.layout.VBox?>
 <AnchorPane prefHeight="640.0" prefWidth="360.0"
-            style="-fx-background-color: radial-gradient(center 50% 50%, radius 80%, #d5a8ff 0%, #a372ff 50%, #7f5bbd 100%);
+            style="-fx-background-color: radial-gradient(center 50% 50%, radius 80%, #DCD6F7 0%, #424874 50%, #424874 100%);
                    -fx-font-family: 'Arial';
                    -fx-font-size: 12px;
                    -fx-padding: 8 16 8 16;"
@@ -38,13 +38,13 @@
                       prefHeight="160.0" prefWidth="300.0"
                       wrapText="true"
                       style="-fx-background-color: #f3e5f5;
-                         -fx-text-fill: #4a0072;
+                         -fx-text-fill: #424874;
                          -fx-font-size: 13px;
                          -fx-font-family: 'Segoe UI', 'Arial';
                          -fx-background-radius: 15;
                          -fx-border-radius: 15;
                          -fx-border-width: 1.5;
-                         -fx-border-color: #ce93d8;
+                         -fx-border-color: #DCD6F7;
                          -fx-padding: 8;
                          -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.3, 0, 2);" />
         </HBox>
@@ -58,13 +58,13 @@
                     onAction="#listarUsuarios"
                     text="Comunidades"
                     prefHeight="35.0" prefWidth="160.0"
-                    style="-fx-background-color: linear-gradient(to bottom, #d16a8a, #6e18a3);
+                    style="-fx-background-color: linear-gradient(to bottom, #424874, #424874);
                    -fx-text-fill: white;
                    -fx-font-size: 14px;
                    -fx-font-weight: bold;
                    -fx-background-radius: 20;
                    -fx-border-radius: 20;
-                   -fx-border-color: #9d5d9b;
+                   -fx-border-color: #DCD6F7;
                    -fx-border-width: 1.5;
                    -fx-cursor: hand;
                    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);">
@@ -77,13 +77,13 @@
                       prefHeight="140.0" prefWidth="300.0"
                       wrapText="true"
                       style="-fx-background-color: #f3e5f5;
-                         -fx-text-fill: #4a0072;
+                         -fx-text-fill: #424874;
                          -fx-font-size: 13px;
                          -fx-font-family: 'Segoe UI', 'Arial';
                          -fx-background-radius: 15;
                          -fx-border-radius: 15;
                          -fx-border-width: 1.5;
-                         -fx-border-color: #ce93d8;
+                         -fx-border-color: #424874;
                          -fx-padding: 8;
                          -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.3, 0, 2);" />
         </HBox>
@@ -106,9 +106,9 @@
                        prefWidth="200.0"
                        promptText="Buscar por índice..."
                        style="-fx-background-color: #f3e5f5;
-                          -fx-text-fill: #4a148c;
+                          -fx-text-fill: #424874;
                           -fx-font-size: 13px;
-                          -fx-border-color: #ba68c8;
+                          -fx-border-color: #424874;
                           -fx-border-radius: 10;
                           -fx-background-radius: 10;
                           -fx-padding: 4 8 4 8;" />
@@ -120,13 +120,13 @@
                     onAction="#conectarUsuario"
                     text="Unirse"
                     prefHeight="35.0" prefWidth="150.0"
-                    style="-fx-background-color: linear-gradient(to bottom, #d16a8a, #6e18a3);
+                    style="-fx-background-color: linear-gradient(to bottom, #424874, #424874);
                    -fx-text-fill: white;
                    -fx-font-size: 14px;
                    -fx-font-weight: bold;
                    -fx-background-radius: 20;
                    -fx-border-radius: 20;
-                   -fx-border-color: #9d5d9b;
+                   -fx-border-color: #424874;
                    -fx-border-width: 1.5;
                    -fx-cursor: hand;
                    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);" />
@@ -135,13 +135,13 @@
                     onAction="#desconectarUsuario"
                     text="Abandonar"
                     prefHeight="35.0" prefWidth="150.0"
-                    style="-fx-background-color: linear-gradient(to bottom, #d16a8a, #6e18a3);
+                    style="-fx-background-color: linear-gradient(to bottom, #424874, #424874);
                    -fx-text-fill: white;
                    -fx-font-size: 14px;
                    -fx-font-weight: bold;
                    -fx-background-radius: 20;
                    -fx-border-radius: 20;
-                   -fx-border-color: #9d5d9b;
+                   -fx-border-color: #424874;
                    -fx-border-width: 1.5;
                    -fx-cursor: hand;
                    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);"/>
@@ -153,13 +153,13 @@
                     onAction="#volver"
                     text="Volver"
                     prefWidth="110.0"
-                    style="-fx-background-color: linear-gradient(to bottom, #d16a8a, #6e18a3);
+                    style="-fx-background-color: linear-gradient(to bottom, #424874, #424874);
                    -fx-text-fill: white;
                    -fx-font-size: 14px;
                    -fx-font-weight: bold;
                    -fx-background-radius: 20;
                    -fx-border-radius: 22;
-                   -fx-border-color: #9d5d9b;
+                   -fx-border-color: #424874;
                    -fx-border-width: 1.5;
                    -fx-cursor: hand;
                    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);" />

@@ -5,6 +5,7 @@ import java.util.List;
 
 import Conexion.MetodosFrecuentes;
 import Conexion.SesionManager;
+import GestionAprendizaje_Modulo.Logica.ConfiguracionUsuarioService;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

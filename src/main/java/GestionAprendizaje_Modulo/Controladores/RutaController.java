@@ -350,9 +350,17 @@
 
 package GestionAprendizaje_Modulo.Controladores;
 
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import Conexion.MetodosFrecuentes;
 import Conexion.SesionManager;
 import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
+import GestionAprendizaje_Modulo.Logica.ConfiguracionUsuarioService;
 import GestionAprendizaje_Modulo.Logica.NodoRuta;
 import GestionAprendizaje_Modulo.Logica.Ruta;
 import GestionAprendizaje_Modulo.Modelo.RecursoAprendizaje;
@@ -371,13 +379,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * =================================================================================

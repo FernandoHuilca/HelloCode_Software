@@ -1,4 +1,4 @@
-package GestionAprendizaje_Modulo.Controladores;
+package GestionAprendizaje_Modulo.Logica;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

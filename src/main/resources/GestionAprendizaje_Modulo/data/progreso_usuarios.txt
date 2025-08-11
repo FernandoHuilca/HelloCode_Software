@@ -1,9 +1,0 @@
-fransisco;ruta-python-nodo-1
-kevin;ruta-python-nodo-1,ruta-python-nodo-4
-GOKU;ruta-java-nodo-1
-esteban;ruta-c-nodo-1,ruta-java-nodo-4,ruta-java-nodo-3,ruta-c-nodo-4,ruta-java-nodo-2,ruta-java-nodo-1
-Lesly;ruta-python-nodo-1,ruta-python-nodo-4
-koko;ruta-python-nodo-1,ruta-python-nodo-4
-tarek;ruta-java-nodo-4,ruta-java-nodo-3,ruta-java-nodo-2,ruta-java-nodo-1
-mikaela;ruta-java-nodo-4,ruta-java-nodo-3,ruta-java-nodo-2,ruta-java-nodo-1
-lokillo;ruta-java-nodo-2,ruta-java-nodo-1

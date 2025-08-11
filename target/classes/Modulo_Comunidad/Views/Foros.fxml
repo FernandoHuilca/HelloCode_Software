@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="360.0" style="-fx-background-color: #DCD6F7;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Comunidad_Modulo.Controladores_GUI.GestionForo_Controller">
+<AnchorPane prefHeight="640.0" prefWidth="360.0" style="-fx-background-color: #DCD6F7;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Comunidad_Modulo.Controladores_GUI.GestionForo_Controller">
    <children>
-      <StackPane prefHeight="720.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane prefHeight="640.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
          <!-- Capa 1: Contenido principal -->
          <VBox fx:id="vboxPrincipal" alignment="TOP_CENTER" spacing="8.0" StackPane.alignment="TOP_CENTER">
