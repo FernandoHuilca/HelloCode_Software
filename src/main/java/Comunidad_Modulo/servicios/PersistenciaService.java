@@ -598,6 +598,10 @@ public class PersistenciaService {
      * Formato: nombreComunidad;tituloGrupo;idSolucion;titulo;contenido;autor;fechaCreacion;tipoSolucion;votosUsuarios
      */
     public static String guardarSolucionCompartida(String nombreComunidad, String tituloGrupo, String titulo, String contenido, String autor, String tipoSolucion, Map<String, Integer> votosUsuarios) {
+        return guardarSolucionCompartida(nombreComunidad, tituloGrupo, titulo, contenido, autor, tipoSolucion, votosUsuarios, null);
+    }
+
+    public static String guardarSolucionCompartida(String nombreComunidad, String tituloGrupo, String titulo, String contenido, String autor, String tipoSolucion, Map<String, Integer> votosUsuarios, String archivo) {
         String idSolucion = generarIdUnico("SOL"); // Generar ID aquí
         System.out.println("📝 Guardando solución compartida: " + titulo + " (ID: " + idSolucion + ")");
 
@@ -607,7 +611,9 @@ public class PersistenciaService {
                     .map(entry -> entry.getKey() + ":" + entry.getValue())
                     .collect(Collectors.joining(","));
 
-            String linea = String.join(";", nombreComunidad, tituloGrupo, idSolucion, titulo, contenido, autor, fechaCreacion, tipoSolucion, votosStr);
+            // Incluir archivo en el formato: nombreComunidad;tituloGrupo;idSolucion;titulo;contenido;autor;fechaCreacion;tipoSolucion;votosStr;archivo
+            String archivoStr = (archivo != null) ? archivo : "";
+            String linea = String.join(";", nombreComunidad, tituloGrupo, idSolucion, titulo, contenido, autor, fechaCreacion, tipoSolucion, votosStr, archivoStr);
             writer.write(linea);
             writer.newLine();
             System.out.println("✅ Solución guardada exitosamente con ID: " + idSolucion);
@@ -640,7 +646,8 @@ public class PersistenciaService {
                     solucion.getAutor().getUsername(),
                     solucion.getFechaPublicacion().format(FORMATO_FECHA),
                     solucion.getTipoSolucion().getDescripcion(),
-                    votosStr);
+                    votosStr,
+                    (solucion.getArchivo() != null) ? solucion.getArchivo() : "");
 
             for (String linea : lineas) {
                 String[] datos = linea.split(";");
@@ -1265,6 +1272,7 @@ public class PersistenciaService {
                     String fechaCreacionStr = datos[6];
                     String tipoSolucionStr = datos[7];
                     String votosUsuariosStr = (datos.length > 8) ? datos[8] : ""; // Leer votos si existen, sino cadena vacía
+                    String archivo = (datos.length > 9) ? datos[9] : null; // Leer archivo si existe
 
                     if (comunidad.equals(nombreComunidad)) {
                         // Buscar el grupo de compartir correspondiente
@@ -1294,7 +1302,7 @@ public class PersistenciaService {
                                         }
 
                                         // Crear la solución usando el constructor de carga
-                                        Solucion solucion = new Solucion(idSolucion, titulo, contenido, autor, tipo, null, fecha, votosUsuarios, null);
+                                        Solucion solucion = new Solucion(idSolucion, titulo, contenido, autor, tipo, archivo, fecha, votosUsuarios, null);
 
                                         // Acceder directamente a la lista privada de soluciones usando reflexión
                                         try {
