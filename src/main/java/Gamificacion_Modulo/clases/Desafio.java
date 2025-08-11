@@ -58,6 +58,11 @@ public abstract class Desafio {
         desbloquearLogro(estudiante);
     }
 
+
+    public void asignarAvance(Integer cantidad) {
+        this.leccionesCompletadas = cantidad;
+    }
+
     public void actualizarAvance(Integer cantidad) {
         this.leccionesCompletadas += cantidad;
     }

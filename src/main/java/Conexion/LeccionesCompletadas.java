@@ -6,11 +6,13 @@ import Modulo_Usuario.Clases.Usuario;
 
 public class LeccionesCompletadas {
     public static void set(int cantidad){
+        System.out.println("Cantidad Lecciones Completadas Desde Conexion: "+cantidad);
         Ranking ran = Ranking.getInstance();
         String usr = SesionManager.getInstancia().getUsernameActual();
         for(ProgresoEstudiante progreso: ran.obtenerRankingGeneral()){
            if (compare(progreso.getUsuario(), usr)){
-               progreso.getDesafiosActivos().getFirst().actualizarAvance(cantidad);
+               progreso.getDesafiosActivos().getFirst().asignarAvance(cantidad);
+               System.out.println(progreso.getDesafiosActivos().getFirst().estaCompletado());
            }
         }
     }
