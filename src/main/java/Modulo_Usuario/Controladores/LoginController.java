@@ -150,7 +150,7 @@ public class LoginController {
     public void irARegistro(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Modulo_Usuario/views/register.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
+            Scene scene = new Scene(fxmlLoader.load(), 360, 640);
 
             Stage stage = new Stage();
             stage.setTitle("Hello Code Software - Registro de Usuario");

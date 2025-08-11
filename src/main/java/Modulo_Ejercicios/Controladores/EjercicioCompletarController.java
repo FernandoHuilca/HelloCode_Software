@@ -20,8 +20,9 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 
-//borrar luego
-import Modulo_Ejercicios.otrosModulos.Usuario; // Importar Usuario para manejar vidas
+// Usar la clase Usuario principal del sistema con persistencia de datos
+import Modulo_Usuario.Clases.Usuario;
+import Conexion.SesionManager;
 
 public class EjercicioCompletarController implements Initializable {
 
@@ -203,13 +204,17 @@ public class EjercicioCompletarController implements Initializable {
                 if (onResultado != null) {
                     onResultado.accept(resultado);
                 } else {
-                    // Fallback por si no se inyecta el callback
-                    //Usuario.restarVida();
+                    // Fallback por si no se inyecta el callback - usar el usuario actual
+                    Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+                    if (usuarioActual != null) {
+                        usuarioActual.quitarVida();
+                    }
                 }
 
                 actualizarVidasUI();
 
-                if (Usuario.getVidas() > 0) {
+                Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+                if (usuarioActual != null && usuarioActual.getVidas() > 0) {
                     mostrarFeedbackIncorrecto(ejercicioIndividual);
                 } else {
                     mostrarGameOver();
@@ -232,7 +237,14 @@ public class EjercicioCompletarController implements Initializable {
      */
     private void actualizarVidasUI() {
         if (TexVida != null) {
-            TexVida.setText(String.valueOf(Usuario.getVidas()));
+            Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+            if (usuarioActual != null) {
+                // Recargar datos del archivo para asegurar sincronización
+                usuarioActual.recargarDatosDesdeArchivo();
+                TexVida.setText(String.valueOf(usuarioActual.getVidas()));
+            } else {
+                TexVida.setText("3"); // Valor por defecto
+            }
         }
     }
 

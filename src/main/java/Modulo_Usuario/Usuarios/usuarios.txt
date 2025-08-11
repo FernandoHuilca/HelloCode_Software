@@ -10,7 +10,7 @@ JuanMateo;123456;Juan Mateo;juan.quisilema@epn.edu.ec;0;3;USUARIO
 Evelin;123456;Evelin Rocha;evelinrocha@epn.edu;0;3;USUARIO
 Jose;1234567;Jose;joserocapod0842@gmail.com;3;3;USUARIO
 esteban;esteban;esteban;esteban@god.ec;1000;3;USUARIO
-tarek;tarek;tarek;tarek@god.com;0;3;USUARIO
+tarek;tarek;tarek;tarek@god.com;0;0;USUARIO
 zack;123456;Isaac;isaacmh@gmail.com;0;3;USUARIO
 isaac;123456;isaac;isaacm1@gmail.com;0;3;USUARIO
 Fernando;fernando;Fernando;fernando.huilca@epn.edu.ec;0;3;USUARIO
@@ -22,3 +22,9 @@ JONJON;JONJON;JONJON;JON@JONJON.com;0;3;USUARIO
 POLLO;POLLO123;POLLO;POLLO@POLLO.com;0;3;USUARIO
 COITO;COITO123;COITO;COITO@COITO.COM;0;3;USUARIO
 GOKU;COKU123;GOKU;GOKU@ZAMBRANO.COM;0;3;USUARIO
+lokillo;lokillo;lokillo;lokillo@gmail.com;0;0;USUARIO
+fransisco;fransisco;fransisco;fransisco@epn.edu.ec;0;0;USUARIO
+mikaela;mikaela;mikaela;mikaela@gmail.com;0;0;USUARIO
+koko;koko1234;koko;koko@gmail.com;0;0;USUARIO
+kevin;kevin123;kevin;kevin@gmail.com;0;0;USUARIO
+Lesly;lesly123;Lesly;Lesly@gmail.com;0;0;USUARIO
