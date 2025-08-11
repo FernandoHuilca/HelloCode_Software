@@ -404,6 +404,8 @@ public class RutaController {
     private void initialize() {
         System.out.println("[RutaController] Inicializando vista de ruta...");
         AprendizajeManager.getInstancia().construirDatosDePrueba();
+        // Asegurar que los recursos estén cargados desde el archivo TXT
+        RecursoRepository.getInstancia().cargarRecursosDesdeTXT();
         cargarDatosIniciales();
         construirContenedoresVisuales();
         configurarListenersBotones();
@@ -612,8 +614,9 @@ public class RutaController {
 
     private void abrirVentanaDeRecursos(String temaNombre, TemaLeccion temaEnum) {
         try {
+            // Corregido: usar el LENGUAJE (nombre de la ruta) y no el NIVEL para buscar recursos
             List<RecursoAprendizaje> recursos = RecursoRepository.getInstancia().buscarRecursosPorLenguajeYTema(
-                    rutaActual.getNivel(), temaEnum.name());
+                    rutaActual.getNombre(), temaEnum.name());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAprendizaje_Modulo/Vistas/RecursosTema.fxml"));
             Parent root = loader.load();
             RecursosTemaController controller = loader.getController();
