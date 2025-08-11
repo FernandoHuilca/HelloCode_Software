@@ -29,9 +29,6 @@ public class AdminMainController {
     private Button btnCrearLogro;
 
     @FXML
-    private Button btnAsignarDesafio;
-
-    @FXML
     private Button btnSimularActividad;
 
     @FXML
@@ -71,11 +68,6 @@ public class AdminMainController {
         abrirVentana("/Gamificacion_Modulo/fxml/admin/CrearLogro.fxml", "Crear Logro Personalizado");
     }
 
-    @FXML
-    private void onAsignarDesafioClicked(ActionEvent event) {
-        System.out.println(">>> Abriendo asignador de desafío");
-        abrirVentana("/Gamificacion_Modulo/fxml/admin/AsignarDesafio.fxml", "Asignar Desafío a Usuario");
-    }
 
     @FXML
     private void onSimularActividadClicked(ActionEvent event) {
@@ -120,13 +112,7 @@ public class AdminMainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
 
-            // Refrescar datos si es la ventana de asignar desafío
-            if (fxmlFile.contains("AsignarDesafio")) {
-                Object controller = loader.getController();
-                if (controller instanceof AsignarDesafioController) {
-                    ((AsignarDesafioController) controller).refrescarDatos();
-                }
-            }
+            // (Eliminado soporte para asignar desafíos manualmente)
 
             Stage stage = new Stage();
             stage.setTitle(titulo);

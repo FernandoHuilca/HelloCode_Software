@@ -4,8 +4,8 @@ import Gamificacion_Modulo.clases.Desafio;
 import Gamificacion_Modulo.clases.DesafioMensual;
 import Gamificacion_Modulo.clases.DesafioSemanal;
 import Gamificacion_Modulo.clases.Logro;
-import Gamificacion_Modulo.utils.GestorGamificacion;
 import Gamificacion_Modulo.clases.ProgresoEstudiante;
+import Gamificacion_Modulo.utils.GestorGamificacion;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -215,8 +215,7 @@ public class PerfilUsuarioController {
                     mensaje.append("   Aún no has obtenido ningún logro.\n\n");
                 } else {
                     for (Logro logro : progresoLogueado.getLogros()) {
-                        mensaje.append("   ✅ ").append(logro.getNombre())
-                                .append(" (+").append(logro.getPuntos()).append(" pts)\n");
+                        mensaje.append("   ✅ ").append(logro.getNombre()).append("\n");
                         mensaje.append("      ").append(logro.getDescripcion()).append("\n\n");
                     }
                 }
@@ -227,13 +226,11 @@ public class PerfilUsuarioController {
                 for (Logro logro : Logro.getLogrosDisponibles()) {
                     boolean obtenido = progresoLogueado.getLogros().contains(logro);
                     String estado = obtenido ? "✅" : "❌";
-                    mensaje.append("   ").append(estado).append(" ").append(logro.getNombre())
-                            .append(" (+").append(logro.getPuntos()).append(" pts)\n");
+                    mensaje.append("   ").append(estado).append(" ").append(logro.getNombre()).append("\n");
                     mensaje.append("      ").append(logro.getDescripcion()).append("\n\n");
                 }
 
-                int puntosLogros = progresoLogueado.getLogros().stream().mapToInt(Logro::getPuntos).sum();
-                mensaje.append("💰 PUNTOS TOTALES POR LOGROS: ").append(puntosLogros);
+                mensaje.append("💰 PUNTOS DE DESAFÍOS: ").append(progresoLogueado.getPuntosTotal());
             } else {
                 mensaje.append("No hay datos de progreso disponibles para el usuario logueado.");
             }

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import Modulo_Usuario.Clases.Usuario;
-import eu.hansolo.tilesfx.tools.Rank;
 
 public class ProgresoEstudiante {
     private Usuario usuario;
@@ -65,8 +64,7 @@ public class ProgresoEstudiante {
     public void agregarLogro(Logro logro) {
         if (!logrosDesbloqueados.contains(logro)) {
             logrosDesbloqueados.add(logro);
-            puntosTotal += logro.getPuntos();
-            System.out.println("*** Logro desbloqueado: " + logro.getNombre() + "! (+" + logro.getPuntos() + " puntos)");
+                System.out.println("*** Logro desbloqueado: " + logro.getNombre());
         }
     }
 
