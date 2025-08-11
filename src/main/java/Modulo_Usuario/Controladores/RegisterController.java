@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 import GestionAprendizaje_Modulo.Logica.ConfiguracionUsuarioService;
 
 import Gamificacion_Modulo.utils.GestorGamificacion;
-import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
+//import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
 
 import Modulo_Usuario.Clases.Roles;
 import Modulo_Usuario.Clases.Usuario;
