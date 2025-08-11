@@ -1,24 +1,20 @@
 package Nuevo_Modulo_Leccion.controllers;
 
 import Conexion.MetodosFrecuentes;
+import Conexion.SesionManager;
 import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
-import Modulo_Ejercicios.logic.EjercicioBase;
-import Modulo_Ejercicios.logic.EjercicioCompletarCodigo;
-import Modulo_Ejercicios.logic.EjercicioSeleccion;
-import Modulo_Ejercicios.logic.ResultadoDeEvaluacion;
-import Modulo_Ejercicios.logic.EjercicioEmparejar;
+import Modulo_Ejercicios.logic.*;
 import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
-
-// Usar la clase Usuario principal del sistema con persistencia de datos
-import Modulo_Usuario.Clases.Usuario;
-import Conexion.SesionManager;
 
 public class LeccionUIController {
 
@@ -26,6 +22,8 @@ public class LeccionUIController {
     private static Leccion leccionActual;
     private static int indiceEjercicioActual = 0;
     private static String rutaFXMLVentanaFinal; // nueva variable
+    // Registro de ventanas de ejercicios abiertas para poder cerrarlas al final
+    private static final List<Stage> ventanasEjercicio = new ArrayList<>();
     /**
      * Método principal para mostrar una lección con ejercicios mixtos
      * Detecta automáticamente los tipos de ejercicios y carga la vista apropiada
@@ -41,20 +39,13 @@ public class LeccionUIController {
             rutaFXMLVentanaFinal = rutaFXML;
 
             // Verifica si el usuario tiene al menos una vida
-            Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
-            if (usuarioActual != null) {
-                // Sincronizar antes de verificar las vidas para obtener datos actualizados
-                usuarioActual.sincronizarVidasDesdeArchivo();
-                System.out.println("🔍 Verificando vidas para lección - Usuario: " + usuarioActual.getUsername() + ", Vidas: " + usuarioActual.getVidas());
-                
-                if (usuarioActual.getVidas() > 0) {
-                    ventanaActual.close();
-                    mostrarSiguienteEjercicio();
-                } else {
-                    MetodosFrecuentes.mostrarAlerta("No tienes suficientes vidas", "Debes tener al menos una vida para acceder a los ejercicios. Vidas actuales: " + usuarioActual.getVidas());
-                }
+            if (SesionManager.getInstancia().getUsuarioAutenticado().getVidas() > 0) {
+                ventanaActual.close();
+                mostrarSiguienteEjercicio();
             } else {
-                MetodosFrecuentes.mostrarAlerta("Error de sesión", "No hay usuario autenticado.");
+                MetodosFrecuentes.mostrarAlerta("No tienes suficientes vidas", "Debes tener más de una vida para acceder a los ejercicios.");
+
+
             }
 
         } catch (Exception e) {
@@ -157,17 +148,16 @@ public class LeccionUIController {
                     if (res == null) return;
                     boolean fallo = res.getPorcentajeDeAcerto() < 100.0;
                     if (fallo) {
-                        Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
-                        if (usuarioActual != null) {
-                            usuarioActual.quitarVida();
-                            usuarioActual.sincronizarVidasDesdeArchivo();
-                            System.out.println("💔 Vida perdida en lección - Vidas restantes: " + usuarioActual.getVidas());
-                        }
+                        SesionManager.getInstancia().getUsuarioAutenticado().quitarVida();
                     }
                 };
                 metodo.invoke(ctrl, onResultado);
             } catch (NoSuchMethodException nsme) {
             }
+
+            // Registrar la ventana y limpiar cuando se cierre
+            ventanasEjercicio.add(stage);
+            stage.setOnHidden(e -> ventanasEjercicio.remove(stage));
 
             stage.show();
         } catch (Exception e) {
@@ -179,6 +169,9 @@ public class LeccionUIController {
 
     private static void mostrarLeccionCompletada() {
         try {
+            // Cerrar cualquier ventana de ejercicio que quede abierta
+            cerrarVentanasEjercicioAbiertas();
+
             FXMLLoader loader = new FXMLLoader(LeccionUIController.class.getResource("/Nuevo_Modulo_Leccion/views/ResumenLeccionCompletada.fxml"));
             Parent root = loader.load();
 
@@ -190,7 +183,8 @@ public class LeccionUIController {
             resumenStage.showAndWait();
 
             if (rutaFXMLVentanaFinal != null && !rutaFXMLVentanaFinal.isEmpty()) {
-                MetodosFrecuentes.mostrarVentana(rutaFXMLVentanaFinal, "Menú de Lecciones");
+                String ruta = rutaFXMLVentanaFinal;
+                MetodosFrecuentes.mostrarVentana(ruta, "Menú de Lecciones");
             }
 
         } catch (Exception e) {
@@ -199,6 +193,34 @@ public class LeccionUIController {
         }
     }
 
+    /**
+     * Reemplaza la escena del ejercicio por la vista "se acabaron vidas".
+     * La navegación a la ruta final se realiza desde el botón OK de esa vista.
+     */
+    public static void mostrarSeAcabaronVidasYVolver(Stage currentStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(LeccionUIController.class.getResource("/Nuevo_Modulo_Leccion/views/seAcabaronVidasLeccion.fxml"));
+            Parent root = loader.load();
+            if (currentStage != null) {
+                currentStage.setScene(new Scene(root));
+                currentStage.setTitle("Sin vidas");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MetodosFrecuentes.mostrarAlerta("Error", "No se pudo abrir la pantalla de fin de vidas: " + e.getMessage());
+        }
+    }
 
+    private static void cerrarVentanasEjercicioAbiertas() {
+        // Cierra todas las ventanas de ejercicios aún abiertas para evitar que queden detrás del resumen
+        for (Stage s : new ArrayList<>(ventanasEjercicio)) {
+            try {
+                if (s != null && s.isShowing()) {
+                    s.close();
+                }
+            } catch (Exception ignored) { }
+        }
+        ventanasEjercicio.clear();
+    }
 
 }
