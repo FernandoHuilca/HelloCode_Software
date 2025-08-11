@@ -118,7 +118,7 @@ public class HomeController {
             SesionManager.getInstancia().cerrarSesion();
             // Volver a la pantalla de login
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(rutaFXML));
-            Scene scene = new Scene(fxmlLoader.load(), 360, 720);
+            Scene scene = new Scene(fxmlLoader.load(), 360, 640);
 
             Stage stage = new Stage();
             stage.setTitle(titulo);

@@ -1,4 +1,4 @@
-package Conexion;
+package MetodosGlobales;
 
 import Modulo_Usuario.Clases.Usuario;
 import Modulo_Usuario.Clases.UsuarioComunidad;
@@ -37,7 +37,6 @@ public class SesionManager {
         // Convertir Usuario a UsuarioComunidad para uso en el módulo de comunidad
         this.usuarioComunidad = convertirAUsuarioComunidad(usuario);
         System.out.println("Sesión iniciada para: " + usuario.getUsername());
-        System.out.println("📊 Datos del usuario en sesión: XP=" + usuario.getXp() + ", Vidas=" + usuario.getVidas() + ", Nombre=" + usuario.getNombre());
     }
     
     /**
