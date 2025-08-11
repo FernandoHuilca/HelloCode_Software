@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 import java.util.function.Consumer;
 
 
-import Modulo_Ejercicios.otrosModulos.Usuario; //import para mostrar los ejercicios solo si el usuario tiene mas de una vida
+// Usar la clase Usuario principal del sistema con persistencia de datos
+import Modulo_Usuario.Clases.Usuario;
+import Conexion.SesionManager;
 
 public class LeccionUIController {
 
@@ -39,13 +41,20 @@ public class LeccionUIController {
             rutaFXMLVentanaFinal = rutaFXML;
 
             // Verifica si el usuario tiene al menos una vida
-            if (Usuario.getVidas() > 0) {
-                ventanaActual.close();
-                mostrarSiguienteEjercicio();
+            Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+            if (usuarioActual != null) {
+                // Sincronizar antes de verificar las vidas para obtener datos actualizados
+                usuarioActual.sincronizarVidasDesdeArchivo();
+                System.out.println("🔍 Verificando vidas para lección - Usuario: " + usuarioActual.getUsername() + ", Vidas: " + usuarioActual.getVidas());
+                
+                if (usuarioActual.getVidas() > 0) {
+                    ventanaActual.close();
+                    mostrarSiguienteEjercicio();
+                } else {
+                    MetodosFrecuentes.mostrarAlerta("No tienes suficientes vidas", "Debes tener al menos una vida para acceder a los ejercicios. Vidas actuales: " + usuarioActual.getVidas());
+                }
             } else {
-                MetodosFrecuentes.mostrarAlerta("No tienes suficientes vidas", "Debes tener más de una vida para acceder a los ejercicios.");
-
-
+                MetodosFrecuentes.mostrarAlerta("Error de sesión", "No hay usuario autenticado.");
             }
 
         } catch (Exception e) {
@@ -148,7 +157,12 @@ public class LeccionUIController {
                     if (res == null) return;
                     boolean fallo = res.getPorcentajeDeAcerto() < 100.0;
                     if (fallo) {
-                        Usuario.restarVida();
+                        Usuario usuarioActual = SesionManager.getInstancia().getUsuarioAutenticado();
+                        if (usuarioActual != null) {
+                            usuarioActual.quitarVida();
+                            usuarioActual.sincronizarVidasDesdeArchivo();
+                            System.out.println("💔 Vida perdida en lección - Vidas restantes: " + usuarioActual.getVidas());
+                        }
                     }
                 };
                 metodo.invoke(ctrl, onResultado);

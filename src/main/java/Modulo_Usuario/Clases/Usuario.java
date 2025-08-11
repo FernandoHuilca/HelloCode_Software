@@ -1,5 +1,10 @@
 package Modulo_Usuario.Clases;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario extends UsuarioBase {
     private String nombre;
     private String email;
@@ -8,6 +13,8 @@ public class Usuario extends UsuarioBase {
     private Roles rol;
     private Object cursoActual; // Para almacenar el curso actual (usar Object para evitar dependencias)
 
+    // Ruta del archivo de usuarios
+    private static final String ARCHIVO_USUARIOS = "src/main/java/Modulo_Usuario/Usuarios/usuarios.txt";
 
 
     // Constructor por defecto
@@ -69,11 +76,34 @@ public class Usuario extends UsuarioBase {
     }
 
     public int getVidas() {
+        // Sincronizar ocasionalmente, no en cada llamada para evitar problemas de rendimiento
+        System.out.println("🔍 getVidas() llamado - Usuario: " + this.getUsername() + ", Vidas en memoria: " + vidas);
+        return vidas;
+    }
+
+    /**
+     * Obtiene las vidas sincronizadas desde el archivo
+     * Usar cuando necesites los datos más actualizados
+     */
+    public int getVidasSincronizadas() {
+        System.out.println("🔄 getVidasSincronizadas() llamado - Usuario: " + this.getUsername());
+        sincronizarVidasDesdeArchivo();
+        System.out.println("🔄 Después de sincronizar - Vidas: " + vidas);
         return vidas;
     }
 
     public void setVidas(int vidas) {
         this.vidas = Math.max(0, vidas); // No permitir vidas negativas
+        // NO guardar cambios automáticamente para evitar bucles infinitos
+    }
+
+    /**
+     * Establece las vidas Y guarda los cambios en archivo
+     * Usar solo cuando se quiera persistir el cambio
+     */
+    public void setVidasYGuardar(int vidas) {
+        setVidas(vidas);
+        guardarCambiosEnArchivo();
     }
 
     public Roles getRol() {
@@ -92,16 +122,56 @@ public class Usuario extends UsuarioBase {
         }
     }
 
-    // ===== MÉTODOS PÚBLICOS PARA MÓDULO DE LECCIONES =====
 
-    /**
-     * Agrega XP al usuario (por respuesta correcta)
-     * @param puntos Puntos a agregar
-     */
+    private void guardarCambiosEnArchivo() {
+        try {
+            File file = new File(ARCHIVO_USUARIOS);
+            if (!file.exists()) {
+                System.err.println("⚠️ Archivo usuarios.txt no encontrado, no se pueden guardar cambios");
+                return;
+            }
+
+            // Leer todos los usuarios del archivo
+            List<Usuario> todosLosUsuarios = new ArrayList<>();
+            try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    linea = linea.trim();
+                    if (!linea.isEmpty()) {
+                        Usuario usuario = Usuario.fromString(linea);
+                        if (usuario != null) {
+                            // Si es el usuario actual, usar la instancia actualizada
+                            if (usuario.getUsername().equals(this.getUsername())) {
+                                todosLosUsuarios.add(this);
+                            } else {
+                                todosLosUsuarios.add(usuario);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Escribir todos los usuarios de vuelta al archivo
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+                for (Usuario usuario : todosLosUsuarios) {
+                    bw.write(usuario.toString() + "\n");
+                }
+            }
+
+            System.out.println("💾 Cambios guardados en archivo para usuario: " + this.getUsername());
+
+        } catch (IOException e) {
+            System.err.println("❌ Error al guardar cambios en archivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
     public void agregarXP(int puntos) {
         if (puntos > 0) {
             setXp(this.xp + puntos);
             System.out.println("✅ +" + puntos + " XP | Total: " + this.xp);
+            guardarCambiosEnArchivo(); // Guardar cambios en archivo
         }
     }
 
@@ -113,59 +183,129 @@ public class Usuario extends UsuarioBase {
         if (puntos > 0) {
             setXp(this.xp - puntos);
             System.out.println("❌ -" + puntos + " XP | Total: " + this.xp);
+            guardarCambiosEnArchivo(); // Guardar cambios en archivo
         }
     }
 
-    /**
-     * Agrega una vida al usuario
-     */
+
     public void agregarVida() {
         this.vidas++;
         System.out.println("💚 +1 Vida | Total: " + this.vidas);
+        guardarCambiosEnArchivo(); // Guardar cambios en archivo
     }
 
-    /**
-     * Quita una vida al usuario
-     * @return true si aún tiene vidas, false si se quedó sin vidas
-     */
+
     public boolean quitarVida() {
         if (this.vidas > 0) {
             this.vidas--;
             System.out.println("💔 -1 Vida | Total: " + this.vidas);
+            guardarCambiosEnArchivo(); // Guardar cambios en archivo
             return this.vidas > 0;
         }
         return false;
     }
 
-    /**
-     * Verifica si el usuario tiene vidas disponibles
-     * @return true si tiene vidas, false si no
-     */
     public boolean tieneVidas() {
+        System.out.println("❓ tieneVidas() llamado - Usuario: " + this.getUsername() + ", Vidas: " + this.vidas + ", Resultado: " + (this.vidas > 0));
         return this.vidas > 0;
     }
 
-    /**
-     * Resetea las vidas del usuario al máximo
-     */
     public void resetearVidas() {
         this.vidas = 3;
         System.out.println("🔄 Vidas reseteadas a " + this.vidas);
+        guardarCambiosEnArchivo(); // Guardar cambios en archivo
     }
 
-    /**
-     * Resetea las vidas del usuario a un número específico
-     * @param vidasNuevas Número de vidas a establecer
-     */
+
     public void resetearVidas(int vidasNuevas) {
         this.vidas = Math.max(0, vidasNuevas);
         System.out.println("🔄 Vidas reseteadas a " + this.vidas);
+        guardarCambiosEnArchivo(); // Guardar cambios en archivo también aquí
     }
 
     /**
-     * Obtiene el nivel del usuario basado en su XP
-     * @return Nivel del usuario (1-10)
+     * Sincroniza las vidas del usuario con el archivo
+     * Útil para actualizar las vidas cuando otro proceso las haya modificado
      */
+    public void sincronizarVidasDesdeArchivo() {
+        try {
+            File file = new File(ARCHIVO_USUARIOS);
+            if (!file.exists()) {
+                System.err.println("⚠️ Archivo usuarios.txt no encontrado para sincronizar vidas");
+                return;
+            }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    linea = linea.trim();
+                    if (!linea.isEmpty()) {
+                        String[] datos = linea.split(";");
+                        // Verificar si es el usuario actual sin crear objeto completo
+                        if (datos.length >= 6 && datos[0].equals(this.getUsername())) {
+                            try {
+                                int vidasArchivo = Integer.parseInt(datos[5]);
+                                if (this.vidas != vidasArchivo) {
+                                    System.out.println("🔄 Sincronizando vidas: " + this.vidas + " → " + vidasArchivo);
+                                    this.vidas = vidasArchivo; // Asignación directa, sin setter
+                                }
+                                return;
+                            } catch (NumberFormatException e) {
+                                // Si hay error parseando, mantener valor actual
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        } catch (IOException e) {
+            System.err.println("❌ Error al sincronizar vidas desde archivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Recarga los datos del usuario actual desde el archivo
+     * Útil para sincronizar cambios realizados por otros procesos
+     */
+    public void recargarDatosDesdeArchivo() {
+        try {
+            File file = new File(ARCHIVO_USUARIOS);
+            if (!file.exists()) {
+                System.err.println("⚠️ Archivo usuarios.txt no encontrado, no se pueden recargar datos");
+                return;
+            }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    linea = linea.trim();
+                    if (!linea.isEmpty()) {
+                        Usuario usuarioTemp = Usuario.fromString(linea);
+                        if (usuarioTemp != null && usuarioTemp.getUsername().equals(this.getUsername())) {
+                            // Actualizar solo los datos que pueden cambiar
+                            this.xp = usuarioTemp.getXp();
+                            this.vidas = usuarioTemp.getVidas();
+                            this.nombre = usuarioTemp.getNombre();
+                            this.email = usuarioTemp.getEmail();
+                            this.rol = usuarioTemp.getRol();
+                            System.out.println("🔄 Datos recargados desde archivo para: " + this.getUsername());
+                            return;
+                        }
+                    }
+                }
+            }
+            
+            System.err.println("⚠️ Usuario no encontrado en archivo: " + this.getUsername());
+            
+        } catch (IOException e) {
+            System.err.println("❌ Error al recargar datos desde archivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
     public int getNivel() {
         if (xp < 100) return 1;
         if (xp < 300) return 2;
@@ -179,44 +319,28 @@ public class Usuario extends UsuarioBase {
         return 10; // Nivel máximo
     }
 
-    /**
-     * Obtiene información del progreso del usuario
-     * @return String con información de XP, nivel y vidas
-     */
+
     public String getProgresoInfo() {
         return String.format("👤 %s | Nivel %d | XP: %d | Vidas: %d",
                 nombre, getNivel(), xp, vidas);
     }
 
-    // ===== MÉTODOS PARA GESTIÓN DE CURSOS =====
 
-    /**
-     * Establece el curso actual del usuario
-     * @param curso El curso a asignar
-     */
     public void setCurso(Object curso) {
         this.cursoActual = curso;
     }
 
-    /**
-     * Obtiene el curso actual del usuario
-     * @return El curso actual o null si no tiene curso asignado
-     */
+
     public Object getCurso() {
         return cursoActual;
     }
 
-    /**
-     * Verifica si el usuario tiene un curso asignado
-     * @return true si tiene curso, false si no
-     */
+
     public boolean tieneCurso() {
         return cursoActual != null;
     }
 
-    /**
-     * Remueve el curso actual del usuario
-     */
+
     public void removerCurso() {
         this.cursoActual = null;
     }
