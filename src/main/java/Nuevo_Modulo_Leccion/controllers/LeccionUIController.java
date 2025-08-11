@@ -24,14 +24,25 @@ public class LeccionUIController {
     private static String rutaFXMLVentanaFinal; // nueva variable
     // Registro de ventanas de ejercicios abiertas para poder cerrarlas al final
     private static final List<Stage> ventanasEjercicio = new ArrayList<>();
+    //Para calcular el tiempo en que se demora hacer una lección:
+    private static long tiempoInicio;
+    private static long tiempoFin;
+    private static long tiempoTranscurridoLeccion;
+    //calcular el porcentaje de acierto en la lección
+    private static double  porcentajeAciertosLeccion;
+
+
+    // Para calcular el porcentaje de aciertos dentro de una lección:
     /**
      * Método principal para mostrar una lección con ejercicios mixtos
      * Detecta automáticamente los tipos de ejercicios y carga la vista apropiada
      */
     public static void mostrarUnaLeccion(Leccion leccionAMostrar, Stage ventanaActual, String rutaFXML) {
-
         try {
-            // Cerrar la ventana actual
+            //Inicial a tomar el tiempo :
+            tiempoInicio = 0; //primero lo regreso a cero
+            tiempoInicio = System.currentTimeMillis(); // tome el tiempo actual
+            porcentajeAciertosLeccion = 0 ;
 
             // Inicializar la secuencia de ejercicios
             leccionActual = leccionAMostrar;
@@ -147,6 +158,8 @@ public class LeccionUIController {
                 Consumer<ResultadoDeEvaluacion> onResultado = (res) -> {
                     if (res == null) return;
                     boolean fallo = res.getPorcentajeDeAcerto() < 100.0;
+                    porcentajeAciertosLeccion += res.getPorcentajeDeAcerto();
+                    System.out.println(" EL POCENTAJE SUMA +=  ES DE : " + porcentajeAciertosLeccion);
                     if (fallo) {
                         SesionManager.getInstancia().getUsuarioAutenticado().quitarVida();
                     }
@@ -169,11 +182,32 @@ public class LeccionUIController {
 
     private static void mostrarLeccionCompletada() {
         try {
+            //Porcentaje de acierto total en lección:
+            System.out.println(" EL PORCENTAJE DE ACIERTOS LA SUMA TOTAL ES : " + porcentajeAciertosLeccion + " EL NUMERO DE JERCICIOS EN LA LECCIONES ES:  " + leccionActual.getNumEjercicios());
+            double porcertajeAciertoTotal = porcentajeAciertosLeccion/ leccionActual.getNumEjercicios();
+            //XP:
+            double xp_ganada = leccionActual.calcularXP();
+            // Dar al usuario actual su xp correspondiente:
+            SesionManager.getInstancia().getUsuarioAutenticado().agregarXP((int) xp_ganada);
+
+            //tiempo final para calcular el transcurrido:
+            tiempoFin = System.currentTimeMillis();
+            tiempoTranscurridoLeccion = tiempoFin - tiempoInicio;
+            //Calculo en minutos y segundos:
+            long segundos = (tiempoTranscurridoLeccion / 1000) % 60;
+            long minutos = (tiempoTranscurridoLeccion / (1000 * 60)) % 60;
             // Cerrar cualquier ventana de ejercicio que quede abierta
             cerrarVentanasEjercicioAbiertas();
 
             FXMLLoader loader = new FXMLLoader(LeccionUIController.class.getResource("/Nuevo_Modulo_Leccion/views/ResumenLeccionCompletada.fxml"));
             Parent root = loader.load();
+
+            //Pasar como parámetros los recursos para que se muestre en el resumen de la leccion, le paso al controlador
+            ResumenLeccionController controller = loader.getController(); // obtengo el controlador
+            //Le paso los datos jeje
+            controller.inicializarDatos(minutos, segundos, xp_ganada, porcertajeAciertoTotal, SesionManager.getInstancia().getNombreUsuarioActual());
+
+
 
             Stage resumenStage = new Stage();
             resumenStage.setTitle("Resumen de la Lección");
@@ -199,8 +233,28 @@ public class LeccionUIController {
      */
     public static void mostrarSeAcabaronVidasYVolver(Stage currentStage) {
         try {
+            //Porcentaje de acierto total en lección:
+            System.out.println(" EL PORCENTAJE DE ACIERTOS LA SUMA TOTAL ES : " + porcentajeAciertosLeccion + " EL NUMERO DE JERCICIOS EN LA LECCIONES ES:  " + leccionActual.getNumEjercicios());
+            double porcertajeAciertoTotal = porcentajeAciertosLeccion/ leccionActual.getNumEjercicios();
+            //tiempo final para calcular el transcurrido:
+            tiempoFin = System.currentTimeMillis();
+            tiempoTranscurridoLeccion = tiempoFin - tiempoInicio;
+            //Calculo en minutos y segundos:
+            long segundos = (tiempoTranscurridoLeccion / 1000) % 60;
+            long minutos = (tiempoTranscurridoLeccion / (1000 * 60)) % 60;
+
+            double xpCasoPerdida = leccionActual.calcularXP_fallida(porcertajeAciertoTotal);
+            //Dar al usuario esa xp:
+            SesionManager.getInstancia().getUsuarioAutenticado().agregarXP((int) xpCasoPerdida);
+
             FXMLLoader loader = new FXMLLoader(LeccionUIController.class.getResource("/Nuevo_Modulo_Leccion/views/seAcabaronVidasLeccion.fxml"));
             Parent root = loader.load();
+            //Pasar como parámetros los recursos para que se muestre en el resumen de la leccion, le paso al controlador
+            seAcabaronVidasLeccionController controller = loader.getController(); // obtengo el controlador
+            //Le paso los datos jeje
+            controller.inicializarDatos(minutos, segundos, xpCasoPerdida,porcertajeAciertoTotal, SesionManager.getInstancia().getNombreUsuarioActual());
+
+
             if (currentStage != null) {
                 currentStage.setScene(new Scene(root));
                 currentStage.setTitle("Sin vidas");
