@@ -1,7 +1,7 @@
 package Comunidad_Modulo.Controladores_GUI;
 
-import Gamificacion_Modulo.clases.Main;
 import Conexion.MetodosFrecuentes;
+import Gamificacion_Modulo.utils.GestorGamificacion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -88,7 +88,7 @@ public class EntradaComunidad_Controller {
     public void irAPerfil(ActionEvent event) {
         try {
             // PASO 1: Inicializar el backend del módulo de gamificación
-            Main.inicializarDesdeModuloExterno();
+            GestorGamificacion.inicializarDesdeModuloExterno();
 
             // PASO 2: Cargar la interfaz gráfica
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Gamificacion_Modulo/fxml/PerfilUsuario.fxml"));
