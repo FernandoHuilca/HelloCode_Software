@@ -13,19 +13,16 @@ import javafx.stage.Stage;
 public class EntradaComunidad_Controller {
 
     @FXML
-    private Button buttonModerador;
+    private Button buttonCrearComunidad;
 
     @FXML
-    private Button buttonGestionarComunidad;
+    private Button buttonMisComunidades;
 
     @FXML
-    private Button buttonGestionarUsuarios;
+    private Button buttonForos;
 
     @FXML
-    private Button buttonGestionarForo;
-
-    @FXML
-    private Button buttonGestionarChatsPrivados;
+    private Button buttonChatsPrivados;
 
     @FXML
     private Button buttonSalirSistema;
@@ -34,50 +31,43 @@ public class EntradaComunidad_Controller {
     private Button buttonVolver;
 
     @FXML
-    private Button btnPerfil2;
+    private Button btnRuta;
 
     @FXML
     private Button btnRanking;
 
     @FXML
-    private Button btnComunidad;
-    @FXML
     private Button btnHomeUsuario;
 
     @FXML
-    private void gestionarComunidad() {
-        MetodosFrecuentes.cambiarVentana((Stage) buttonGestionarComunidad.getScene().getWindow(),
-                "/Modulo_Comunidad/Views/GestionComunidad.fxml", "GESTIONAR COMUNIDAD");
+    private void crearComunidad() {
+        MetodosFrecuentes.cambiarVentana((Stage) buttonCrearComunidad.getScene().getWindow(),
+                "/Modulo_Comunidad/Views/CrearComunidad.fxml", "Crear COMUNIDAD");
     }
 
     @FXML
-    private void gestionarUsuarios() {
-        MetodosFrecuentes.cambiarVentana((Stage) buttonGestionarUsuarios.getScene().getWindow(),
-                "/Modulo_Comunidad/Views/GestionUsuarios.fxml", "GESTIONAR USUARIOS");
+    private void misComunidades() {
+        MetodosFrecuentes.cambiarVentana((Stage) buttonMisComunidades.getScene().getWindow(),
+                "/Modulo_Comunidad/Views/MisComunidades.fxml", "MIS COMUNIDADES");
     }
 
     @FXML
-    private void gestionarForo() {
-        MetodosFrecuentes.cambiarVentana((Stage) buttonGestionarForo.getScene().getWindow(),
-                "/Modulo_Comunidad/Views/GestionForo.fxml", "GESTIONAR FORO");
+    private void Foros() {
+        MetodosFrecuentes.cambiarVentana((Stage) buttonForos.getScene().getWindow(),
+                "/Modulo_Comunidad/Views/Foros.fxml", "FOROS");
     }
 
     @FXML
-    private void gestionarChatsPrivados() {
-        MetodosFrecuentes.cambiarVentana((Stage) buttonGestionarChatsPrivados.getScene().getWindow(),
-                "/Modulo_Comunidad/Views/GestionChatsPrivados.fxml", "GESTIONAR CHATS PRIVADOS");
-    }
-
-    @FXML
-    private void moderadorComunidad() {
-        MetodosFrecuentes.cambiarVentana((Stage) buttonModerador.getScene().getWindow(),
-                "/Modulo_Comunidad/Views/Moderador.fxml", "MODERADOR");
+    private void chatsPrivados() {
+        MetodosFrecuentes.cambiarVentana((Stage) buttonChatsPrivados.getScene().getWindow(),
+                "/Modulo_Comunidad/Views/ChatsPrivados.fxml", "CHATS PRIVADOS");
     }
 
     @FXML
     private void volverAHome() {
         mostrarMensaje("Ruta", "Funcionalidad de la ruta pronto será mostrada");
     }
+
     @FXML
     private void salir() {
         MetodosFrecuentes.cambiarVentana((Stage) buttonSalirSistema.getScene().getWindow(), "/Modulo_Usuario/views/login.fxml", "Login");
@@ -116,10 +106,11 @@ public class EntradaComunidad_Controller {
     }
 
     @FXML
-    public void irAComunidad() {
-        MetodosFrecuentes.cambiarVentana((Stage) btnComunidad.getScene().getWindow(),
-                "/Modulo_Comunidad/Views/Comunidad.fxml", "Ir a Menu Comunidad");
+    public void irARuta() {
+        MetodosFrecuentes.cambiarVentana((Stage) btnRuta.getScene().getWindow(),
+                "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", "Ir a Ruta de Usuario");
     }
+
     @FXML
     void irAHomeUsuario(ActionEvent event){
             MetodosFrecuentes.cambiarVentana((Stage) btnHomeUsuario.getScene().getWindow(),

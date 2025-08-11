@@ -1852,7 +1852,7 @@ public class GestionForo_Controller implements Initializable {
         }
 
         if (comboNivelJava.getValue() == null) {
-            mostrarMensajeError("⚠️ Debe seleccionar un nivel de Java.", areaTexto);
+            mostrarMensajeError("⚠️ Debe seleccionar un nivel", areaTexto);
             return false;
         }
 
