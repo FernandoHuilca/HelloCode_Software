@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    //TODO: VER PORQUE AHORA NO SE GUARDA LOS LOGROS ASIGNADOS DESPUES DE CERRAR SESION.
+
     public static void main(String[] args) {
         // Inicializar datos del sistema
         GestorGamificacion.inicializarDesdeModuloExterno();

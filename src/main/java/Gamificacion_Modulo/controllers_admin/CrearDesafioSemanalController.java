@@ -188,7 +188,7 @@ public class CrearDesafioSemanalController {
                         .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
                         .findFirst().orElse(null);
                 if (progreso != null) {
-                    progreso.agregarDesafio(new DesafioSemanal(desafio));
+                    progreso.actualizarDesafios(new DesafioSemanal(desafio));
 
                 }
             }

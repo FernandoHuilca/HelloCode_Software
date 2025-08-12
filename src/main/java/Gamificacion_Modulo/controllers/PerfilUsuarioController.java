@@ -171,14 +171,14 @@ public class PerfilUsuarioController {
                         if (desafio instanceof DesafioSemanal) {
                             DesafioSemanal ds = (DesafioSemanal) desafio;
                             progreso_str = " - " + ds.getLeccionesCompletadas() + "/" + ds.getMetaSemanal() +
-                                    " (" + String.format("%.1f", ds.getProgreso()) + "%)";
+                                    " (" + String.format("%.1f", ds.getAvanceDesafio()) + "%)";
                             nombreDesafio = "Desafío Semanal #" + contadorDesafios + " (Meta: " + ds.getMetaSemanal() + " lecciones)";
                         } else if (desafio instanceof DesafioMensual) {
                             DesafioMensual dm = (DesafioMensual) desafio;
                             Integer objetivo = (dm.getMetaMensual() != null) ? dm.getMetaMensual() : 1;
                             Integer completadas = (dm.getLeccionesCompletadas() != null) ? dm.getLeccionesCompletadas() : 0;
                             progreso_str = " - " + completadas + "/" + objetivo +
-                                    " (" + String.format("%.1f", dm.getProgreso()) + "%)";
+                                    " (" + String.format("%.1f", dm.getAvanceDesafio()) + "%)";
                             nombreDesafio = "Desafío Mensual #" + contadorDesafios + " (Meta: " + objetivo + " actividades)";
                         }
 
