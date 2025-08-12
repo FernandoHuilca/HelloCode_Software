@@ -30,6 +30,7 @@ public class LeccionesCompletadas {
 
     public static void aumentarXP(int cantidad){
         usr = SesionManager.getInstancia().getUsuarioAutenticado();;
+        progresoActual = encontrarProgresoActual();
         progresoActual.sumarPuntos(cantidad);
     }
     private static ProgresoEstudiante encontrarProgresoActual(){
