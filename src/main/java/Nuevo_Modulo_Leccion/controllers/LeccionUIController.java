@@ -24,6 +24,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+//Para restaurar las vidas del usuario actual:
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
+
+
 public class LeccionUIController {
     //porcentajeParaCompletarUnaLeccion
     private static int porcentajeParaCompletarUnaLeccion = 50;
@@ -260,6 +270,11 @@ public class LeccionUIController {
      */
     public static void mostrarSeAcabaronVidasYVolver(Stage currentStage) {
         try {
+            // se quedó sin vidas démosle 2 minutos de regeneración:
+            if (SesionManager.getInstancia().getUsuarioAutenticado().getVidas() <= 0) {
+                System.out.println("Iniciando regeneracion de vidas en dos minutos");
+                iniciarRecuperacionVidas();
+            }
 
             //Porcentaje de acierto total en lección:
             System.out.println(" EL PORCENTAJE DE ACIERTOS LA SUMA TOTAL ES : " + porcentajeAciertosLeccion + " EL NUMERO DE JERCICIOS EN LA LECCIONES ES:  " + leccionActual.getNumEjercicios());
@@ -312,6 +327,18 @@ public class LeccionUIController {
             } catch (Exception ignored) { }
         }
         ventanasEjercicio.clear();
+    }
+
+
+    private static void iniciarRecuperacionVidas() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.minutes(2), e -> {
+                    SesionManager.getInstancia().getUsuarioAutenticado().setVidas(3);
+                    System.out.println("¡Vidas restauradas a 3!");
+                })
+        );
+        timeline.setCycleCount(1);
+        timeline.play();
     }
 
 }
