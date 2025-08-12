@@ -72,5 +72,10 @@ public class Main extends Application {
                 e2.printStackTrace();
             }
         }
+        System.out.println("Main Gamificacion");
+        for(ProgresoEstudiante progreso : Ranking.getInstance().obtenerRankingGeneral())
+            System.out.println(progreso.getDesafiosActivos());
+
+
     }
 }

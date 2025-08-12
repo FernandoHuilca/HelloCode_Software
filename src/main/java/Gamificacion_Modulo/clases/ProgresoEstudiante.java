@@ -30,6 +30,10 @@ public class ProgresoEstudiante {
        Ranking.getInstance().actualizarRanking(this);
     }
 
+    public void verificarDesafios(){
+        this.desafiosActivos.removeIf(desafio -> !desafio.estaActivo);
+    }
+
     public void setPuntosTotal(Integer puntosTotal) {
         this.puntosTotal = puntosTotal;
         // Actualizar automáticamente el ranking cuando cambian los puntos
