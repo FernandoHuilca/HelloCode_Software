@@ -40,11 +40,19 @@ public class seAcabaronVidasLeccionController {
         }
     }
 
-    public void inicializarDatos(long minutos, long segundos, double XP_ganada, double porcentajeAciertos, String nombreUsuarioActual) {
+    public void inicializarDatos(long minutos, long segundos, double XP_ganada, double porcentajeAciertos, String nombreUsuarioActual, boolean completada) {
         // Mostrar valores en la interfaz con formato correcto
         Tiempo_Text.setText(String.format("%02d:%02d", minutos, segundos));
         PorcentajeAciertos_Text.setText(String.format("%.2f %%", porcentajeAciertos));
-        XP_Text.setText(String.format("%.0f XP", XP_ganada));
+        XP_Text.setText(String.format("%.0f", XP_ganada));
         nombreUsuaio_text.setText(nombreUsuarioActual);
+
+        // Cambiar color según completada
+        if (completada) {
+            PorcentajeAciertos_Text.setFill(javafx.scene.paint.Color.GREEN);
+        } else {
+            PorcentajeAciertos_Text.setFill(javafx.scene.paint.Color.RED);
+        }
+
     }
 }

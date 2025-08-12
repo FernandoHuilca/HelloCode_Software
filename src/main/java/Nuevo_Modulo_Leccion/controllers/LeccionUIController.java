@@ -5,6 +5,9 @@ import Conexion.SesionManager;
 import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
 import Modulo_Ejercicios.logic.*;
+import Nuevo_Modulo_Leccion.logic.CalculoXPBasico;
+import Nuevo_Modulo_Leccion.logic.CalculoXPQuedasteSinVidas;
+import Nuevo_Modulo_Leccion.logic.CalculoXPSinErrores;
 import Nuevo_Modulo_Leccion.logic.Leccion;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +20,8 @@ import java.util.function.Consumer;
 
 
 public class LeccionUIController {
-
+    //porcentajeParaCompletarUnaLeccion
+    private static int porcentajeParaCompletarUnaLeccion = 50;
     // Variables estáticas para manejar la secuencia de ejercicios
     private static Leccion leccionActual;
     private static int indiceEjercicioActual = 0;
@@ -183,20 +187,29 @@ public class LeccionUIController {
 
     private static void mostrarLeccionCompletada() {
         try {
-            //Porcentaje de acierto total en lección:
-            System.out.println(" EL PORCENTAJE DE ACIERTOS LA SUMA TOTAL ES : " + porcentajeAciertosLeccion + " EL NUMERO DE JERCICIOS EN LA LECCIONES ES:  " + leccionActual.getNumEjercicios());
+            // xp que se le asignará :
+            int xp_ganada;
+            //Porcentaje de aciertos totales, es decir de cada ejercicio la suma y el total
             double porcertajeAciertoTotal = porcentajeAciertosLeccion/ leccionActual.getNumEjercicios();
-            //XP:
-            double xp_ganada = leccionActual.calcularXP();
-            // Dar al usuario actual su xp correspondiente:
-            SesionManager.getInstancia().getUsuarioAutenticado().agregarXP((int) xp_ganada);
-
             //tiempo final para calcular el transcurrido:
             tiempoFin = System.currentTimeMillis();
             tiempoTranscurridoLeccion = tiempoFin - tiempoInicio;
             //Calculo en minutos y segundos:
             long segundos = (tiempoTranscurridoLeccion / 1000) % 60;
             long minutos = (tiempoTranscurridoLeccion / (1000 * 60)) % 60;
+
+            //Definir la XP que ha ganado según algún criterio, es decir, cuál es la estrategia de cálculo:
+            if (porcertajeAciertoTotal == 100){
+                //Quiere decir que no tuvo errores: wow xd
+                 xp_ganada = leccionActual.getXPcalculada(new CalculoXPSinErrores(tiempoTranscurridoLeccion));
+            }else{
+                //Fer estuvo aquí 3:)
+                 xp_ganada = leccionActual.getXPcalculada(new CalculoXPBasico(tiempoTranscurridoLeccion));
+            }
+            // Dar al usuario actual su xp correspondiente:
+            SesionManager.getInstancia().getUsuarioAutenticado().agregarXP(xp_ganada);
+
+
             // Cerrar cualquier ventana de ejercicio que quede abierta
             cerrarVentanasEjercicioAbiertas();
 
@@ -205,8 +218,15 @@ public class LeccionUIController {
 
             //Pasar como parámetros los recursos para que se muestre en el resumen de la leccion, le paso al controlador
             ResumenLeccionController controller = loader.getController(); // obtengo el controlador
+            //Marcar leccion como completada si el valor del porcentaje de aciertos total es mayor o igual al 50%
+            if(porcertajeAciertoTotal >= porcentajeParaCompletarUnaLeccion){
+                leccionActual.setCompletada(true);
+            }
             //Le paso los datos jeje
-            controller.inicializarDatos(minutos, segundos, xp_ganada, porcertajeAciertoTotal, SesionManager.getInstancia().getNombreUsuarioActual());
+            controller.inicializarDatos(minutos, segundos, xp_ganada,
+                    porcertajeAciertoTotal,
+                    SesionManager.getInstancia().getNombreUsuarioActual(),
+                    leccionActual.getCompletada());
 
 
 
@@ -234,6 +254,7 @@ public class LeccionUIController {
      */
     public static void mostrarSeAcabaronVidasYVolver(Stage currentStage) {
         try {
+
             //Porcentaje de acierto total en lección:
             System.out.println(" EL PORCENTAJE DE ACIERTOS LA SUMA TOTAL ES : " + porcentajeAciertosLeccion + " EL NUMERO DE JERCICIOS EN LA LECCIONES ES:  " + leccionActual.getNumEjercicios());
             double porcertajeAciertoTotal = porcentajeAciertosLeccion/ leccionActual.getNumEjercicios();
@@ -244,16 +265,23 @@ public class LeccionUIController {
             long segundos = (tiempoTranscurridoLeccion / 1000) % 60;
             long minutos = (tiempoTranscurridoLeccion / (1000 * 60)) % 60;
 
-            double xpCasoPerdida = leccionActual.calcularXP_fallida(porcertajeAciertoTotal);
+            int xpCasoPerdida = leccionActual.getXPcalculada(new CalculoXPQuedasteSinVidas(tiempoTranscurridoLeccion));
             //Dar al usuario esa xp:
-            SesionManager.getInstancia().getUsuarioAutenticado().agregarXP((int) xpCasoPerdida);
+            SesionManager.getInstancia().getUsuarioAutenticado().agregarXP(xpCasoPerdida);
 
             FXMLLoader loader = new FXMLLoader(LeccionUIController.class.getResource("/Nuevo_Modulo_Leccion/views/seAcabaronVidasLeccion.fxml"));
             Parent root = loader.load();
             //Pasar como parámetros los recursos para que se muestre en el resumen de la leccion, le paso al controlador
             seAcabaronVidasLeccionController controller = loader.getController(); // obtengo el controlador
+            //Marcar leccion como completada si el valor del porcentaje de aciertos total es mayor o igual al 50%
+            if(porcertajeAciertoTotal >= porcentajeParaCompletarUnaLeccion){
+                leccionActual.setCompletada(true);
+            }
             //Le paso los datos jeje
-            controller.inicializarDatos(minutos, segundos, xpCasoPerdida,porcertajeAciertoTotal, SesionManager.getInstancia().getNombreUsuarioActual());
+            controller.inicializarDatos(minutos, segundos,
+                    xpCasoPerdida,porcertajeAciertoTotal,
+                    SesionManager.getInstancia().getNombreUsuarioActual(),
+                    leccionActual.getCompletada());
 
 
             if (currentStage != null) {

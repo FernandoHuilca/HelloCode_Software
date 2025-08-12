@@ -31,7 +31,7 @@ public class ResumenLeccionController {
         stage.close();
     }
 
-    public void inicializarDatos(long minutos, long segundos, double XP_ganada, double porcentajeAcierto, String nombreUsuarioActual) {
+    public void inicializarDatos(long minutos, long segundos, double XP_ganada, double porcentajeAcierto, String nombreUsuarioActual, boolean completada) {
         this.minutos = minutos;
         this.segundos = segundos;
         this.xpGanada = XP_ganada;
@@ -41,8 +41,16 @@ public class ResumenLeccionController {
         // Mostrar valores en la interfaz con formato correcto
         Tiempo_Text.setText(String.format("%02d:%02d", this.minutos, this.segundos));
         PorcentajeAciertos_Text.setText(String.format("%.2f %%", this.porcentajeAcierto));
-        XP_Text.setText(String.format("%.0f XP", xpGanada));
+        XP_Text.setText(String.format("%.0f", xpGanada));
         nombreUsuaio_text.setText(this.nombreUsuarioActual);
+
+        // Cambiar color según completada
+        if (completada) {
+            PorcentajeAciertos_Text.setFill(javafx.scene.paint.Color.GREEN);
+        } else {
+            PorcentajeAciertos_Text.setFill(javafx.scene.paint.Color.RED);
+        }
+
     }
 
 

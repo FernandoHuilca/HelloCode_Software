@@ -8,11 +8,18 @@ import java.util.List;
 public class Leccion {
     //Una lección tiene o está compuesta por varios ejercicios:
     private List<EjercicioBase> listEjercicios;
-    private double XPGeneral;
+    private double XPQueOtorga;
+    private boolean completada;
+    private TemaLeccion temaLeccion;
+    private CalculoXP calculoXP;
+
 
     public Leccion() {
         listEjercicios = new ArrayList<EjercicioBase>();
-        XPGeneral = 330;
+        XPQueOtorga = 0; // por si no se pasa a la strategy no salte excepción
+        completada = false;
+        this.temaLeccion = TemaLeccion.OTRO;//inicialmente luego se cambia al correspondiente
+
     }
 
     public void agregarEjercicio(EjercicioBase nuevoEjercicio) {
@@ -37,11 +44,16 @@ public class Leccion {
         }
     }
 
-    public double calcularXP() {
-        return XPGeneral;
+    public int getXPcalculada(CalculoXP estrategiaUsada) {
+        return estrategiaUsada.calcularXP();
     }
 
-    public double calcularXP_fallida(double porcertajeAciertoTotal) {
-            return 0;
+
+
+    public void setCompletada(boolean completada) {
+        this.completada = completada;
+    }
+    public boolean getCompletada() {
+        return completada;
     }
 }
