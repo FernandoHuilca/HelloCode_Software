@@ -1,5 +1,9 @@
 package Gamificacion_Modulo.clases;
 
+
+import Conexion.SesionManager;
+import Modulo_Usuario.Clases.Usuario;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +17,7 @@ public abstract class Desafio {
     protected Boolean estaActivo;
     protected List<Logro> logrosDisponibles;
     protected int leccionesCompletadas;
-    protected int meta;
+    public int meta;
 
     // Lista estática de desafíos disponibles
     private static final List<Desafio> desafiosDisponibles = new ArrayList<>();
@@ -51,12 +55,15 @@ public abstract class Desafio {
     }
 
     public void completarDesafio(ProgresoEstudiante estudiante) {
-        // Sumar puntos de recompensa
-        estudiante.sumarPuntos(puntosRecompensa);
+        Usuario usr = SesionManager.getInstancia().getUsuarioAutenticado();
+        usr.setXp(usr.getXp() + puntosRecompensa);
+        estudiante.setPuntosTotal(usr.getXp());
+
         // Desactivar el desafío
         desactivar();
         desbloquearLogro(estudiante);
     }
+
 
 
     public void asignarAvance(Integer cantidad) {
@@ -80,20 +87,23 @@ public abstract class Desafio {
         desafiosDisponibles.add(desafio);
     }
 
-    public static void removerDesafio(Desafio desafio) {
-        desafiosDisponibles.remove(desafio);
-    }
-
     public static List<Desafio> getDesafiosActivos() {
         return desafiosDisponibles.stream()
                 .filter(Desafio::getEstaActivo)
                 .collect(Collectors.toList());
     }
 
+    public Double getProgreso() {
+        if (this.meta == 0) return 0.0;
+        double progreso = (leccionesCompletadas * 100.0) / this.meta;
+        return Math.min(progreso, 100.0); // Máximo 100%
+    }
     // Getters
     public Boolean getEstaActivo() { return estaActivo; }
 
-    public abstract Boolean estaCompletado();
+    public Boolean estaCompletado(){
+        return this.leccionesCompletadas >= this.meta;
+    };
 
 
 } 
