@@ -1,10 +1,19 @@
 package Nuevo_Modulo_Leccion.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 import Conexion.MetodosFrecuentes;
 import Conexion.SesionManager;
+import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
 import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
-import Modulo_Ejercicios.logic.*;
+import Modulo_Ejercicios.logic.EjercicioBase;
+import Modulo_Ejercicios.logic.EjercicioCompletarCodigo;
+import Modulo_Ejercicios.logic.EjercicioEmparejar;
+import Modulo_Ejercicios.logic.EjercicioSeleccion;
+import Modulo_Ejercicios.logic.ResultadoDeEvaluacion;
 import Nuevo_Modulo_Leccion.logic.CalculoXPBasico;
 import Nuevo_Modulo_Leccion.logic.CalculoXPQuedasteSinVidas;
 import Nuevo_Modulo_Leccion.logic.CalculoXPSinErrores;
@@ -14,14 +23,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
 //Para restaurar las vidas del usuario actual:
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
 
 
 public class LeccionUIController {
@@ -226,6 +236,7 @@ public class LeccionUIController {
             //Marcar leccion como completada si el valor del porcentaje de aciertos total es mayor o igual al 50%
             if(porcertajeAciertoTotal >= porcentajeParaCompletarUnaLeccion){
                 leccionActual.setCompletada(true);
+                AprendizajeManager.getInstancia().onLeccionCompletada(SesionManager.getInstancia().getUsuarioAutenticado(), leccionActual);
             }
             //Le paso los datos jeje
             controller.inicializarDatos(minutos, segundos, xp_ganada,
@@ -286,6 +297,8 @@ public class LeccionUIController {
             //Marcar leccion como completada si el valor del porcentaje de aciertos total es mayor o igual al 50%
             if(porcertajeAciertoTotal >= porcentajeParaCompletarUnaLeccion){
                 leccionActual.setCompletada(true);
+                AprendizajeManager.getInstancia().onLeccionCompletada(SesionManager.getInstancia().getUsuarioAutenticado(), leccionActual);
+
             }
             //Le paso los datos jeje
             controller.inicializarDatos(minutos, segundos,
