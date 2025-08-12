@@ -175,7 +175,7 @@ public class Usuario extends UsuarioBase {
             System.out.println("✅ +" + puntos + " XP | Total: " + this.xp);
             guardarCambiosEnArchivo(); // Guardar cambios en archivo
             //Agregar en los puntos también para que no se desigualen ninguno :
-            //LeccionesCompletadas.aumentarXP(puntos);
+            LeccionesCompletadas.aumentarXP(puntos);
         }
     }
 
