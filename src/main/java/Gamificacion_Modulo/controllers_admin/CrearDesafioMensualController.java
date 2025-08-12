@@ -5,6 +5,7 @@ import java.util.List;
 
 import Gamificacion_Modulo.clases.Desafio;
 import Gamificacion_Modulo.clases.DesafioMensual;
+import Gamificacion_Modulo.clases.DesafioSemanal;
 import Gamificacion_Modulo.clases.Logro;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -188,7 +189,7 @@ public class CrearDesafioMensualController {
                         .filter(p -> p.getUsuario().getUsername().equals(usuario.getUsername()))
                         .findFirst().orElse(null);
                 if (progreso != null) {
-                    progreso.agregarDesafio(desafio);
+                    progreso.agregarDesafio(new DesafioMensual(desafio));
                 }
             }
             System.out.println(">>> Desafío asignado automáticamente a todos los usuarios logueados");

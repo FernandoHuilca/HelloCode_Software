@@ -12,6 +12,8 @@ public class LeccionesCompletadas {
     private static ProgresoEstudiante progresoActual = encontrarProgresoActual();
 
     public static void set(int cantidad){
+        usr = SesionManager.getInstancia().getUsuarioAutenticado();
+        progresoActual = encontrarProgresoActual();
         progresoActual.verificarDesafios();
         if(!progresoActual.getDesafiosActivos().isEmpty()){
             for(Desafio desafio: progresoActual.getDesafiosActivos()){
@@ -30,6 +32,7 @@ public class LeccionesCompletadas {
         progresoActual.sumarPuntos(cantidad);
     }
     private static ProgresoEstudiante encontrarProgresoActual(){
+        ran = Ranking.getInstance();
         for(ProgresoEstudiante progreso: ran.obtenerRankingGeneral()){
             if(compare(progreso.getUsuario(), usr))
                 return progreso;
