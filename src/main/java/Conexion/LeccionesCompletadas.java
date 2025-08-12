@@ -22,6 +22,7 @@ public class LeccionesCompletadas {
                     desafio.completarDesafio(progresoActual);
             }
         }
+        progresoActual.verificarDesafios();
     }
 
     private static boolean compare(Usuario u1, Usuario u2){
