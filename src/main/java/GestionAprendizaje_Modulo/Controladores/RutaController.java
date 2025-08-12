@@ -408,6 +408,12 @@ public class RutaController {
         // Asegurar que los recursos estén cargados desde el archivo TXT
         RecursoRepository.getInstancia().cargarRecursosDesdeTXT();
         cargarDatosIniciales();
+        // Sincronizar banderas de Leccion con el .txt para el usuario actual antes de dibujar
+        try {
+            if (usuarioActual != null) {
+                AprendizajeManager.getInstancia().sincronizarBanderasParaUsuario(usuarioActual.getUsername());
+            }
+        } catch (Exception ignored) {}
         construirContenedoresVisuales();
         configurarListenersBotones();
     }
@@ -516,9 +522,6 @@ public class RutaController {
             // Si el botón está deshabilitado, este código nunca se ejecuta.
             nodoBoton.setOnAction(e -> {
                 NodoRuta nodoClicado = (NodoRuta) ((Button) e.getSource()).getUserData();
-                if (!AprendizajeManager.getInstancia().isNodoCompletadoParaUsuario(usuarioActual, nodoClicado)) {
-                    AprendizajeManager.getInstancia().marcarNodoComoCompletado(usuarioActual, nodoClicado);
-                }
                 Stage stage = (Stage) contenidoVBox.getScene().getWindow();
                 LeccionUIController.mostrarUnaLeccion(nodoClicado.getLeccion(), stage, "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml");
                 construirContenedoresVisuales();

@@ -280,7 +280,8 @@ public class PerfilUsuarioController {
                 System.out.println(">>> No hay progreso para el usuario logueado: " + usuarioLogueado.getNombre());
                 // Mostrar datos básicos del usuario pero sin progreso
                 if (userName != null) userName.setText(usuarioLogueado.getNombre());
-                if (userEmail != null) userEmail.setText("@" + usuarioLogueado.getEmail().split("@")[0]);
+                // Mostrar el correo completo real
+                if (userEmail != null) userEmail.setText(usuarioLogueado.getEmail());
                 if (expPoints != null) expPoints.setText("0");
                 if (desafiosSemanales != null) desafiosSemanales.setText("0");
                 if (desafiosMensuales != null) desafiosMensuales.setText("0");
@@ -298,7 +299,8 @@ public class PerfilUsuarioController {
 
             // Actualizar información básica del usuario logueado
             if (userName != null) userName.setText(usuarioLogueado.getNombre());
-            if (userEmail != null) userEmail.setText("@" + usuarioLogueado.getEmail().split("@")[0]);
+            // Mostrar el correo completo real
+            if (userEmail != null) userEmail.setText(usuarioLogueado.getEmail());
             if (expPoints != null) expPoints.setText(String.valueOf(progresoLogueado.getPuntosTotal()));
 
             // Contar desafíos por tipo del usuario logueado
@@ -446,9 +448,16 @@ public class PerfilUsuarioController {
     }
 
     // Métodos públicos para actualizar la información
-    public void actualizarDatosUsuario(String nombre, String tag, String experiencia) {
+    public void actualizarDatosUsuario(String nombre, String correoOIdentificador, String experiencia) {
         if (userName != null) userName.setText(nombre);
-        if (userEmail != null) userEmail.setText("@" + tag);
+        if (userEmail != null) {
+            // Si el segundo parámetro ya es un correo, lo mostramos tal cual; si no, lo mostramos sin anteponer '@'
+            if (correoOIdentificador != null && correoOIdentificador.contains("@")) {
+                userEmail.setText(correoOIdentificador);
+            } else {
+                userEmail.setText(correoOIdentificador != null ? correoOIdentificador : "");
+            }
+        }
         if (expPoints != null) expPoints.setText(experiencia);
     }
 
