@@ -158,6 +158,7 @@ public class LeccionUIController {
                 Consumer<ResultadoDeEvaluacion> onResultado = (res) -> {
                     if (res == null) return;
                     boolean fallo = res.getPorcentajeDeAcerto() < 100.0;
+                    //Ingresar hasta aqui
                     porcentajeAciertosLeccion += res.getPorcentajeDeAcerto();
                     System.out.println(" EL POCENTAJE SUMA +=  ES DE : " + porcentajeAciertosLeccion);
                     if (fallo) {
