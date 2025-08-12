@@ -6,26 +6,34 @@ import Gamificacion_Modulo.clases.Ranking;
 import Modulo_Usuario.Clases.Usuario;
 
 public class LeccionesCompletadas {
-    public static void set(int cantidad){
-        Ranking ran = Ranking.getInstance();
-        Usuario usr = SesionManager.getInstancia().getUsuarioAutenticado();
 
-        for(ProgresoEstudiante progreso: ran.obtenerRankingGeneral()){
-           progreso.verificarDesafios();
-           if(compare(progreso.getUsuario(), usr) && !progreso.getDesafiosActivos().isEmpty()){
-               for(Desafio desafio: progreso.getDesafiosActivos()){
-                   desafio.actualizarAvance(1);
-                   if(desafio.estaCompletado())
-                       desafio.completarDesafio(progreso);
-               }
-               System.out.println("puntos: " + progreso.getPuntosTotal());
-               System.out.println("xp: " + usr.getXp());
-               break;
-           }
+    private static Ranking ran = Ranking.getInstance();
+    private static Usuario usr = SesionManager.getInstancia().getUsuarioAutenticado();
+    private static ProgresoEstudiante progresoActual = encontrarProgresoActual();
+
+    public static void set(int cantidad){
+        if(!progresoActual.getDesafiosActivos().isEmpty()){
+            for(Desafio desafio: progresoActual.getDesafiosActivos()){
+                desafio.actualizarAvance(1);
+                if(desafio.estaCompletado())
+                    desafio.completarDesafio(progresoActual);
+            }
         }
     }
 
     private static boolean compare(Usuario u1, Usuario u2){
         return u1.getUsername().equals(u2.getUsername());
+    }
+
+    public static void aumentarXP(int cantidad){
+        progresoActual.sumarPuntos(cantidad);
+    }
+    private static ProgresoEstudiante encontrarProgresoActual(){
+        for(ProgresoEstudiante progreso: ran.obtenerRankingGeneral()){
+            progreso.verificarDesafios();
+            if(compare(progreso.getUsuario(), usr))
+                return progreso;
+        }
+        return null;
     }
 }
