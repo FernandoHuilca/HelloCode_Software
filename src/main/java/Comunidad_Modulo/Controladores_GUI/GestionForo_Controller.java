@@ -1061,6 +1061,18 @@ public class GestionForo_Controller implements Initializable {
                 hilosInfo.append("   ────────────────────────────────\n");
             }
 
+            Moderador moderador = contexto.getComunidadActual().getModerador();
+
+            if (moderador.usuarioEstaSancionado(autor)) {
+                SancionUsuario sancion = moderador.getSancionActiva(autor);
+                mostrarMensajeError(String.format(
+                        "🚫 No puedes responder en este hilo porque tienes una sanción activa por %d minutos. Razón: %s",
+                        sancion.getMinutosRestantes(),
+                        sancion.getRazon()
+                ), txtInformacionDiscusion);
+                return;
+            }
+
             // Seleccionar hilo
             TextInputDialog hiloDialog = crearTextInputDialog("Responder Hilo", hilosInfo.toString(), "Seleccione el hilo (número):");
 
@@ -1092,8 +1104,6 @@ public class GestionForo_Controller implements Initializable {
 
             String contenido = respuestaResult.get().trim();
 
-            // Procesar la respuesta con moderación
-            Moderador moderador = contexto.getComunidadActual().getModerador();
             // La respuesta se crea con un ID temporal, que será reemplazado al guardar
             Respuesta tempRespuesta = new Respuesta(UUID.randomUUID().toString(), contenido, autor);
             boolean respuestaEnviada = hilo.responder(contenido, autor, moderador);
@@ -1623,6 +1633,17 @@ public class GestionForo_Controller implements Initializable {
         Solucion solucionSeleccionada = seleccionarSolucion(soluciones, txtInformacionCompartir);
         if (solucionSeleccionada == null) return;
 
+        // Validar si el usuario está sancionado antes de permitir comentar
+        Moderador moderador = ContextoSistema.getInstance().getComunidadActual().getModerador();
+
+        if (moderador.usuarioEstaSancionado(autorComentario)) {
+            SancionUsuario sancion = moderador.getSancionActiva(autorComentario);
+            mostrarMensajeError(String.format("🚫 No puedes comentar, tienes una sanción activa por %d minutos. Razón: %s",
+                    sancion.getMinutosRestantes(), sancion.getRazon()), txtInformacionCompartir);
+            return;
+        }
+
+        // Si pasa la validación, sigue con el TextInputDialog y el guardado
         TextInputDialog comentarioDialog = crearTextInputDialog("Comentar Solución", "Comentando la solución: '" + solucionSeleccionada.getTitulo() + "'", "Escriba su comentario:");
 
         Optional<String> result = comentarioDialog.showAndWait();
