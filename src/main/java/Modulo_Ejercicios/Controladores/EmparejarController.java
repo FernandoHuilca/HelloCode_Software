@@ -64,6 +64,7 @@ public class EmparejarController implements Initializable {
     private List<Button> botonesIzquierda;
     private List<Button> botonesDerecha;
     private int emparejamientosCompletados = 0;
+    private int emparejamientosIncorrectos = 0;
     private boolean ejercicioCompletado = false;
 
     // Lista para almacenar si cada respuesta fue correcta
@@ -328,6 +329,7 @@ public class EmparejarController implements Initializable {
             emparejamientosCompletados++;
 
             respuestasCorrectasUsuario.add(true);
+            
 
         } else {
             // Emparejamiento incorrecto
@@ -337,9 +339,10 @@ public class EmparejarController implements Initializable {
             // Notificar a Lección para que gestione la resta de vidas
             if (onResultado != null) {
                 onResultado.accept(new ResultadoDeEvaluacion(0)); // Cualquier <100 indica fallo
+                emparejamientosIncorrectos++;
             } else {
                 // Fallback: decrementar directamente si no hay callback
-                SesionManager.getInstancia().getUsuarioAutenticado().quitarVida();
+                //SesionManager.getInstancia().getUsuarioAutenticado().quitarVida();
             }
             actualizarVidasUI();
 
@@ -413,6 +416,12 @@ public class EmparejarController implements Initializable {
             // Ejercicio completado exitosamente - Se completaron todos los emparejamientos
             ejercicioCompletado = true;
             validarRespuestasFinal();
+            if (onResultado != null) {
+                onResultado.accept(new ResultadoDeEvaluacion(100.0 - (double)emparejamientosIncorrectos/emparejamientosCompletados * 100)); // Porcentaje de acierto
+            }
+            System.out.println("Emparejamientos completados: " + emparejamientosCompletados);
+            System.out.println("Emparejamientos correctos: " + emparejamientosCorrectos.size());
+            System.out.println("Emparejamientos incorrectos: " + emparejamientosIncorrectos);
         }
         // Si aún tiene vidas y no ha completado todos los emparejamientos, continúa el juego
     }
@@ -429,7 +438,10 @@ public class EmparejarController implements Initializable {
             double porcentajeAcierto = resultado.getPorcentajeDeAcerto();
 
             // Determinar el mensaje basado en el rendimiento usando el ResultadoDeEvaluacion
+            
+            
             String mensaje;
+
             if (porcentajeAcierto == 100.0) {
                 mensaje = "¡Perfecto! Has emparejado todos los elementos correctamente sin errores.";
             } else if (porcentajeAcierto >= 80.0) {

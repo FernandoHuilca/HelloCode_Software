@@ -191,7 +191,11 @@ public class EjercicioCompletarController implements Initializable {
 
         if (ejercicioIndividual != null) {
             ResultadoDeEvaluacion resultado = ejercicioIndividual.evaluarRespuestas(respuestasUsuario);
-
+            
+            if (onResultado != null) {
+                onResultado.accept(resultado);
+            }
+            
             if (resultado.getPorcentajeDeAcerto() == 100) {
                 // Respuesta correcta
                 respuestasCorrectasUsuario.add(true);
@@ -199,14 +203,6 @@ public class EjercicioCompletarController implements Initializable {
             } else {
                 // Respuesta incorrecta
                 respuestasCorrectasUsuario.add(false);
-                // Notificar primero a Lección para que gestione vidas
-                if (onResultado != null) {
-                    onResultado.accept(resultado);
-                } else {
-                    // Fallback por si no se inyecta el callback
-                    //Usuario.restarVida();
-                }
-
                 actualizarVidasUI();
                 // Mostrar SIEMPRE el feedback de incorrecto (aunque se hayan acabado las vidas)
                 mostrarFeedbackIncorrecto(ejercicioIndividual);
