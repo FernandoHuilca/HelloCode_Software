@@ -2,6 +2,7 @@ package Nuevo_Modulo_Leccion.controllers;
 
 import Conexion.MetodosFrecuentes;
 import Conexion.SesionManager;
+import GestionAprendizaje_Modulo.Logica.AprendizajeManager;
 import Modulo_Ejercicios.Controladores.EjercicioCompletarController;
 import Modulo_Ejercicios.Controladores.EjercicioSeleccionController;
 import Modulo_Ejercicios.logic.*;
@@ -221,6 +222,10 @@ public class LeccionUIController {
             //Marcar leccion como completada si el valor del porcentaje de aciertos total es mayor o igual al 50%
             if(porcertajeAciertoTotal >= porcentajeParaCompletarUnaLeccion){
                 leccionActual.setCompletada(true);
+                try {
+                    AprendizajeManager.getInstancia().onLeccionCompletada(
+                            SesionManager.getInstancia().getUsuarioAutenticado(), leccionActual);
+                } catch (Exception ignored) {}
             }
             //Le paso los datos jeje
             controller.inicializarDatos(minutos, segundos, xp_ganada,
@@ -276,6 +281,10 @@ public class LeccionUIController {
             //Marcar leccion como completada si el valor del porcentaje de aciertos total es mayor o igual al 50%
             if(porcertajeAciertoTotal >= porcentajeParaCompletarUnaLeccion){
                 leccionActual.setCompletada(true);
+                try {
+                    AprendizajeManager.getInstancia().onLeccionCompletada(
+                            SesionManager.getInstancia().getUsuarioAutenticado(), leccionActual);
+                } catch (Exception ignored) {}
             }
             //Le paso los datos jeje
             controller.inicializarDatos(minutos, segundos,
