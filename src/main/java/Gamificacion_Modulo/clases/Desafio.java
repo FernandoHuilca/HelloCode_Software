@@ -56,7 +56,7 @@ public abstract class Desafio {
 
     public void completarDesafio(ProgresoEstudiante estudiante) {
         Usuario usr = SesionManager.getInstancia().getUsuarioAutenticado();
-        usr.setXp(usr.getXp() + puntosRecompensa);
+        usr.agregarXP(puntosRecompensa);
         estudiante.setPuntosTotal(usr.getXp());
 
         // Desactivar el desafío
