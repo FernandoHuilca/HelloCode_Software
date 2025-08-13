@@ -1,9 +1,15 @@
 package Conexion;
 
+import Modulo_Usuario.Clases.NivelJava;
 import Modulo_Usuario.Clases.Usuario;
 import Modulo_Usuario.Clases.UsuarioComunidad;
-import Modulo_Usuario.Clases.NivelJava;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +22,13 @@ public class SesionManager {
     private UsuarioComunidad usuarioComunidad;
     private List<Usuario> usuarios;
     
-    private SesionManager() {}
+    // Ruta del archivo de usuarios
+    private static final String ARCHIVO_USUARIOS = "src/main/java/Modulo_Usuario/Usuarios/usuarios.txt";
+    
+    private SesionManager() {
+        // Cargar usuarios al inicializar la instancia
+        cargarUsuariosDesdeArchivo();
+    }
     
     public static SesionManager getInstancia() {
         if (instancia == null) {
@@ -30,9 +42,133 @@ public class SesionManager {
     }
 
     /**
+     * Carga todos los usuarios desde el archivo usuarios.txt
+     */
+    public void cargarUsuariosDesdeArchivo() {
+        this.usuarios = new ArrayList<>();
+        
+        try {
+            File file = new File(ARCHIVO_USUARIOS);
+            if (!file.exists()) {
+                System.err.println("⚠️ Archivo usuarios.txt no encontrado: " + ARCHIVO_USUARIOS);
+                return;
+            }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    linea = linea.trim();
+                    if (!linea.isEmpty()) {
+                        Usuario usuario = Usuario.fromString(linea);
+                        if (usuario != null) {
+                            this.usuarios.add(usuario);
+                        }
+                    }
+                }
+            }
+            
+            System.out.println("✅ Cargados " + this.usuarios.size() + " usuarios desde archivo");
+            
+        } catch (IOException e) {
+            System.err.println("❌ Error al cargar usuarios desde archivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Actualiza la lista de usuarios recargando desde el archivo
+     */
+    public void actualizarUsuariosDesdeArchivo() {
+        System.out.println("🔄 Actualizando lista de usuarios...");
+        cargarUsuariosDesdeArchivo();
+    }
+
+    /**
+     * Agrega un nuevo usuario a la lista y lo sincroniza con el archivo
+     */
+    public void agregarNuevoUsuario(Usuario nuevoUsuario) {
+        if (nuevoUsuario == null) {
+            System.err.println("⚠️ No se puede agregar un usuario nulo");
+            return;
+        }
+        
+        // Verificar si ya existe
+        boolean yaExiste = usuarios.stream()
+                .anyMatch(u -> u.getUsername().equals(nuevoUsuario.getUsername()));
+        
+        if (!yaExiste) {
+            usuarios.add(nuevoUsuario);
+            System.out.println("✅ Usuario agregado a la lista: " + nuevoUsuario.getUsername());
+        } else {
+            System.out.println("⚠️ Usuario ya existe en la lista: " + nuevoUsuario.getUsername());
+        }
+        
+        // Recargar desde archivo para asegurar sincronización completa
+        actualizarUsuariosDesdeArchivo();
+    }
+
+    /**
+     * Fuerza una recarga completa de todos los usuarios
+     */
+    public void forzarRecarga() {
+        System.out.println("🔄 Forzando recarga completa de usuarios...");
+        cargarUsuariosDesdeArchivo();
+    }
+
+    /**
+     * Busca un usuario por username en la lista cargada
+     * Actualiza la lista antes de buscar para asegurar datos actualizados
+     */
+    public Usuario buscarUsuarioPorUsername(String username) {
+        if (username == null) {
+            return null;
+        }
+        
+        // Actualizar lista antes de buscar
+        actualizarUsuariosDesdeArchivo();
+        
+        if (usuarios == null) {
+            return null;
+        }
+        
+        Usuario encontrado = usuarios.stream()
+                .filter(u -> username.equals(u.getUsername()))
+                .findFirst()
+                .orElse(null);
+                
+        if (encontrado != null) {
+            System.out.println("👤 Usuario encontrado: " + encontrado.getUsername());
+        } else {
+            System.out.println("❌ Usuario no encontrado: " + username);
+        }
+        
+        return encontrado;
+    }
+
+    /**
+     * Obtiene todos los usuarios cargados
+     */
+    public List<Usuario> getTodosLosUsuarios() {
+        if (usuarios == null) {
+            System.out.println("⚠️ Lista de usuarios es null, cargando desde archivo...");
+            cargarUsuariosDesdeArchivo();
+        } else {
+            // Siempre actualizar para asegurar datos más recientes
+            actualizarUsuariosDesdeArchivo();
+        }
+        
+        System.out.println("📊 Total de usuarios cargados: " + (usuarios != null ? usuarios.size() : 0));
+        
+        return usuarios != null ? new ArrayList<>(usuarios) : new ArrayList<>(); // Retornar copia para evitar modificaciones externas
+    }
+
+    /**
      * Inicia sesión con un usuario
      */
     public void iniciarSesion(Usuario usuario) {
+        // Actualizar lista de usuarios antes de iniciar sesión
+        actualizarUsuariosDesdeArchivo();
+        
         this.usuarioAutenticado = usuario;
         // Convertir Usuario a UsuarioComunidad para uso en el módulo de comunidad
         this.usuarioComunidad = convertirAUsuarioComunidad(usuario);
@@ -48,7 +184,14 @@ public class SesionManager {
         this.usuarioComunidad = null;
         System.out.println("Sesión cerrada");
     }
-    public List<Usuario> getUsuarios() {return usuarios;}
+    /**
+     * Obtiene la lista de usuarios actualizada
+     */
+    public List<Usuario> getUsuarios() {
+        // Siempre actualizar desde archivo antes de devolver
+        actualizarUsuariosDesdeArchivo();
+        return usuarios;
+    }
     /**
      * Verifica si hay un usuario autenticado
      */
@@ -60,6 +203,10 @@ public class SesionManager {
      * Obtiene el usuario autenticado (formato original)
      */
     public Usuario getUsuarioAutenticado() {
+        // Sincronizar datos del usuario autenticado con el archivo
+        if (usuarioAutenticado != null) {
+            usuarioAutenticado.recargarDatosDesdeArchivo();
+        }
         return usuarioAutenticado;
     }
     
@@ -133,5 +280,32 @@ public class SesionManager {
         if (usuarioComunidad != null) {
             usuarioComunidad.setReputacion(nuevaReputacion);
         }
+    }
+
+    /**
+     * Notifica que se ha creado un nuevo usuario
+     * Debe llamarse después de crear un usuario nuevo
+     */
+    public void notificarNuevoUsuario() {
+        System.out.println("🔔 Notificación: Se ha creado un nuevo usuario, recargando lista...");
+        forzarRecarga();
+    }
+
+    /**
+     * Obtiene el conteo actual de usuarios
+     */
+    public int getConteoUsuarios() {
+        actualizarUsuariosDesdeArchivo();
+        return usuarios != null ? usuarios.size() : 0;
+    }
+
+    /**
+     * Verifica si un usuario existe por username
+     */
+    public boolean existeUsuario(String username) {
+        if (username == null) return false;
+        
+        Usuario usuario = buscarUsuarioPorUsername(username);
+        return usuario != null;
     }
 }
