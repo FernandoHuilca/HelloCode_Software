@@ -1,6 +1,0 @@
-# Archivo de chats privados
-# Formato: nombreComunidad;participantes(separados por ,);fechaCreacion
-
-
-Comunidad para PHP;JuanMateo,Luis;2025-08-11 22:26:01
-Comunidad para PHP;JuanMateo,Prueba;2025-08-11 22:26:27

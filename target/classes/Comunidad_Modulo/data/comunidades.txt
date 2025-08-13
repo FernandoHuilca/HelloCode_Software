@@ -1,6 +1,0 @@
-# Archivo de comunidades persistidas
-# Formato: nombre;descripcion;fechaCreacion;moderador
-Java Principiantes;Comunidad para aprender Java desde cero;2025-01-25 10:00:00;ModeradorBot_Java Principiantes
-Programadores Avanzados;Espacio para discutir temas avanzados de programación;2025-01-25 11:30:00;ModeradorBot_Programadores Avanzados
-Comunidad para PHP;PHP no ha muerto;2025-08-11 22:01:48;ModeradorBot_Comunidad para PHP
-Python is life;Todo sobre Python;2025-08-11 22:16:07;ModeradorBot_Python is life
