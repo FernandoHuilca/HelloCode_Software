@@ -7,7 +7,6 @@ import Modulo_Usuario.Clases.Usuario;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Desafio {
 
@@ -18,8 +17,6 @@ public abstract class Desafio {
     protected List<Logro> logrosDisponibles;
     protected int leccionesCompletadas;
     public int meta;
-
-    // Lista estática de desafíos disponibles
     private static final List<Desafio> desafiosDisponibles = new ArrayList<>();
 
     public Desafio( List<Logro> logros, int recompensa, int meta) {
@@ -47,7 +44,7 @@ public abstract class Desafio {
 
         if (!estudiante.getLogros().contains(this.logrosDisponibles)) {
             for(Logro logro : this.logrosDisponibles) {
-                estudiante.agregarLogro(logro);
+                estudiante.actualizarLogro(logro);
             }
             return true;
         }
@@ -57,17 +54,10 @@ public abstract class Desafio {
     public void completarDesafio(ProgresoEstudiante estudiante) {
         Usuario usr = SesionManager.getInstancia().getUsuarioAutenticado();
         usr.agregarXP(puntosRecompensa);
-//        estudiante.setPuntosTotal(usr.getXp());
-
+        estudiante.aumentarDesafiosCompletados();
         // Desactivar el desafío
         desactivar();
         desbloquearLogro(estudiante);
-    }
-
-
-
-    public void asignarAvance(Integer cantidad) {
-        this.leccionesCompletadas = cantidad;
     }
 
     public void actualizarAvance(Integer cantidad) {
@@ -87,13 +77,7 @@ public abstract class Desafio {
         desafiosDisponibles.add(desafio);
     }
 
-    public static List<Desafio> getDesafiosActivos() {
-        return desafiosDisponibles.stream()
-                .filter(Desafio::getEstaActivo)
-                .collect(Collectors.toList());
-    }
-
-    public Double getProgreso() {
+    public Double getAvanceDesafio() {
         if (this.meta == 0) return 0.0;
         double progreso = (leccionesCompletadas * 100.0) / this.meta;
         return Math.min(progreso, 100.0); // Máximo 100%

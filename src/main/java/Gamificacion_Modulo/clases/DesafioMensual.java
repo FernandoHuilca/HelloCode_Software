@@ -12,6 +12,12 @@ public class DesafioMensual extends Desafio {
         this.activar();
     }
 
+    public DesafioMensual(Desafio desafio) {
+        super(desafio.logrosDisponibles, desafio.puntosRecompensa, desafio.meta);
+        this.meta = desafio.meta;
+        this.leccionesCompletadas = 0;
+        this.activar();
+    }
     @Override
     public void activar() {
         this.estaActivo = true;
