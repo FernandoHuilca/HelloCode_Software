@@ -1,30 +1,88 @@
-@startuml
-skinparam componentStyle rectangle
+@startuml Flujos_Entrada_Salida_Gamificacion
 
-' ==== Componentes ====
-component "Modulo_Usuario" as MU {
-    [Usuario]
+!theme plain
+title Diagrama de Componentes - Módulo Gamificación
+
+skinparam rectangle {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
 }
 
-component "Gamificacion_Modulo" as GM {
+skinparam arrow {
+    Color DarkBlue
+    FontColor DarkBlue
+}
+
+' === ENTRADAS AL MÓDULO ===
+rectangle "**ENTRADAS**" as Entradas {
+  [Usuario] as UserIn
+  [LeccionesCompletadas] as LessonsIn
+ [AdminDesafios/Logros] as AdminIn
+}
+
+' === NÚCLEO DEL MÓDULO GAMIFICACIÓN ===
+rectangle "**GAMIFICACION_MODULO**" as Core {
+
+  rectangle "Modelo Principal" as ModeloCore {
     [Logro]
     [Desafio]
     [DesafioSemanal]
     [DesafioMensual]
     [ProgresoEstudiante]
     [Ranking]
+  }
+
+  rectangle "Gestión" as Gestion {
+    [ControlDesafios]
+    [ControlLogros]
+    [GestionRanking]
+  }
+
 }
 
-component "Conexiones" as CN {
-    [LeccionesCompletadas]
+' === SALIDAS DEL MÓDULO ===
+rectangle "**SALIDAS**" as Salidas {
+  [Posición Ranking] as RankOut
+  [Estadísticas de Progreso/Completados] as ProgressOut
+  [Logros Conseguidos] as AchievementOut
 }
 
-' ==== Dependencias y flujo de datos ====
-MU --> GM : Entrada → Datos de Usuario
-CN --> GM : Entrada → Lecciones completadas
-GM --> GM : Salida → Posición y ranking
 
-' ==== Herencia interna en Gamificación ====
+' === FLUJOS DE ENTRADA ===
+UserIn --> Core : "1. Datos del usuario\nauthenticado"
+LessonsIn --> Core : "2. Datos de lecciones\ncompletadas"
+AdminIn --> Gestion : "Administración\nde desafíos y logros"
+
+' === FLUJOS INTERNOS ===
+Gestion --> ModeloCore : "Gestiona\nentidades"
+
+' === FLUJOS DE SALIDA ===
+Core --> RankOut : "3. Genera posición\ny ranking"
+Core --> ProgressOut : "4. Progreso y\nporcentaje desafíos"
+Core --> AchievementOut : "5. Logros\ncompletados"
+
+' === INTERACCIÓN CON GUI ===
+
+' === NOTAS DETALLADAS ===
+note as N1
+**FLUJOS DE ENTRADA DETALLADOS:**
+• **Usuario**: nombre, experiencia, email, exp de usuarios autenticados y ya registrados
+• **Lecciones Completadas**: IDs, fecha y porcentaje
+• **Administración**: creación, edición, eliminación de desafíos y logros
+end note
+
+note as N2
+**FLUJOS DE SALIDA DETALLADOS:**
+• **Ranking**: Posición global, posición por categoría
+• **Progreso**: % completado de cada desafío
+• **Logros**: Lista de logros desbloqueados
+end note
+
+
+N1 .. Entradas
+N2 .. Salidas
+
+' === HERENCIA EN MODELO PRINCIPAL ===
 [Desafio] <|-- [DesafioSemanal]
 [Desafio] <|-- [DesafioMensual]
 
