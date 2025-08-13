@@ -604,7 +604,6 @@ package "GestionDeAprendizaje"{
     Ruta --> NodoRuta
     NodoRuta *-- RecursoAprendizaje
 }
-
 package Modulo_Leccion{
 
     class Leccion{
@@ -647,24 +646,13 @@ package Modulo_Leccion{
     }
 
     class CalculoBasico{
-    - TIEMPO_MAXIMO
-        - TIEMPO_OPTIMO
-        - XP_MAXIMA
-        - XP_MINIMA
     + calcularXP()
     }
     class CalculoLeccionSinErrores{
-    - TIEMPO_MAXIMO
-    - TIEMPO_OPTIMO
-    - XP_MAXIMA
-    - XP_MINIMA
     + calcularXP()
     }
     class CalculoLeccionSinVidas{
-        - TIEMPO_MAXIMO
-        - TIEMPO_OPTIMO
-        - XP_MAXIMA
-        - XP_MINIMA
+
     + calcularXP()
     }
 
@@ -680,6 +668,16 @@ package Modulo_Leccion{
     + filtrar(Ejercicio ejercicio)
     }
 
+    abstract class CalculoXPBase{
+        # TIEMPO_MAXIMO
+        # TIEMPO_OPTIMO
+        # XP_MAXIMA
+        # XP_MINIMA
+        + {abstract}calcularXP()
+    }
+
+      'Refactor
+      CalculoXPBase ..U|> CalculoXPStrategy
 
     'Relaciones :
     LeccionRepository o--U> Leccion
@@ -691,9 +689,9 @@ package Modulo_Leccion{
     FiltroPorLenguaje --U|> FiltroEjercicio
     'Patron Strategy
     Leccion o--R> CalculoXPStrategy
-    CalculoBasico ..u|> CalculoXPStrategy
-    CalculoLeccionSinErrores ..u|> CalculoXPStrategy
-    CalculoLeccionSinVidas ..u|> CalculoXPStrategy
+    CalculoBasico --u|> CalculoXPBase
+    CalculoLeccionSinErrores --u|> CalculoXPBase
+    CalculoLeccionSinVidas --u|> CalculoXPBase
 
 
 
