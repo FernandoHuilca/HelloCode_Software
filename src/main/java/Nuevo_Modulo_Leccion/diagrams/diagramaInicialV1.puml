@@ -41,12 +41,24 @@ package Modulo_Leccion{
     }
 
     class CalculoBasico{
+    - TIEMPO_MAXIMO
+        - TIEMPO_OPTIMO
+        - XP_MAXIMA
+        - XP_MINIMA
     + calcularXP()
     }
     class CalculoLeccionSinErrores{
+    - TIEMPO_MAXIMO
+    - TIEMPO_OPTIMO
+    - XP_MAXIMA
+    - XP_MINIMA
     + calcularXP()
     }
     class CalculoLeccionSinVidas{
+        - TIEMPO_MAXIMO
+        - TIEMPO_OPTIMO
+        - XP_MAXIMA
+        - XP_MINIMA
     + calcularXP()
     }
 
