@@ -33,9 +33,8 @@ rectangle "**GAMIFICACION_MODULO**" as Core {
   }
 
   rectangle "Gestión" as Gestion {
-    [ControlDesafios]
-    [ControlLogros]
-    [GestionRanking]
+    [CrearDesafioController]
+    [CrearLogroController]
   }
 
 }
