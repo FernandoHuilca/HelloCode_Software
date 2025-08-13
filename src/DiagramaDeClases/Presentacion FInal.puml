@@ -261,6 +261,7 @@ package Modulo_Leccion{
         + {abstract}calcularXP()
     }
 
+
       'Refactor
       CalculoXPBase ..U|> CalculoXPStrategy
 
@@ -580,13 +581,13 @@ RecursosTemaController ..> RecursoAprendizaje : muestra
 
 ' Referencias a clases externas (solo menciones, sin paquete)
 ProgresoLecciones ..> AprendizajeManager : delega
-AprendizajeManager ..> "Usuario" : gestiona progreso
+
 AprendizajeManager ..> "Leccion" : procesa
 AprendizajeManager ..> "LeccionRepository" : consulta
 NodoRuta ..> "Leccion" : contiene
 RutaController ..> "TemaLeccion" : clasifica
-RutaController ..> "Usuario" : obtiene datos
-RutaController ..> "LeccionUIController" : llama a
+
+
 
 'Modulo Comunidad'
 package "Comunidad_Modulo" {
@@ -792,32 +793,13 @@ package "Comunidad_Modulo" {
         }
     }
 
-    package "Módulo Usuario" {
-        enum NivelProgramacion {
-            PRINCIPIANTE
-            INTERMEDIO
-            AVANZADO
-            EXPERTO
-        }
 
-        class UsuarioComunidad {
-            - String idUsuario
-            - String nombre
-            - String username
-            - String email
-            - NivelProgramacion nivelProgramacion
-            --
-            + getNombre(): String
-            + getUsername(): String
-            + getNivelProgramacion(): NivelProgramacion
-        }
-    }
 }
 
 ' === RELACIONES PRINCIPALES (SIMPLIFICADAS) ===
 Comunidad *-- ForoGeneral
 Comunidad --> ChatPrivado
-Comunidad --> UsuarioComunidad
+
 Comunidad --> IModerador
 
 ForoGeneral --> GrupoDiscusion
@@ -839,15 +821,15 @@ ModeradorManual --> SancionUsuario : "gestiona"
 
 ' === RELACIONES CON ENUMS ===
 GrupoDiscusion --> TipoTema
-GrupoDiscusion --> NivelProgramacion
+
 GrupoCompartir --> TipoTema
-GrupoCompartir --> NivelProgramacion
+
 HiloDiscusion --> EstadoHilo
 Solucion --> TipoSolucion
 
 ' === RELACIONES DE SERVICIOS ===
 ContextoSistema --> Comunidad
-ContextoSistema --> UsuarioComunidad
+
 ContextoSistema --> ContextoSistema
 PersistenciaService --> Comunidad
 
@@ -944,7 +926,7 @@ package "Gamificacion_Modulo" {
     Desafio <|-- DesafioMensual
 
     ' Relaciones de Composición
-    ProgresoEstudiante *-- Usuario : "contiene"
+
 
 
     ' Relaciones de Dependencia
@@ -952,7 +934,7 @@ package "Gamificacion_Modulo" {
     Desafio <. ProgresoEstudiante : "completarDesafio()"
     Ranking --> ProgresoEstudiante : "actualizarRanking()"
     Desafio -> Logro
-    LeccionesCompletadas -> Desafio
+
 }
 
 'Modulo Usuario
@@ -970,7 +952,7 @@ package "Modulo_Usuario.Clases" {
     + setPassword(password:String) : void
   }
 
-  class Usuario extends UsuarioBase {
+  class Usuario  {
     - nombre : String
     - email : String
     - xp : int
@@ -1022,7 +1004,7 @@ package "Modulo_Usuario.Clases" {
     - guardarCambiosEnArchivo() : void
   }
 
-  class UsuarioComunidad extends Usuario {
+  class UsuarioComunidad {
     - idUsuario : String
     - nivel : Nivel
     - reputacion : Integer
@@ -1064,10 +1046,8 @@ package "Modulo_Usuario.Clases" {
     {static} + fromDescripcion(descripcion:String) : Nivel
   }
 
-
 }
-
-package "Conexion" {
+package Conexion{
   class SesionManager <<external>> {
     {static} + getInstancia() : SesionManager
     + iniciarSesion(usuario:Modulo_Usuario.Clases.Usuario) : void
@@ -1086,10 +1066,17 @@ Usuario <|-- UsuarioComunidad
 ' Asociaciones y dependencias
 UsuarioComunidad "0..*" o-- "amigos" Usuario
 Usuario --> Roles
-UsuarioComunidad --> Nivel
-DebugVidas ..> SesionManager : usa
-Usuario ..> LeccionesCompletadas : usa
+Modulo_Usuario.Clases.UsuarioComunidad --> Nivel
+Usuario ..> Conexion.LeccionesCompletadas : usa
+ProgresoEstudiante *-- Modulo_Usuario.Clases.Usuario : "contiene"
+RutaController ..> "Usuario" : obtiene datos
+AprendizajeManager ..> "Usuario" : gestiona progreso
 
+Comunidad --> UsuarioComunidad
+ContextoSistema --> UsuarioComunidad
+GrupoDiscusion --> Nivel
+GrupoCompartir --> Nivel
 
-
+Modulo_Leccion.Leccion o--> EjerciciosIteractivos_Modulo.Logic.EjercicioBase
+Conexion.LeccionesCompletadas -> Desafio
 @enduml
