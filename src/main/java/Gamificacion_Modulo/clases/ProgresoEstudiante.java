@@ -40,30 +40,6 @@ public class ProgresoEstudiante {
         Ranking.getInstance().actualizarRanking(this);
     }
 
-    public void actualizarProgreso(Desafio desafio) {
-        // 1. Verificar si el desafío está completado
-        if (desafio.estaCompletado()) {
-            // 2. Actualizar porcentaje en lista de desafíos
-            listaDesafios.put("Xd", 100.0);
-
-            // 3. Verificar si desbloquea logros
-            if (desafio.verificarComplecion(this)) {
-                // 4. Completar el desafío (suma puntos y desactiva)
-                desafio.completarDesafio(this);
-                desafiosCompletados++;
-                System.out.println("Desafio completado! Puntos totales: " + puntosTotal);
-            }
-        } else {
-            // Actualizar progreso parcial
-            Double progreso = 0.0;
-            if (desafio instanceof DesafioSemanal) {
-                progreso = ((DesafioSemanal) desafio).getAvanceDesafio();
-            } else if (desafio instanceof DesafioMensual) {
-                progreso = ((DesafioMensual) desafio).getAvanceDesafio();
-            }
-            listaDesafios.put("xd", progreso);
-        }
-    }
 
     public void actualizarLogro(Logro logro) {
         if (!logrosDesbloqueados.contains(logro)) {

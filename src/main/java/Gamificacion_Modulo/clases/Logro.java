@@ -28,9 +28,9 @@ public class Logro {
         if (!inicializado) {
             logrosDisponibles.clear();
             logrosDisponibles.add(new Logro("Principiante", "Completar tu primer desafío"));
-            logrosDisponibles.add(new Logro("Dedicado", "Completar 3 desafíos"));
+            logrosDisponibles.add(new Logro("Dedicado", "Por realizar 3 lecciones"));
             logrosDisponibles.add(new Logro("Acumulador", "Obtener muchos puntos de desafíos"));
-            logrosDisponibles.add(new Logro("Coleccionista", "Obtener 5 logros"));
+            logrosDisponibles.add(new Logro("Coleccionista", "Por completar una ruta"));
             inicializado = true;
             System.out.println(">>> Logros predeterminados cargados: " + logrosDisponibles.size());
         }
