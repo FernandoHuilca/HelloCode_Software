@@ -19,6 +19,12 @@ package Modulo_Leccion{
     - filtroEjercicio : FiltroEjercicio
     + getLecciones(Lenguaje, NivelDificultad, TemaLeccion, nunEjercicios)
     }
+    abstract class FiltroEjercicio{
+    - siguiente : FiltroEjercicio
+    + cambiarSiguiente : (siguiente : FiltroEjercicio)
+    + filtrarEjercicio(Ejercicio ejercicio)
+    # {abstract} filtrar(Ejercicio ejercicio)
+    }
 
 
     enum TemaLeccion {
@@ -35,42 +41,52 @@ package Modulo_Leccion{
     }
 
     class CalculoBasico{
-            - TIEMPO_MAXIMO
-            - TIEMPO_OPTIMO
-            - XP_MAXIMA
-            - XP_MINIMA
     + calcularXP()
     }
     class CalculoLeccionSinErrores{
-            - TIEMPO_MAXIMO
-            - TIEMPO_OPTIMO
-            - XP_MAXIMA
-            - XP_MINIMA
     + calcularXP()
     }
     class CalculoLeccionSinVidas{
-            - TIEMPO_MAXIMO
-            - TIEMPO_OPTIMO
-            - XP_MAXIMA
-            - XP_MINIMA
 
     + calcularXP()
     }
 
 
+    class FiltroPorTema{
+    + filtrar(Ejercicio ejercicio)
+    }
+    class FiltroPorDificultad{
+    + filtrar(Ejercicio ejercicio)
+    }
 
+    class FiltroPorLenguaje{
+    + filtrar(Ejercicio ejercicio)
+    }
+
+    abstract class CalculoXPBase{
+        # TIEMPO_MAXIMO
+        # TIEMPO_OPTIMO
+        # XP_MAXIMA
+        # XP_MINIMA
+        + {abstract}calcularXP()
+    }
 
       'Refactor
-      CalculoBasico ..U|> CalculoXPStrategy
+      CalculoXPBase ..U|> CalculoXPStrategy
 
     'Relaciones :
     LeccionRepository o--U> Leccion
+    LeccionRepository --> FiltroEjercicio : "Usa"
     'Leccion --> TemaLeccion
     'Patron ChainOfResponsibility
+    FiltroPorTema --U|> FiltroEjercicio
+    FiltroPorDificultad --U|> FiltroEjercicio
+    FiltroPorLenguaje --U|> FiltroEjercicio
     'Patron Strategy
     Leccion o--R> CalculoXPStrategy
-    CalculoLeccionSinErrores ..u|> CalculoXPStrategy
-    CalculoLeccionSinVidas ..u|> CalculoXPStrategy
+    CalculoBasico --u|> CalculoXPBase
+    CalculoLeccionSinErrores --u|> CalculoXPBase
+    CalculoLeccionSinVidas --u|> CalculoXPBase
 
 
 

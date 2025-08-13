@@ -1,14 +1,9 @@
 package Nuevo_Modulo_Leccion.logic;
 
-public class CalculoXPBasico implements CalculoXP {
-    private long tiempoDeLeccion; // en milisegundos
-    private final int XP_MINIMA = 200;
-    private final int XP_MAXIMA = 500;
-    private final long TIEMPO_OPTIMO = 120_000;  // 2 minutos en ms
-    private final long TIEMPO_MAXIMO = 600_000;  // 10 minutos en ms
+public class CalculoXPBasico extends CalculoXPBase {
 
     public CalculoXPBasico(long tiempoTranscurridoLeccion) {
-        this.tiempoDeLeccion = tiempoTranscurridoLeccion;
+        super(tiempoTranscurridoLeccion, 200, 500, 120_000, 600_000);
     }
 
     @Override
