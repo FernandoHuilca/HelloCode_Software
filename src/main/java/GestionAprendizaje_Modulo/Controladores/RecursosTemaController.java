@@ -121,7 +121,7 @@ public class RecursosTemaController {
     @FXML
     private void volverARuta() {
         try {
-            javafx.stage.Stage stage = (javafx.stage.Stage) recursosContainerVBox.getScene().getWindow();
+            Stage stage = (Stage) recursosContainerVBox.getScene().getWindow();
             Conexion.MetodosFrecuentes.cambiarVentana(stage, "/GestionAprendizaje_Modulo/Vistas/Ruta.fxml", "Ruta");
         } catch (Exception ex) {
             ex.printStackTrace();

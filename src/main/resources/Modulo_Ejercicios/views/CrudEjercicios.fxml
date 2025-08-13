@@ -10,9 +10,9 @@
             fx:controller="Modulo_Ejercicios.Controladores.GUICrud_Controller"
             prefWidth="360.0" prefHeight="640.0"
             style="-fx-background-color: #424874;">
-    
+
     <!-- Navbar superior -->
-    <HBox style="-fx-background-color: #A6B1E1; -fx-effect: dropshadow(gaussian, #23243a, 4, 0.2, 0, 2);" 
+    <HBox style="-fx-background-color: #A6B1E1; -fx-effect: dropshadow(gaussian, #23243a, 4, 0.2, 0, 2);"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" prefHeight="60">
         <padding>
             <Insets top="12" right="20" bottom="12" left="20"/>
@@ -29,11 +29,11 @@
     </HBox>
 
     <!-- Contenido principal con ScrollPane -->
-    <ScrollPane fitToWidth="true" 
-                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" 
+    <ScrollPane fitToWidth="true"
+                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                 AnchorPane.topAnchor="60" AnchorPane.bottomAnchor="0"
                 style="-fx-background: transparent; -fx-background-color: transparent;">
-        
+
         <VBox spacing="20" alignment="TOP_CENTER">
             <padding>
                 <Insets top="20" right="16" bottom="20" left="16"/>
@@ -41,9 +41,9 @@
 
             <!-- Título de sección -->
             <VBox alignment="CENTER" spacing="8">
-                <Label text="💻 Crear Nuevo Ejercicio" 
+                <Label text="💻 Crear Nuevo Ejercicio"
                        style="-fx-text-fill: #DCD6F7; -fx-font-size: 24px; -fx-font-weight: bold;"/>
-                <Label text="Completa los campos para crear un ejercicio" 
+                <Label text="Completa los campos para crear un ejercicio"
                        style="-fx-text-fill: #A6B1E1; -fx-font-size: 14px;"/>
             </VBox>
 
@@ -51,107 +51,107 @@
             <VBox spacing="8" maxWidth="320">
                 <Label text="Tipo de Ejercicio" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px; -fx-font-weight: bold;"/>
                 <ComboBox fx:id="comboTipoEjercicio" prefWidth="320" promptText="Selecciona el tipo de ejercicio"
-                         style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"
-                         onAction="#cambiarTipoEjercicio"/>
+                          style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"
+                          onAction="#cambiarTipoEjercicio"/>
             </VBox>
 
             <!-- Instrucción -->
             <VBox spacing="8" maxWidth="320">
                 <Label text="Instrucción/Pregunta" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px; -fx-font-weight: bold;"/>
                 <TextArea fx:id="txtInstruccion" prefRowCount="3" prefWidth="320" wrapText="true"
-                         promptText="Escribe la instrucción o pregunta del ejercicio..."
-                         style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                          promptText="Escribe la instrucción o pregunta del ejercicio..."
+                          style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
             </VBox>
 
             <!-- Lenguaje -->
             <VBox spacing="8" maxWidth="320">
                 <Label text="Lenguaje de Programación" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px; -fx-font-weight: bold;"/>
                 <ComboBox fx:id="comboLenguaje" prefWidth="320" promptText="Selecciona el lenguaje"
-                         style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                          style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
             </VBox>
 
             <!-- Nivel de dificultad -->
             <VBox spacing="8" maxWidth="320">
                 <Label text="Nivel de Dificultad" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px; -fx-font-weight: bold;"/>
                 <ComboBox fx:id="comboNivel" prefWidth="320" promptText="Selecciona el nivel"
-                         style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                          style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
             </VBox>
 
             <!-- Tema de la lección -->
             <VBox spacing="8" maxWidth="320">
                 <Label text="Tema de la Lección" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px; -fx-font-weight: bold;"/>
                 <ComboBox fx:id="comboTema" prefWidth="320" promptText="Selecciona el tema"
-                         style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                          style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
             </VBox>
 
             <!-- Sección específica para ejercicios de selección -->
             <VBox fx:id="seccionSeleccion" spacing="16" maxWidth="320" visible="false" managed="false">
                 <Label text="Opciones de Selección" style="-fx-text-fill: #DCD6F7; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                
+
                 <!-- Opciones -->
                 <VBox spacing="8">
                     <Label text="Opciones (separadas por comas)" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px;"/>
                     <TextArea fx:id="txtOpciones" prefRowCount="3" prefWidth="320" wrapText="true"
-                             promptText="Ejemplo: opcion1,opcion2,opcion3,opcion4"
-                             style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                              promptText="Ejemplo: opcion1,opcion2,opcion3,opcion4"
+                              style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
                 </VBox>
 
                 <!-- Respuestas correctas -->
                 <VBox spacing="8">
                     <Label text="Respuestas Correctas (separadas por comas)" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px;"/>
                     <TextField fx:id="txtRespuestasCorrectas" prefWidth="320"
-                              promptText="Ejemplo: respuesta1,respuesta2"
-                              style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                               promptText="Ejemplo: respuesta1,respuesta2"
+                               style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
                 </VBox>
             </VBox>
 
             <!-- Sección específica para ejercicios de completar código -->
             <VBox fx:id="seccionCompletar" spacing="16" maxWidth="320" visible="false" managed="false">
                 <Label text="Completar Código" style="-fx-text-fill: #DCD6F7; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                
+
                 <!-- Código con espacios -->
                 <VBox spacing="8">
                     <Label text="Código (usa _____ para espacios en blanco)" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px;"/>
                     <TextArea fx:id="txtCodigo" prefRowCount="4" prefWidth="320" wrapText="true"
-                             promptText="Ejemplo: public _____ main(String[] args) { _____ }"
-                             style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8; -fx-font-family: 'Courier New';"/>
+                              promptText="Ejemplo: public _____ main(String[] args) { _____ }"
+                              style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8; -fx-font-family: 'Courier New';"/>
                 </VBox>
 
                 <!-- Respuestas para los espacios -->
                 <VBox spacing="8">
                     <Label text="Respuestas para los espacios (separadas por comas)" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px;"/>
                     <TextField fx:id="txtRespuestasEspacios" prefWidth="320"
-                              promptText="Ejemplo: static void,System.out.println"
-                              style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                               promptText="Ejemplo: static void,System.out.println"
+                               style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
                 </VBox>
             </VBox>
 
             <!-- Sección específica para ejercicios de emparejar -->
             <VBox fx:id="seccionEmparejar" spacing="16" maxWidth="320" visible="false" managed="false">
                 <Label text="Emparejar Opciones" style="-fx-text-fill: #DCD6F7; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                
+
                 <!-- Columna izquierda -->
                 <VBox spacing="8">
                     <Label text="Columna Izquierda (separadas por comas)" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px;"/>
                     <TextArea fx:id="txtColumnaIzquierda" prefRowCount="3" prefWidth="320" wrapText="true"
-                             promptText="Ejemplo: Variable,Función,Clase"
-                             style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                              promptText="Ejemplo: Variable,Función,Clase"
+                              style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
                 </VBox>
 
                 <!-- Columna derecha -->
                 <VBox spacing="8">
                     <Label text="Columna Derecha (separadas por comas)" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px;"/>
                     <TextArea fx:id="txtColumnaDerecha" prefRowCount="3" prefWidth="320" wrapText="true"
-                             promptText="Ejemplo: Almacena datos,Ejecuta código,Define objeto"
-                             style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                              promptText="Ejemplo: Almacena datos,Ejecuta código,Define objeto"
+                              style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
                 </VBox>
 
                 <!-- Emparejamientos correctos -->
                 <VBox spacing="8">
                     <Label text="Emparejamientos Correctos (formato: izq|der, separados por comas)" style="-fx-text-fill: #DCD6F7; -fx-font-size: 14px;"/>
                     <TextField fx:id="txtEmparejamientosCorrectos" prefWidth="320"
-                              promptText="Ejemplo: Variable|Almacena datos,Función|Ejecuta código"
-                              style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
+                               promptText="Ejemplo: Variable|Almacena datos,Función|Ejecuta código"
+                               style="-fx-background-color: #DCD6F7; -fx-text-fill: #424874; -fx-background-radius: 8; -fx-padding: 8;"/>
                 </VBox>
             </VBox>
 
@@ -170,23 +170,23 @@
 
             <!-- Sección de visualización de ejercicios -->
             <VBox alignment="CENTER" spacing="12">
-                <Label text="📋 Ejercicios Existentes" 
+                <Label text="📋 Ejercicios Existentes"
                        style="-fx-text-fill: #DCD6F7; -fx-font-size: 20px; -fx-font-weight: bold;"/>
-                
+
                 <!-- Filtros -->
                 <HBox spacing="12" alignment="CENTER">
                     <ComboBox fx:id="filtroTipo" promptText="Filtrar por tipo" prefWidth="140"
-                             style="-fx-background-color: #A6B1E1; -fx-text-fill: #424874; -fx-background-radius: 6; -fx-padding: 6;"
-                             onAction="#filtrarEjercicios"/>
+                              style="-fx-background-color: #A6B1E1; -fx-text-fill: #424874; -fx-background-radius: 6; -fx-padding: 6;"
+                              onAction="#filtrarEjercicios"/>
                     <ComboBox fx:id="filtroLenguaje" promptText="Filtrar por lenguaje" prefWidth="140"
-                             style="-fx-background-color: #A6B1E1; -fx-text-fill: #424874; -fx-background-radius: 6; -fx-padding: 6;"
-                             onAction="#filtrarEjercicios"/>
+                              style="-fx-background-color: #A6B1E1; -fx-text-fill: #424874; -fx-background-radius: 6; -fx-padding: 6;"
+                              onAction="#filtrarEjercicios"/>
                 </HBox>
 
                 <!-- Lista de ejercicios -->
                 <ListView fx:id="listaEjercicios" prefHeight="300" prefWidth="320" maxWidth="320"
-                         style="-fx-background-color: #DCD6F7; -fx-background-radius: 8; -fx-border-color: #A6B1E1; -fx-border-radius: 8;"/>
-                
+                          style="-fx-background-color: #DCD6F7; -fx-background-radius: 8; -fx-border-color: #A6B1E1; -fx-border-radius: 8;"/>
+
                 <!-- Botones para ejercicios seleccionados -->
                 <HBox spacing="8" alignment="CENTER">
                     <Button text="Ver Detalles" onAction="#verDetalles"

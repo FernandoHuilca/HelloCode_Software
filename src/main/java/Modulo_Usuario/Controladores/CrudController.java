@@ -1,10 +1,7 @@
 package Modulo_Usuario.Controladores;
 
 import Conexion.SesionManager;
-import Modulo_Usuario.Clases.NivelJava;
-import Modulo_Usuario.Clases.Roles;
-import Modulo_Usuario.Clases.Usuario;
-import Modulo_Usuario.Clases.UsuarioComunidad;
+import Modulo_Usuario.Clases.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -236,10 +233,10 @@ public class CrudController {
                 bw.write(usuario.toString() + "\n");
             }
             mostrarMensaje("Usuarios guardados correctamente", "success");
-            
+
             // Notificar al SesionManager después de guardar cambios
             SesionManager.getInstancia().forzarRecarga();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
             mostrarMensaje("Error al guardar usuarios: " + e.getMessage(), "error");
@@ -272,10 +269,10 @@ public class CrudController {
         if (nuevoUsuario != null) {
             usuarios.add(nuevoUsuario);
             guardarUsuarios();
-            
+
             // Notificar al SesionManager que se creó un nuevo usuario
             SesionManager.getInstancia().notificarNuevoUsuario();
-            
+
             actualizarListView();
             limpiarCampos();
             mostrarMensaje("Usuario agregado correctamente", "success");
