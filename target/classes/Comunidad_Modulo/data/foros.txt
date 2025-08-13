@@ -1,0 +1,10 @@
+# Archivo de grupos de foro
+# Formato: nombreComunidad;tipoGrupo;titulo;nivelJava;tipoTema;creador
+Java Principiantes;DISCUSION;Prueba1;Intermedio;Estructuras de Datos;Sistema
+Java Principiantes;DISCUSION;PRUEBA2;Principiante;Sintaxis;Sistema
+Comunidad para PHP;DISCUSION;Discusion PHP;Principiante;Sintaxis;Luis
+Comunidad para PHP;DISCUSION;PHP para principiantes;Principiante;Frameworks;Luis
+Comunidad para PHP;COMPARTIR;PHP Solutions;Principiante;Estructuras de Datos;Luis
+Comunidad para PHP;DISCUSION;PHP no merece su propia comunidad, borrenla;Principiante;Sintaxis;JuanMateo
+Comunidad para PHP;COMPARTIR;Compartiendo hacks de PHP para estafar gente;Principiante;Sintaxis;JuanMateo
+Python is life;DISCUSION;Python GOD;Principiante;Sintaxis;JuanMateo
