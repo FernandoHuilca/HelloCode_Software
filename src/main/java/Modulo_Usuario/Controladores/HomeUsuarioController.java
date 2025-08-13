@@ -2,7 +2,12 @@ package Modulo_Usuario.Controladores;
 
 import Conexion.MetodosFrecuentes;
 import Conexion.SesionManager;
+
+import Gamificacion_Modulo.clases.Main;
+
 import Gamificacion_Modulo.utils.GestorGamificacion;
+//import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
+
 import GestionAprendizaje_Modulo.Controladores.DiagnosticoController;
 import GestionAprendizaje_Modulo.Logica.ConfiguracionUsuarioService;
 import Modulo_Usuario.Clases.Usuario;

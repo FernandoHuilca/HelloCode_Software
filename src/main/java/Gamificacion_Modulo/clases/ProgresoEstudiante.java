@@ -77,7 +77,7 @@ public class ProgresoEstudiante {
     public static ProgresoEstudiante getProgresoUsuarioLogueado() {
         try {
             Conexion.SesionManager sesionManager = Conexion.SesionManager.getInstancia();
-            Modulo_Usuario.Clases.Usuario usuarioLogueado = sesionManager.getUsuarioAutenticado();
+            Usuario usuarioLogueado = sesionManager.getUsuarioAutenticado();
 
             if (usuarioLogueado == null) {
                 System.out.println(">>> No hay usuario logueado en el sistema");

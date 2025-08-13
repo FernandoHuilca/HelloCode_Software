@@ -1,8 +1,22 @@
 package Modulo_Usuario.Controladores;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import Conexion.SesionManager;
-import Gamificacion_Modulo.utils.GestorGamificacion;
 import GestionAprendizaje_Modulo.Logica.ConfiguracionUsuarioService;
+import Gamificacion_Modulo.utils.GestorGamificacion;
+//import GestionAprendizaje_Modulo.Controladores.ConfiguracionUsuarioService;
+
 import Modulo_Usuario.Clases.Roles;
 import Modulo_Usuario.Clases.Usuario;
 import javafx.event.ActionEvent;
@@ -14,12 +28,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class RegisterController {
     @FXML private TextField nombreField;
@@ -146,18 +154,18 @@ public class RegisterController {
 
     }
 
- private void verificarGuardarUsuario(Usuario nuevoUsuario) {
+    private void verificarGuardarUsuario(Usuario nuevoUsuario) {
 
         if (guardarUsuario(nuevoUsuario)) {
             // Notificar al SesionManager que se creó un nuevo usuario
             SesionManager.getInstancia().notificarNuevoUsuario();
-            
+
             // NUEVA LÓGICA: Marcar usuario como "primera vez" si es USUARIO normal
             if (nuevoUsuario.getRol() == Roles.USUARIO) {
                 ConfiguracionUsuarioService.getInstancia().marcarUsuarioNuevo(nuevoUsuario.getUsername());
                 System.out.println("Usuario marcado como primera vez: " + nuevoUsuario.getUsername());
             }
-            
+
             mostrarMensaje("Usuario registrado exitosamente", false);
             GestorGamificacion.crearProgresoEstudiante();
             limpiarCampos();

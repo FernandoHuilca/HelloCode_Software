@@ -8,3 +8,4 @@ Empareja cada concepto OOP con su descripción:|Ocultar detalles internos/Encaps
 Empareja cada excepción con su causa típica:|Acceso a índice inválido/IndexOutOfBoundsException,Conversión de tipo incompatible/ClassCastException,División entre cero/ArithmeticException,Acceso a referencia nula/NullPointerException|INTERMEDIO|JAVA|OTRO
 Empareja cada operación de stream con su función:|Transforma cada elemento/map,Filtra elementos por predicado/filter,Reduce a un solo resultado/reduce,Ordena los elementos/sorted|AVANZADO|JAVA|FUNCIONES_Y_METODOS
 Empareja cada palabra clave de concurrencia con su propósito:|Bloque sincronizado/synchronized,Leer o escribir variable de forma visible entre hilos/volatile,Crear nuevo hilo/Thread,Resultado futuro de una tarea/Future|AVANZADO|JAVA|OTRO
+Hola|Hola/holis|INTERMEDIO|PYTHON|TIPOS_Y_OPERADORES
