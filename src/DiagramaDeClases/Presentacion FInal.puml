@@ -1,0 +1,1082 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'Modulo de Ejercicio'
+package "EjerciciosIteractivos_Modulo.Logic" {
+    ' Interfaces
+    interface EvaluadorRespuestas {
+        + evaluarRespuestas(ArrayList<Respuesta>): ResultadoDeEvaluacion
+    }
+
+    interface Respuesta {
+        + getRespuesta(): Object
+    }
+
+    ' Enums
+    enum NivelDificultad {
+        PRINCIPIANTE
+        BASICO
+        INTERMEDIO
+        AVANZADO
+        EXPERTO
+        --
+        + getDescripcion(): String
+    }
+
+    enum Lenguaje {
+        JAVA
+        PYTHON
+        C
+        PHP
+    }
+
+    ' Clases de Evaluación
+    class ResultadoDeEvaluacion {
+        - porcentajeDeAcerto: double
+        --
+        + ResultadoDeEvaluacion(porcentajeDeAcerto: double)
+        + getPorcentajeDeAcerto(): double
+    }
+
+    class RespuestaString {
+        - respuesta: String
+        --
+        + RespuestaString(respuesta: String)
+        + getRespuesta(): Object
+    }
+
+    ' Clases de Ejercicios
+    abstract class EjercicioBase {
+        # instruccion: String
+        # respuestasCorrectas: ArrayList<String>
+        # nivelDificultad: NivelDificultad
+        # lenguaje: Lenguaje
+        # temaLeccion: TemaLeccion
+        --
+        + EjercicioBase(instruccion, respuestasCorrectas, nivelDificultad, lenguaje, temaLeccion)
+        + getInstruccion(): String
+        + getNivel(): NivelDificultad
+        + getLenguaje(): Lenguaje
+        + getTemaLeccion(): TemaLeccion
+        + {abstract} evaluarRespuestas(ArrayList<Respuesta>): ResultadoDeEvaluacion
+    }
+
+    class EjercicioSeleccion {
+        - opcionesDeSeleccion: ArrayList<String>
+        --
+        + getListOpciones(): ArrayList<String>
+        + getOpcion(numOpcion: int): String
+        + obtenerRespuestasCorrectas(): ArrayList<String>
+        + evaluarRespuestas(ArrayList<Respuesta>): ResultadoDeEvaluacion
+        + getLenguajeEjercicio(): String
+    }
+
+    class EjercicioSeleccionBuilder {
+        - instruccion: String
+        - opcionesDeSeleccion: ArrayList<String>
+        - respuestasCorrectas: ArrayList<String>
+        - nivelDificultad: NivelDificultad
+        - lenguaje: Lenguaje
+        - temaLeccion: TemaLeccion
+        --
+        + conInstruccion(instruccion: String): Builder
+        + conOpcion(opcion: String): Builder
+        + conOpciones(opciones: ArrayList<String>): Builder
+        + conRespuestaCorrecta(respuestaCorrecta: String): Builder
+        + conRespuestasCorrectas(respuestasCorrectas: ArrayList<String>): Builder
+        + conNivel(nivelDificultad: NivelDificultad): Builder
+        + conLenguaje(lenguaje: Lenguaje): Builder
+        + conTema(temaLeccion: TemaLeccion): Builder
+        + construir(): EjercicioSeleccion
+    }
+
+    class EjercicioCompletarCodigo {
+        - codigoIncompleto: String
+        - partesFaltantes: ArrayList<String>
+        - respuestasEsperadas: ArrayList<String>
+        - partesDelCodigoIncompleto: String
+        --
+        - generarPartesDelCodigo(codigoIncompleto: String, bandera: String): void
+        + obtenerPartesDelCodigoIncompleto():ArrayList<String>
+        + obtenerCodigoIncompleto(): String
+        + obtenerPartesFaltantes(): ArrayList<String>
+        + obtenerRespuestasEsperadas(): ArrayList<String>
+        + obtenerNumeroPartesFaltantes(): int
+        + getLenguajeEjercicio(): String
+        + evaluarRespuestas(ArrayList<Respuesta>): ResultadoDeEvaluacion
+    }
+
+    class EjercicioCompletarCodigoBuilder {
+        - instruccion: String
+        - codigoIncompleto: String
+        - partesFaltantes: ArrayList<String>
+        - respuestasEsperadas: ArrayList<String>
+        - nivelDificultad: NivelDificultad
+        - lenguaje: Lenguaje
+        - temaLeccion: TemaLeccion
+        --
+        + conInstruccion(instruccion: String): Builder
+        + conCodigoIncompleto(codigoIncompleto: String): Builder
+        + conParteFaltante(parteFaltante: String): Builder
+        + conPartesFaltantes(partesFaltantes: ArrayList<String>): Builder
+        + conRespuestaEsperada(respuestaEsperada: String): Builder
+        + conRespuestasEsperadas(respuestasEsperadas: ArrayList<String>): Builder
+        + conNivel(nivelDificultad: NivelDificultad): Builder
+        + conLenguaje(lenguaje: Lenguaje): Builder
+        + conTema(temaLeccion: TemaLeccion): Builder
+        + construir(): EjercicioCompletarCodigo
+    }
+
+    class EjercicioEmparejar {
+        - columnaIzquierda ArrayList<String>
+        - columnaDerecha ArrayList<String>
+        --
+        + obtenerColumnaIzquierda():
+        + obtenerColumnaDerecha():
+        + obtenerNumeroParejas():
+        + obtenerRespuestasCorrectas():
+        + getLenguajeEjercicio(): String
+        + evaluarRespuestas(ArrayList<Respuesta>): ResultadoDeEvaluacion
+    }
+    class EjercicioEmparejarBuilder{
+        - instruccion: String
+        - columnaIzquierda: ArrayList<String>
+        - columnaDerecha: ArrayList<String>
+        - respuestasCorrectas: ArrayList<String>
+        - nivelDificultad: NivelDificultad
+        - lenguaje: Lenguaje
+        - temaLeccion: TemaLeccion
+        --
+        + conInstruccion(instruccion: String): Builder
+        + conOpcionIzquierda(opcion: String): Builder
+        + conOpcionesIzquierda(opciones: ArrayList<String>): Builder
+        + conOpcionDerecha(opcion: String): Builder
+        + conOpcionesDerecha(opciones: ArrayList<String>): Builder
+        + conRespuestaCorrecta(respuestaCorrecta: String): Builder
+        + conRespuestasCorrectas(respuestasCorrectas: ArrayList<String>): Builder
+        + conNivel(nivelDificultad: NivelDificultad): Builder
+        + conLenguaje(lenguaje: Lenguaje): Builder
+        + conTema(temaLeccion: TemaLeccion): Builder
+        + construir(): EjercicioEmparejar
+    }
+
+
+
+
+' Relaciones de Implementación (Dependencia)
+EjercicioBase ..|> EvaluadorRespuestas
+RespuestaString ..|> Respuesta
+
+' Relaciones de Herencia (Dependencia)
+EjercicioSeleccion --|> EjercicioBase
+EjercicioCompletarCodigo --|> EjercicioBase
+EjercicioEmparejar --|> EjercicioBase
+
+' Relaciones de Composición (Composición fuerte - ciclo de vida compartido)
+EjercicioBase --> NivelDificultad : "tiene"
+EjercicioBase --> Lenguaje : "tiene"
+
+
+' Relaciones de Asociación (Uso temporal)
+EvaluadorRespuestas ..> Respuesta : "evalúa"
+EvaluadorRespuestas ..> ResultadoDeEvaluacion : "retorna"
+
+' Relaciones de Builder (Asociación de creación)
+EjercicioSeleccionBuilder ..> EjercicioSeleccion : "construye"
+EjercicioCompletarCodigoBuilder ..> EjercicioCompletarCodigo : "construye"
+EjercicioEmparejarBuilder ..> EjercicioEmparejar : "construye"
+}
+
+'Mdulo Lecciones'
+
+package Modulo_Leccion{
+
+    class Leccion{
+        - listEjercicio<EjercicioBase> : EjercicioBase
+        - xpQueOtorga : int
+        - completada : boolean
+        - tema : TemaLeccion
+        - calculoXP : CalculoXPStrategy
+        + agregarEjercicio(Ejercicio nuevoEjercicio) : void
+        + agregarEjerciciosLista(List<EjercicioBase>)
+        + getNumeroEjercicios() : int
+        + getListaEjercicios() : List<EjercicioBase>
+        + setCompletada() : void
+        + getXPcalculada(metodo : CalculoXPStrategy)
+    }
+
+    abstract class LeccionRepository{
+    - filtroEjercicio : FiltroEjercicio
+    + getLecciones(Lenguaje, NivelDificultad, TemaLeccion, nunEjercicios)
+    }
+    abstract class FiltroEjercicio{
+    - siguiente : FiltroEjercicio
+    + cambiarSiguiente : (siguiente : FiltroEjercicio)
+    + filtrarEjercicio(Ejercicio ejercicio)
+    # {abstract} filtrar(Ejercicio ejercicio)
+    }
+
+
+    enum TemaLeccion {
+        CONTROL_DE_FLUJO
+        TIPOS_Y_OPERADORES
+        FUNCIONES_Y_METODOS
+        CLASES_Y_ESTRUCTURAS
+        ENTRADA_Y_SALIDA
+        OTRO
+    }
+
+    interface CalculoXPStrategy <<Interface>>{
+    + {abstract} calcularXP()
+    }
+
+    class CalculoBasico{
+    + calcularXP()
+    }
+    class CalculoLeccionSinErrores{
+    + calcularXP()
+    }
+    class CalculoLeccionSinVidas{
+
+    + calcularXP()
+    }
+
+
+    class FiltroPorTema{
+    + filtrar(Ejercicio ejercicio)
+    }
+    class FiltroPorDificultad{
+    + filtrar(Ejercicio ejercicio)
+    }
+
+    class FiltroPorLenguaje{
+    + filtrar(Ejercicio ejercicio)
+    }
+
+    abstract class CalculoXPBase{
+        # TIEMPO_MAXIMO
+        # TIEMPO_OPTIMO
+        # XP_MAXIMA
+        # XP_MINIMA
+        + {abstract}calcularXP()
+    }
+
+
+      'Refactor
+      CalculoXPBase ..U|> CalculoXPStrategy
+
+    'Relaciones :
+    LeccionRepository o--U> Leccion
+    LeccionRepository --> FiltroEjercicio : "Usa"
+    'Leccion --> TemaLeccion
+    'Patron ChainOfResponsibility
+    FiltroPorTema --U|> FiltroEjercicio
+    FiltroPorDificultad --U|> FiltroEjercicio
+    FiltroPorLenguaje --U|> FiltroEjercicio
+    'Patron Strategy
+    Leccion o--R> CalculoXPStrategy
+    CalculoBasico --u|> CalculoXPBase
+    CalculoLeccionSinErrores --u|> CalculoXPBase
+    CalculoLeccionSinVidas --u|> CalculoXPBase
+
+}
+
+'Modulo Ruta'
+skinparam class {
+    BackgroundColor lightblue
+    BorderColor black
+    ArrowColor black
+}
+skinparam package {
+    BackgroundColor lightgray
+    BorderColor black
+}
+
+package "GestionAprendizaje_Modulo.Modelo" {
+    abstract class RecursoAprendizaje {
+        # titulo : String
+        # lenguaje : String
+        # tema : String
+        # url : String
+        + RecursoAprendizaje(String, String, String, String)
+        + getTitulo() : String
+        + getLenguaje() : String
+        + getTema() : String
+        + getUrl() : String
+        + {abstract} obtenerDetalle() : String
+        + toString() : String
+    }
+
+    class Video {
+        - duracionEnSegundos : int
+        + Video(String, String, String, String, int)
+        + getDuracionEnSegundos() : int
+        + obtenerDetalle() : String
+    }
+
+    class DocumentoPDF {
+        - numeroDePaginas : int
+        + DocumentoPDF(String, String, String, String, int)
+        + obtenerDetalle() : String
+    }
+
+    class Articulo {
+        + Articulo(String, String, String, String)
+        + obtenerDetalle() : String
+    }
+}
+
+package "GestionAprendizaje_Modulo.Repositorio" {
+    class RecursoRepository {
+        - {static} instancia : RecursoRepository
+        - bancoDeRecursos : List<RecursoAprendizaje>
+        - RecursoRepository()
+        + {static} getInstancia() : RecursoRepository
+        + cargarRecursosDesdeTXT() : void
+        + buscarRecursosPorLenguajeYTema(String, String) : List<RecursoAprendizaje>
+        - crearRecurso(String[]) : RecursoAprendizaje
+    }
+}
+
+package "GestionAprendizaje_Modulo.Logica" {
+    class Curso {
+        - id : String
+        - nombre : String
+        - descripcion : String
+        - rutas : List<Ruta>
+        + Curso(String, String, String)
+        + agregarRuta(Ruta) : void
+        + getId() : String
+        + getNombre() : String
+        + getDescripcion() : String
+        + getRutas() : List<Ruta>
+    }
+
+    class Ruta {
+        - id : String
+        - nombre : String
+        - nivel : String
+        - nodos : List<NodoRuta>
+        + Ruta(String, String, String)
+        + agregarNodo(NodoRuta) : void
+        + getId() : String
+        + getNombre() : String
+        + getNivel() : String
+        + getNodos() : List<NodoRuta>
+    }
+
+    class NodoRuta {
+        - orden : int
+        - completado : boolean
+        - id : String
+        - leccion : Leccion
+        - materialDeApoyo : List<RecursoAprendizaje>
+        + NodoRuta(int, String, Leccion)
+        + getId() : String
+        + getOrden() : int
+        + getLeccion() : Leccion
+    }
+
+    class AprendizajeManager {
+        - {static} instancia : AprendizajeManager
+        - rutasPlantilla : List<Ruta>
+        - progresoPorUsuario : Map<String, Map<String, Boolean>>
+        - RUTA_ARCHIVO_PROGRESO : Path
+        - completionPolicy : CompletionPolicy
+        - AprendizajeManager()
+        + {static} getInstancia() : AprendizajeManager
+        + construirDatosDePrueba() : void
+        + getCompletionPolicy() : CompletionPolicy
+        + getRutaPorNombre(String) : Ruta
+        + onLeccionCompletada(Usuario, Leccion) : void
+        + isNodoCompletadoParaUsuario(Usuario, NodoRuta) : boolean
+        + getLeccionesCompletadasParaUsuario(Usuario) : int
+        + sincronizarBanderasParaUsuario(String) : void
+        - construirRutaJava() : void
+        - construirRutaPython() : void
+        - construirRutaPhp() : void
+        - construirRutaC() : void
+        - guardarProgresoEnArchivo() : void
+        - cargarProgresoDesdeArchivo() : void
+    }
+
+    enum CompletionPolicy {
+        NODE_PROGRESS_ONLY
+        LECCION_FLAG_ONLY
+        EITHER
+        BOTH
+    }
+
+    class ProgresoLecciones {
+        + {static} getLeccionesCompletadas() : int
+    }
+
+    class ConfiguracionUsuarioService {
+        - {static} ARCHIVO_CONFIGURACION : String
+        - {static} instancia : ConfiguracionUsuarioService
+        - ConfiguracionUsuarioService()
+        + {static} getInstancia() : ConfiguracionUsuarioService
+        + esPrimeraVez(String) : boolean
+        + obtenerConfiguracion(String) : ConfiguracionUsuario
+        + guardarConfiguracion(String, String, String) : void
+        + guardarConfiguracionMultiple(String, List<String>, List<String>) : void
+        + agregarLenguajesAlUsuario(String, List<String>, List<String>) : void
+        + marcarUsuarioNuevo(String) : void
+        - leerConfiguraciones() : List<ConfiguracionUsuario>
+        - parsearLinea(List<ConfiguracionUsuario>, String) : void
+        - escribirConfiguraciones(List<ConfiguracionUsuario>) : void
+    }
+
+    class ConfiguracionUsuario {
+        - username : String
+        - lenguajes : List<String>
+        - niveles : List<String>
+        - primeraVez : boolean
+        + ConfiguracionUsuario(String, List<String>, List<String>, boolean)
+        + ConfiguracionUsuario(String, String, String, boolean)
+        + getUsername() : String
+        + getLenguajes() : List<String>
+        + getNiveles() : List<String>
+        + isPrimeraVez() : boolean
+        + getLenguaje() : String
+        + getNivel() : String
+        + setPrimeraVez(boolean) : void
+        + agregarLenguaje(String, String) : void
+        + tieneLinquaje(String) : boolean
+        + getNivelParaLenguaje(String) : String
+    }
+}
+
+package "GestionAprendizaje_Modulo.Controladores" {
+    class RutaController {
+        - contenidoVBox : VBox
+        - tituloLenguajeLabel : Label
+        - rootPane : AnchorPane
+        - btnLibrary : Button
+        - btnAdd : Button
+        - usuarioActual : Usuario
+        - rutaActual : Ruta
+        - nivelDesbloqueado : int
+        + initialize() : void
+        - cargarDatosIniciales() : void
+        - construirContenedoresVisuales() : void
+        - crearContenedorUI(TemaLeccion, List<NodoRuta>, boolean) : VBox
+        - determinarTemasVisibles() : int
+        - agruparNodosPorTema() : Map<TemaLeccion, List<NodoRuta>>
+        - calcularNivelDesbloqueado() : int
+        - estanTodosCompletos(Map<TemaLeccion, List<NodoRuta>>, int, int) : boolean
+        - configurarListenersBotones() : void
+        - abrirVentanaDeRecursos(String, TemaLeccion) : void
+        - capitalizar(String) : String
+        + manejarAtras() : void
+    }
+
+    class DiagnosticoController {
+        + {static} nivelSeleccionado : String
+        + {static} lenguajeSeleccionado : String
+        - tituloLabel : Label
+        - rbNivelBasico : RadioButton
+        - rbNivelIntermedio : RadioButton
+        - rbNivelAvanzado : RadioButton
+        - btnContinuar : Button
+        - nivelGroup : ToggleGroup
+        + initialize() : void
+        + setDiagnosticoText(String) : void
+    }
+
+    class MisLenguajesController {
+        - lenguajesContainer : VBox
+        - rootPane : AnchorPane
+        - btnAtras : Button
+        - btnHome : Button
+        - btnAdd : Button
+        - btnLibrary : Button
+        - usuarioActual : Usuario
+        + initialize() : void
+        - cargarLenguajesDelUsuario() : void
+        - crearTarjetaLenguaje(String, String) : VBox
+        - configurarBotones() : void
+    }
+
+    class SeleccionMultipleLenguajesController {
+        - lenguajesContainer : VBox
+        - btnContinuar : Button
+        - btnVolver : Button
+        - checkBoxLenguajes : Map<String, CheckBox>
+        - comboBoxNiveles : Map<String, ComboBox<String>>
+        + initialize() : void
+        - crearOpcionesLenguajes() : void
+        - deshabilitarLenguajesExistentes() : void
+        - configurarBotones() : void
+    }
+
+    class WebController {
+        - webView : WebView
+        - titleLabel : Label
+        - backButton : Button
+        - forwardButton : Button
+        - progressBar : ProgressBar
+        - currentUrl : String
+        + initialize() : void
+        + cargarUrl(String) : void
+        + loadUrl(String) : void
+        + establecerTituloVentanaPorDefecto(String) : void
+        + setWindowTitleFallback(String) : void
+        - irAtras() : void
+        - irAdelante() : void
+        - recargar() : void
+        - abrirEnNavegadorExterno() : void
+        - cerrarVentana() : void
+        - detenerMedios() : void
+        - abrirExterno(String) : void
+    }
+
+    class CursosController {
+        - tituloLenguajeLabel : Label
+        - btnJava : Button
+        - btnPython : Button
+        - btnPhp : Button
+        - btnCplusplus : Button
+        - btnVolver : Button
+        + initialize() : void
+        - abrirDiagnostico(String) : void
+    }
+
+    class RecursosTemaController {
+        + setRecursos(String, List<RecursoAprendizaje>) : void
+    }
+}
+
+' Relaciones de Herencia
+RecursoAprendizaje <|-- Video
+RecursoAprendizaje <|-- DocumentoPDF
+RecursoAprendizaje <|-- Articulo
+
+' Composición y Agregación
+Curso *-- Ruta : contiene
+Ruta *-- NodoRuta : contiene
+NodoRuta o-- RecursoAprendizaje : materialDeApoyo
+
+' Clase anidada (inner class)
+ConfiguracionUsuarioService +-- ConfiguracionUsuario : inner class
+
+' Enum anidado
+AprendizajeManager +-- CompletionPolicy : nested enum
+
+' Dependencias y Asociaciones principales
+AprendizajeManager -- Ruta : gestiona
+RecursoRepository -- RecursoAprendizaje : almacena
+ConfiguracionUsuarioService -- ConfiguracionUsuario : maneja
+
+' Controladores y sus dependencias
+RutaController ..> AprendizajeManager : usa
+RutaController ..> RecursoRepository : consulta
+RutaController ..> Ruta : visualiza
+DiagnosticoController ..> ConfiguracionUsuarioService : guarda
+MisLenguajesController ..> ConfiguracionUsuarioService : consulta
+SeleccionMultipleLenguajesController ..> ConfiguracionUsuarioService : usa
+WebController ..> RecursoAprendizaje : muestra
+CursosController ..> ConfiguracionUsuarioService : valida
+RecursosTemaController ..> RecursoAprendizaje : muestra
+
+' Referencias a clases externas (solo menciones, sin paquete)
+ProgresoLecciones ..> AprendizajeManager : delega
+
+AprendizajeManager ..> "Leccion" : procesa
+AprendizajeManager ..> "LeccionRepository" : consulta
+NodoRuta ..> "Leccion" : contiene
+RutaController ..> "TemaLeccion" : clasifica
+
+
+
+'Modulo Comunidad'
+package "Comunidad_Modulo" {
+
+    package "modelo" {
+
+        class Comunidad {
+            - String idComunidad
+            - String nombre
+            - String descripcion
+            - ForoGeneral foroGeneral
+            - List<ChatPrivado> chatsPrivados
+            - List<UsuarioComunidad> usuariosMiembros
+            - List<UsuarioComunidad> usuariosConectados
+            - IModerador moderador
+            --
+            + unirUsuario(UsuarioComunidad): void
+            + conectarUsuario(UsuarioComunidad): void
+            + iniciarChatPrivado(List<UsuarioComunidad>): ChatPrivado
+            + obtenerEstadisticas(): String
+        }
+
+        class ForoGeneral {
+            - List<GrupoDiscusion> gruposDiscusion
+            - List<GrupoCompartir> gruposCompartir
+            --
+            + crearGrupoDiscusion(String, NivelProgramacion, TipoTema): GrupoDiscusion
+            + crearGrupoCompartir(String, NivelProgramacion, TipoTema): GrupoCompartir
+            + buscarGruposDiscusionRecomendados(UsuarioComunidad): List<GrupoDiscusion>
+        }
+
+        class GrupoDiscusion {
+            - String idGrupo
+            - String titulo
+            - NivelProgramacion nivelProgramacion
+            - TipoTema tipoTema
+            - List<UsuarioComunidad> miembros
+            - List<HiloDiscusion> hilos
+            --
+            + unirseGrupo(UsuarioComunidad): void
+            + esApropiado(UsuarioComunidad): boolean
+        }
+
+        class GrupoCompartir {
+            - String idGrupo
+            - String titulo
+            - NivelProgramacion nivelProgramacion
+            - TipoTema tipoTema
+            - List<UsuarioComunidad> miembros
+            - List<Solucion> soluciones
+            --
+            + compartirSolucion(Solucion): void
+            + unirseGrupo(UsuarioComunidad): void
+        }
+
+        class HiloDiscusion {
+            - String idHilo
+            - String titulo
+            - String problema
+            - UsuarioComunidad autor
+            - EstadoHilo estado
+            - List<Respuesta> respuestas
+            --
+            + responder(String, UsuarioComunidad): void
+            + votar(UsuarioComunidad, int): void
+            + marcarResuelto(): void
+        }
+
+        class Respuesta {
+            - String idRespuesta
+            - String contenido
+            - UsuarioComunidad autor
+            - Map<String, Integer> votosUsuarios
+            --
+            + votar(UsuarioComunidad, int): void
+            + marcarComoSolucion(): void
+        }
+
+        class ChatPrivado {
+            - String idChat
+            - List<UsuarioComunidad> participantes
+            - List<Mensaje> mensajes
+            --
+            + enviarMensaje(String, UsuarioComunidad): void
+            + obtenerHistorial(): List<Mensaje>
+        }
+
+        class Mensaje {
+            - String idMensaje
+            - String contenido
+            - UsuarioComunidad emisor
+            - LocalDateTime fechaEnvio
+            --
+            + marcarComoLeido(): void
+        }
+
+        class Solucion {
+            - String idSolucion
+            - String titulo
+            - String contenido
+            - UsuarioComunidad autor
+            - TipoSolucion tipoSolucion
+            - List<Comentario> comentarios
+            --
+            + votar(UsuarioComunidad, int): void
+            + comentar(String, UsuarioComunidad): void
+        }
+
+        class Comentario {
+            - String idComentario
+            - String contenido
+            - UsuarioComunidad autor
+            --
+            + votar(UsuarioComunidad, int): void
+        }
+
+        interface IModerador {
+            + getNombre(): String
+            + getUsername(): String
+            + asignarComunidad(Comunidad): void
+            + usuarioEstaSancionado(UsuarioComunidad): boolean
+            + getSancionActiva(UsuarioComunidad): SancionUsuario
+        }
+
+        class ModeradorManual {
+            - String nombre
+            - String username
+            --
+            + cerrarHilo(HiloDiscusion): void
+            + aplicarSancionManual(UsuarioComunidad, String, int): SancionUsuario
+            + expulsarUsuarioDeComunidad(UsuarioComunidad, Comunidad): void
+        }
+
+        class ModeradorAutomatico {
+            - String nombre
+            - boolean filtroActivado
+            - int nivelStricto
+            --
+            + moderarMensajeAutomatico(String, UsuarioComunidad): boolean
+            + aplicarSancionAutomatica(UsuarioComunidad, String): SancionUsuario
+            + setNivelStricto(int): void
+        }
+
+        class SancionUsuario {
+            - String idSancion
+            - UsuarioComunidad usuario
+            - String razon
+            - LocalDateTime fechaInicio
+            - LocalDateTime fechaFin
+            - boolean activa
+            --
+            + estaActiva(): boolean
+            + levantarSancion(): void
+        }
+    }
+
+    package "enums" {
+        enum TipoTema {
+            SINTAXIS
+            POO
+            ESTRUCTURAS_DATOS
+            ALGORITMOS
+            EXCEPCIONES
+            FRAMEWORKS
+        }
+
+        enum EstadoHilo {
+            ABIERTO
+            CERRADO
+            RESUELTO
+        }
+
+        enum TipoSolucion {
+            CODIGO
+            IMAGEN
+            TEXTO
+        }
+    }
+
+    package "servicios" {
+        class PersistenciaService {
+            --
+            + guardarComunidades(List<Comunidad>): void
+            + cargarComunidades(): List<Comunidad>
+            + guardarChats(List<ChatPrivado>): void
+            + cargarChats(): List<ChatPrivado>
+        }
+    }
+
+    package "controladores" {
+        class ContextoSistema <<Singleton>> {
+            - static ContextoSistema instancia
+            - List<Comunidad> comunidades
+            - Comunidad comunidadActual
+            - UsuarioComunidad usuarioActivo
+            --
+            - ContextoSistema()
+            + getInstance(): ContextoSistema {static}
+            + crearComunidad(String, String): Comunidad
+            + obtenerComunidades(): List<Comunidad>
+            + setUsuarioActivo(UsuarioComunidad): void
+            + setComunidadActual(Comunidad): void
+        }
+    }
+
+
+}
+
+' === RELACIONES PRINCIPALES (SIMPLIFICADAS) ===
+Comunidad *-- ForoGeneral
+Comunidad --> ChatPrivado
+
+Comunidad --> IModerador
+
+ForoGeneral --> GrupoDiscusion
+ForoGeneral --> GrupoCompartir
+
+GrupoDiscusion *-- HiloDiscusion
+GrupoCompartir --> Solucion
+
+HiloDiscusion *-- Respuesta
+ChatPrivado *-- Mensaje
+
+Solucion --> Comentario
+
+' === RELACIONES DE MODERACIÓN ===
+IModerador <|.. ModeradorManual : "implementa"
+IModerador <|.. ModeradorAutomatico : "implementa"
+ModeradorAutomatico --> SancionUsuario : "gestiona"
+ModeradorManual --> SancionUsuario : "gestiona"
+
+' === RELACIONES CON ENUMS ===
+GrupoDiscusion --> TipoTema
+
+GrupoCompartir --> TipoTema
+
+HiloDiscusion --> EstadoHilo
+Solucion --> TipoSolucion
+
+' === RELACIONES DE SERVICIOS ===
+ContextoSistema --> Comunidad
+
+ContextoSistema --> ContextoSistema
+PersistenciaService --> Comunidad
+
+'Modulo Gamificación'
+
+
+package Conexiones{
+    class LeccionesCompletadas{
+    -ran: Ranking
+    -usr: SesionManager
+    -progresoActual: ProgresoEstudiante
+    + LeccionesCompletadas()
+    +set(cantidad:int)
+    +aumentarXp(cantidad:int)
+    }
+}
+package "Gamificacion_Modulo" {
+
+    class Logro {
+        - nombre : String
+        - descripcion : String
+        - logrosDisponibles : List<Logro>
+        - inicializado : Boolean
+        + Logro(nombre: String, descripcion: String)
+        + getLogrosDisponibles()
+        + agregarLogro(logro: Logro)):void
+        + inicializarLogro() : void
+    }
+
+    abstract class Desafio {
+        - puntosRecompensa : Integer
+        - estaActivo : Boolean
+        - logrosDisponibles : List<Logro>
+        - fechaInicio : LocalDateTime
+        - fechaFin : LocalDateTime
+        - leccionesCompletadas : int
+        - meta : Integer
+        - desafiosDisponibles : List<Desafio>
+
+        + Desafio(logros: List<Logro>, recompensa:int, meta:int)
+        + activar() : void
+        + desactivar() : void
+        + verificarComplecion(estudiante: ProgresoEstudiante) : Boolean
+        + desbloquearLogro(logro: Logro, estudiante: ProgresoEstudiante) : Boolean
+        + completarDesafio(estudiante: ProgresoEstudiante) : void
+        + actualizarAvance(cantidad:int)
+        + estaCompletado() : Boolean
+        + agregarDesafio(desafio: Desafio) : void
+        + getAvanceDesafio()
+    }
+
+    class DesafioSemanal {
+
+        + DesafioSemanal(metaSemanal: Integer, logros: List<Logro>)
+        + DesafioSemanal(desafio: Desafio)
+        + activar()
+    }
+
+    class DesafioMensual {
+
+        + DesafioMensual(objetivoMensual: Integer, logros: List<Logro>)
+        + DesafioMensual(desafio: Desafio)
+        + activar()
+    }
+
+    class ProgresoEstudiante {
+        - usuario : Usuario
+        - logrosDesbloqueados : List<Logro>
+        - puntosTotal : Integer
+        - desafiosCompletados : Integer
+        - desafiosActivos : Lista<Desafio>
+        + ProgresoUsuario (usuario: Usuario)
+        + actualizarLogro(logro: Logro)
+        + verificarDesafios()
+        + actualizarDesafios(desafio: Desafio)
+        + actualizarProgreso(desafio: Desafio) : void
+        + getProgresoUsuarioLogueado()
+        + sumarPuntos(puntos: Integer)
+    }
+
+    class Ranking {
+        - rankingGeneral : List<ProgresoEstudiante>
+        -INSTANCE
+        - Ranking()
+        + getInstance() : Ranking
+        + getTotalProgreso()
+        + actualizarRanking(estudiante: ProgresoEstudiante) : void
+        + obtenerRankingGeneral() : List<ProgresoEstudiante>
+        + calcularPosicion(estudiante: ProgresoEstudiante) : Integer
+    }
+    Ranking ->Ranking: getInstance()
+    ' Relaciones de Herencia
+    Desafio <|-- DesafioSemanal
+    Desafio <|-- DesafioMensual
+
+    ' Relaciones de Composición
+
+
+
+    ' Relaciones de Dependencia
+    Logro <.. ProgresoEstudiante
+    Desafio <. ProgresoEstudiante : "completarDesafio()"
+    Ranking --> ProgresoEstudiante : "actualizarRanking()"
+    Desafio -> Logro
+
+}
+
+'Modulo Usuario
+package "Modulo_Usuario.Clases" {
+
+  abstract class UsuarioBase {
+    - username : String
+    - password : String
+    --
+    + UsuarioBase()
+    + UsuarioBase(username:String, password:String)
+    + getUsername() : String
+    + setUsername(username:String) : void
+    + getPassword() : String
+    + setPassword(password:String) : void
+  }
+
+  class Usuario  {
+    - nombre : String
+    - email : String
+    - xp : int
+    - vidas : int
+    - rol : Roles
+    - cursoActual : Object
+    - {static} ARCHIVO_USUARIOS : String
+    --
+    + Usuario()
+    + Usuario(username:String, password:String)
+    + Usuario(username:String, password:String, nombre:String, email:String)
+    + Usuario(username:String, password:String, nombre:String, email:String, xp:int)
+    + Usuario(username:String, password:String, nombre:String, email:String, xp:int, rol:Roles)
+    --
+    + getXp() : int
+    + setXp(xp:int) : void
+    + getVidas() : int
+    + getVidasSincronizadas() : int
+    + setVidas(vidas:int) : void
+    + setVidasYGuardar(vidas:int) : void
+    + getRol() : Roles
+    + setRol(rol:Roles) : void
+    --
+    + agregarXP(puntos:int) : void
+    + quitarXP(puntos:int) : void
+    + agregarVida() : void
+    + quitarVida() : boolean
+    + tieneVidas() : boolean
+    + resetearVidas() : void
+    + resetearVidas(vidasNuevas:int) : void
+    + sincronizarVidasDesdeArchivo() : void
+    + recargarDatosDesdeArchivo() : void
+    + getNivel() : int
+    + getProgresoInfo() : String
+    --
+    + setCurso(curso:Object) : void
+    + getCurso() : Object
+    + tieneCurso() : boolean
+    + removerCurso() : void
+    --
+    + getNombre() : String
+    + setNombre(nombre:String) : void
+    + getEmail() : String
+    + setEmail(email:String) : void
+    + toString() : String
+    --
+    {static} + fromString(linea:String) : Usuario
+    --
+    - guardarCambiosEnArchivo() : void
+  }
+
+  class UsuarioComunidad {
+    - idUsuario : String
+    - nivel : Nivel
+    - reputacion : Integer
+    - amigos : List<Usuario>
+    --
+    + UsuarioComunidad()
+    + UsuarioComunidad(username:String, password:String, nombre:String, email:String)
+    + UsuarioComunidad(username:String, password:String, nombre:String, email:String, idUsuario:String, nivel:Nivel, reputacion:Integer)
+    --
+    + getIdUsuario() : String
+    + setIdUsuario(idUsuario:String) : void
+    + getNivel() : Nivel
+    + setNivel(nivel:Nivel) : void
+    + getReputacion() : Integer
+    + setReputacion(reputacion:Integer) : void
+    + getAmigos() : List<Usuario>
+    + setAmigos(amigos:List<Usuario>) : void
+    --
+    + agregarAmigo(amigo:Usuario) : void
+    + eliminarAmigo(amigo:Usuario) : void
+    + incrementarReputacion(puntos:int) : void
+    + decrementarReputacion(puntos:int) : void
+    + toString() : String
+  }
+
+  enum Roles {
+    USUARIO
+    ADMINISTRADOR
+  }
+
+  enum Nivel {
+    PRINCIPIANTE
+    INTERMEDIO
+    AVANZADO
+    EXPERTO
+    --
+    + getDescripcion() : String
+    + toString() : String
+    {static} + fromDescripcion(descripcion:String) : Nivel
+  }
+
+}
+package Conexion{
+  class SesionManager <<external>> {
+    {static} + getInstancia() : SesionManager
+    + iniciarSesion(usuario:Modulo_Usuario.Clases.Usuario) : void
+    + getUsuarioAutenticado() : Modulo_Usuario.Clases.Usuario
+  }
+
+  class LeccionesCompletadas <<external>> {
+    {static} + aumentarXP(puntos:int) : void
+  }
+}
+
+' Relaciones de herencia
+UsuarioBase <|-- Usuario
+Usuario <|-- UsuarioComunidad
+
+' Asociaciones y dependencias
+UsuarioComunidad "0..*" o-- "amigos" Usuario
+Usuario --> Roles
+Modulo_Usuario.Clases.UsuarioComunidad --> Nivel
+Usuario ..> Conexion.LeccionesCompletadas : usa
+ProgresoEstudiante *-- Modulo_Usuario.Clases.Usuario : "contiene"
+RutaController ..> "Usuario" : obtiene datos
+AprendizajeManager ..> "Usuario" : gestiona progreso
+
+Comunidad --> UsuarioComunidad
+ContextoSistema --> UsuarioComunidad
+GrupoDiscusion --> Nivel
+GrupoCompartir --> Nivel
+
+Modulo_Leccion.Leccion o--> EjerciciosIteractivos_Modulo.Logic.EjercicioBase
+Conexion.LeccionesCompletadas -> Desafio
+@enduml
